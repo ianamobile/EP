@@ -6,6 +6,7 @@ import com.iana.api.domain.JoinRecord;
 import com.iana.api.domain.Pagination;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SecurityObject;
+import com.iana.api.domain.SetupEpTemplates;
 import com.iana.api.domain.SetupMCDataJsonDTO;
 
 public interface EPService {
@@ -20,5 +21,7 @@ public interface EPService {
 	
 	SetupMCDataJsonDTO getMCLookUpForEP(SecurityObject securityObject, SearchAccount searchAccount) throws Exception;
 
+	SetupEpTemplates setupEpTemplates() throws Exception;
+	
 }
 

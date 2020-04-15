@@ -16,6 +16,7 @@ import com.iana.api.domain.MCDataJsonDTO;
 import com.iana.api.domain.Pagination;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SecurityObject;
+import com.iana.api.domain.SetupEpTemplates;
 import com.iana.api.domain.SetupMCDataJsonDTO;
 import com.iana.api.utils.CommonUtils;
 import com.iana.api.utils.GlobalVariables;
@@ -86,5 +87,11 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 		
 		return setupMCDataJsonDTO;
 	}
-	
+
+	@Override
+	public SetupEpTemplates setupEpTemplates() throws Exception {
+		SetupEpTemplates setupEpTemplates = new SetupEpTemplates();
+		setupEpTemplates.setEpTemplates(restService.epTemplates());
+		return setupEpTemplates;
+	}
 }

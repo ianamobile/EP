@@ -20,6 +20,7 @@ import com.iana.api.domain.Pagination;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SearchResult;
 import com.iana.api.domain.SecurityObject;
+import com.iana.api.domain.SetupEpTemplates;
 import com.iana.api.domain.SetupMCDataJsonDTO;
 import com.iana.api.service.EPService;
 import com.iana.api.utils.ApiException;
@@ -44,6 +45,9 @@ public class EPRest extends CommonUtils {
 	
 	public static final String URI_EP_MOTOR_CARRIERS  			= "epMotorCarriers";
 	public static final String URI_GET_MCLOOKUP_FOR_EP			= "getMCLookUpForEP";
+
+	public static final String URI_SETUP 						= "/setup";
+	public static final String URI_EP_TEMPLATES					= "epTemplates";
 	
 	@Autowired
 	private EPService epService;
@@ -154,6 +158,29 @@ public class EPRest extends CommonUtils {
 			return sendServerError(e,GlobalVariables.FAIL);
 		}
 		
+	}
+	
+	@GetMapping(path = URI_EP_TEMPLATES + URI_SETUP, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "SETUP EP TEMPLATES IN "+ CLASS_NAME, response  = SetupEpTemplates.class, tags= {GlobalVariables.CATEGORY_EP_TEMPLATE, GlobalVariables.CATEGORY_SETUP})
+	@ApiResponses({
+		@ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
+		@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
+		@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class)
+    })	
+	public ResponseEntity<?> epTemplatesSetup(HttpServletRequest request) {
+	
+		try {
+			
+			SetupEpTemplates setupEpTemplates = epService.setupEpTemplates();
+			return new ResponseEntity<SetupEpTemplates>(setupEpTemplates, HttpStatus.OK);
+	
+		} catch (ApiException e) {
+			return sendValidationError(e);
+	
+		} catch (Exception e) {
+			return sendServerError(e,GlobalVariables.FAIL);
+		}
+	
 	}
  	
 }

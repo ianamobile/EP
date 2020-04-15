@@ -78,6 +78,7 @@ public class GlobalVariables {
 	public static final String CATEGORY_SETUP = "SETUP";
 	
 	public static final String CATEGORY_MC_LOOKUP = "MC LOOKUP";
+	public static final String CATEGORY_EP_TEMPLATE = "EP TEMPLATE";
 	
 	public static final String URI_PATH_EP_MC_USDOT_STATUS_REPORTS = "epMcUsdotStatusReports/report";
 	

@@ -1,5 +1,6 @@
 package com.iana.api.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.iana.api.dao.GenericDAO;
 import com.iana.api.domain.CommonFieldsSearch;
 import com.iana.api.domain.FpToken;
+import com.iana.api.domain.LabelValueForm;
 import com.iana.api.domain.Pagination;
 import com.iana.api.utils.APIReqErrors;
 import com.iana.api.utils.ApiResponseMessage;
@@ -159,5 +161,15 @@ public class BaseRestService extends GenericDAO {
 		
 	}
 
-	
+	public List<LabelValueForm> epTemplates() throws Exception {
+		
+		List<LabelValueForm> epTemplatesList = new ArrayList<>();
+ 
+		epTemplatesList.add(new LabelValueForm("Present",GlobalVariables.PRESENTTEMPLATE ));
+		epTemplatesList.add(new LabelValueForm("Future", GlobalVariables.WHATIFTEMPLATE ));
+		epTemplatesList.add(new LabelValueForm("Past", GlobalVariables.PASTTEMPLATE ));
+		
+		return epTemplatesList;
+	}
+
 }

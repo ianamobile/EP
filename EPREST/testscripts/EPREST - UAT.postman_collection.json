@@ -204,7 +204,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/epMotorCarriers?mcName=2&mcScac=&knownAs=&pageIndex=2&pageSize=2",
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/epMotorCarriers?mcName=2dsa&mcScac=&knownAs=&pageIndex=2&pageSize=2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -220,7 +220,7 @@
 					"query": [
 						{
 							"key": "mcName",
-							"value": "2"
+							"value": "2dsa"
 						},
 						{
 							"key": "mcScac",
@@ -238,6 +238,77 @@
 							"key": "pageSize",
 							"value": "2"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MC Lookup - getMCLookUpForEP",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkdlbmUiLCJsYXN0TmFtZSI6IktlbW1lcmVyIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSJ9.N_GyOBb6qhfrEbTzlyjx0rrnYhfzaEBt8xzJkqutCXppBZORQ0e_2DiF5cLjr5UQ9LNrYd-vja_1mO9xX5MF8g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/getMCLookUpForEP?mcName=2004ff&mcScac=&epAccNo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"getMCLookUpForEP"
+					],
+					"query": [
+						{
+							"key": "mcName",
+							"value": "2004ff"
+						},
+						{
+							"key": "mcScac",
+							"value": ""
+						},
+						{
+							"key": "epAccNo",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EP Template - epTemplates/setup",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/epTemplates/setup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"epTemplates",
+						"setup"
 					]
 				}
 			},

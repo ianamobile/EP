@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.iana.api.controller.EPRest;
 import com.iana.api.controller.LoginRest;
 import com.iana.api.security.CustomAuthenticationProvider;
 import com.iana.api.security.JwtAuthenticationEntryPoint;
@@ -85,6 +86,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/" + GlobalVariables.REST_URI_UIIA + LoginRest.URI_FORGOT_PASSWORD).permitAll()
             .antMatchers("/" + GlobalVariables.REST_URI_UIIA + LoginRest.URI_VALID_FORGOT_PASSWORD).permitAll()
             .antMatchers("/" + GlobalVariables.REST_URI_UIIA + LoginRest.URI_RESET_PASSWORD).permitAll()
+            .antMatchers("/" + GlobalVariables.REST_URI_UIIA + EPRest.URI_EP_TEMPLATES + EPRest.URI_SETUP).permitAll()
+            
             .anyRequest().authenticated();
 
        httpSecurity
