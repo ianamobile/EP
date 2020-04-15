@@ -24,5 +24,8 @@ public interface LoginService {
 	void validateResetPassword(ResetPassword resetPassword, List<String> errorList) throws Exception;
 
 	void resetPassword(ResetPassword resetPassword, List<String> errorList) throws Exception;
-	
+
+	void validateChangePassword(ResetPassword resetPassword, List<String> errorList) throws Exception;
+
+	void changePassword(ResetPassword resetPassword, SecurityObject securityObject, List<String> errorList) throws Exception;
 }

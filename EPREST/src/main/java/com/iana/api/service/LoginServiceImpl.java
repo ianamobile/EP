@@ -172,5 +172,40 @@ public class LoginServiceImpl extends CommonUtils implements LoginService {
 	
 	}
 
+	@Override
+	public void validateChangePassword(ResetPassword resetPassword, List<String> errorList) throws Exception {
+		if(null == resetPassword) {
+			errorList.add(env.getProperty("msg_error_invalid_request"));
+			return;
+		}
+		
+		if(StringUtils.isBlank(resetPassword.getNewPassword()) || StringUtils.isBlank(resetPassword.getConfirmPassword())){
+			if(StringUtils.isBlank(resetPassword.getNewPassword()))
+				errorList.add(env.getProperty("msg_error_empty_password"));
+			else
+				errorList.add(env.getProperty("msg_error_empty_confim_password")); 
+			
+		} else if(!resetPassword.getNewPassword().equals(resetPassword.getConfirmPassword())) {
+			errorList.add(env.getProperty("msg_error_match_password"));
+		} else if(resetPassword.getNewPassword().length() > 35) {
+			errorList.add(env.getProperty("msg_error_length_password"));
+		
+		}
+		
+	}
+	
+	@Override
+	public void changePassword(ResetPassword resetPassword, SecurityObject securityObject, List<String> errorList) throws Exception {
+		 
+		int rs = userDao.changePassword(resetPassword, securityObject);
+		if(rs > 0){
+			String body = restService.prepareResetPwdEmailBody(securityObject.getFirstName(), securityObject.getLastName());
+			notificationSender.sendEmailWithImage(new String[] { securityObject.getEmail() }, env.getProperty("emailProp.smtp.subject_reset_pwd_success"), body,
+													new String[] { env.getProperty("root_dir_path")+env.getProperty("img_path_app_logo") });
+		}else{
+			errorList.add(env.getProperty("msg_error_change_password"));
+		}
+	}
+
 	
 }

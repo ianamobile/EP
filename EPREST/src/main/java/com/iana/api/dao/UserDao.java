@@ -28,5 +28,7 @@ public interface UserDao {
 	FpToken getForgotPasswordTokenInfoByScac(FpToken fpToken) throws Exception;
 
 	int updatePassword(ResetPassword resetPassword, FpToken fpToken) throws Exception;
+
+	int changePassword(ResetPassword resetPassword, SecurityObject securityObject) throws Exception;
 	
 }

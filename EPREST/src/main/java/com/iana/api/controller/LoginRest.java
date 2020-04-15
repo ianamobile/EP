@@ -53,8 +53,10 @@ public class LoginRest extends CommonUtils {
 	
 	public static final String URI_AUTH_PATH = "auth";
 	public static final String URI_FORGOT_PASSWORD = "forgotPassword";
-	public static final String URI_VALID_FORGOT_PASSWORD = "validateForgotPwdLink";	
+	public static final String URI_VALID_FORGOT_PASSWORD = "validateForgotPwdLink";
 	public static final String URI_RESET_PASSWORD = "resetPassword";
+	public static final String URI_CHANGE_PASSWORD = "changePassword";
+	
 	
 	
 	@Autowired
@@ -245,5 +247,47 @@ public class LoginRest extends CommonUtils {
 		}
 		
 	}
+
+    @PostMapping( path = URI_CHANGE_PASSWORD, produces = { MediaType.APPLICATION_JSON_VALUE }, headers = { "Accept=application/json" })
+    @ApiOperation(value = "CHANGE PASSWORD REQUEST ", response = ApiResponseMessage.class)
+	@ApiResponses({
+		@ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
+		@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
+		@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class)
+    })	
+	public ResponseEntity<?> changePassword(HttpEntity<ResetPassword> requestEntity, HttpServletRequest request) {
+		List<Errors> errors = null;
+		List<String> errorList = getListInstance();
+		
+		try {
+
+			SecurityObject securityObject = (SecurityObject) request.getAttribute(GlobalVariables.SECURITY_OBJECT);
+			ResetPassword changePassword = requestEntity.getBody();
+			loginService.validateChangePassword(changePassword, errorList);
+			if (isNotNullOrEmpty(errorList)) {
+				errors = setValidationErrors(errorList);
+			} else {
+				loginService.changePassword(changePassword,securityObject, errorList);
+				if (isNotNullOrEmpty(errorList)) {
+					errors = setBusinessError(errorList);
+				}
+			}
+		
+			if (isNotNullOrEmpty(errors)) {
+				return sendUnprocessableEntity(errors);
+			} else {
+				ApiResponseMessage response = new ApiResponseMessage(ApiResponseMessage.OK,env.getProperty("msg_success_change_pwd"), null);
+				return new ResponseEntity<ApiResponseMessage>(response, HttpStatus.OK);
+			}
+
+		} catch (ApiException e) {
+			return sendValidationError(e);
+	
+		} catch (Exception e) {
+			return sendServerError(e,GlobalVariables.FAIL);
+		}
+		
+	}
+
     
 }

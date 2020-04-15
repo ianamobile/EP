@@ -148,4 +148,16 @@ public class UserDaoImpl extends GenericDAO implements UserDao {
 							fpToken.getUserName(), DateTimeFormater.getSqlSysTimestamp(), fpToken.getId());
 	}
 
+	@Override
+	public int changePassword(ResetPassword resetPassword, SecurityObject securityObject) throws Exception {
+		StringBuffer sbQuery = new StringBuffer();
+		
+		sbQuery.append(" UPDATE user_login ");
+		sbQuery.append(" SET PASSWORD = ?, MODIFIED_BY = ?, MODIFIED_DATE = ? ");
+		sbQuery.append(" WHERE ACCOUNT_NUMBER = ? AND SCAC_CODE = ?");
+		
+		return saveOrUpdate(this.uiiaDataSource, sbQuery.toString(), false, EncryptionUtils.encrypt(resetPassword.getNewPassword().toUpperCase()), securityObject.getUsername(),
+							DateTimeFormater.getSqlSysTimestamp(), securityObject.getAccountNumber(), securityObject.getScac());
+	}
+	
 }
