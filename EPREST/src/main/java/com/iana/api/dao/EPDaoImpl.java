@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import com.iana.api.domain.EPJoinDet;
 import com.iana.api.domain.JoinRecord;
+import com.iana.api.domain.MCDataJsonDTO;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SecurityObject;
 import com.iana.api.utils.CommonUtils;
@@ -234,6 +235,80 @@ public class EPDaoImpl extends GenericDAO implements EPDao {
 			sbQuery.append(" AND d.ep_acct_no = ? ");
 			params.add(searchAccount.getAccountNumber());
 		}
+	}
+
+	@Override
+	public List<MCDataJsonDTO> getMCLookUpForEP(SecurityObject securityObject, SearchAccount searchAccount) throws Exception {
+		List<Object> params = new ArrayList<>();
+		StringBuffer sbQuery = new StringBuffer();
+		
+		sbQuery.append(" SELECT a.company_name,a.scac_code,j.mc_acct_no, j.mc_ep_status, d.ep_mem  ");
+		sbQuery.append(" FROM account_info a,");
+		sbQuery.append(" (mc_ep_join_status j  ");
+		sbQuery.append(" LEFT JOIN  ep_mc_join_details d  ON (d.mc_acct_no = j.mc_acct_no AND d.ep_acct_no = ?) ");
+		sbQuery.append(" LEFT JOIN (mc_specific_overrides op) ON(op.mc_acct_no = j.mc_acct_no AND op.ep_acct_no = ?) ");
+		sbQuery.append(" LEFT JOIN (mc_areq_overrides oa) ON(oa.mc_acct_no = j.mc_acct_no AND oa.ep_acct_no = ? )) ");
+		sbQuery.append(" WHERE j.ep_acct_no = ? ");
+		
+		params.add(CommonUtils.validateObject(securityObject.getAccountNumber()));
+		params.add(CommonUtils.validateObject(securityObject.getAccountNumber()));
+		params.add(CommonUtils.validateObject(securityObject.getAccountNumber()));
+		params.add(CommonUtils.validateObject(securityObject.getAccountNumber()));
+			
+		filterGetMCLookUpForEP(searchAccount, params, sbQuery);
+			
+		sbQuery.append(" GROUP BY j.mc_acct_no ORDER BY a.company_name ");
+				
+//		return findAll(this.uiiaDataSource, sbQuery.toString(), params.toArray(), MCDataJsonDTO.class);
+		
+		return getSpringJdbcTemplate(this.uiiaDataSource).query(sbQuery.toString(), params.toArray(), new ResultSetExtractor<List<MCDataJsonDTO>>(){
+			@Override
+			public List<MCDataJsonDTO> extractData(ResultSet rsCompList) throws SQLException, DataAccessException {
+				List<MCDataJsonDTO> mcDataDtos = new ArrayList<>();
+				
+				while(rsCompList.next())
+				{ 
+					MCDataJsonDTO mcDataJsonDTO = new MCDataJsonDTO();
+			    	  mcDataJsonDTO.setAccountNumber(rsCompList.getString("mc_acct_no") == null ? StringUtils.EMPTY : rsCompList.getString("mc_acct_no"));
+			    	  mcDataJsonDTO.setCompanyName(rsCompList.getString("company_name") == null ? StringUtils.EMPTY : rsCompList.getString("company_name"));
+			    	  mcDataJsonDTO.setMcScac(rsCompList.getString("scac_code") == null ? StringUtils.EMPTY : rsCompList.getString("scac_code"));
+			    	  String mcEPStatus;
+			    	  if(rsCompList.getString("mc_ep_status") == null || rsCompList.getString("mc_ep_status").trim().equalsIgnoreCase("") 
+			    			  || rsCompList.getString("mc_ep_status").trim().equalsIgnoreCase("null") 
+			    			  || rsCompList.getString("mc_ep_status").trim().equalsIgnoreCase("N") ){
+			    		  mcEPStatus ="Not approved";
+			    	 }else{
+			    		 mcEPStatus ="Approved";
+			    	 }
+			    	  mcDataJsonDTO.setMcEPStatus(mcEPStatus);
+			    	  String epMem="";
+			    	  if(rsCompList.getString("ep_mem") == null || rsCompList.getString("ep_mem").trim().equalsIgnoreCase("") 
+			    			  || rsCompList.getString("ep_mem").trim().equalsIgnoreCase("null") || rsCompList.getString("ep_mem").trim().equalsIgnoreCase("N")){
+			    		  epMem ="Non member";
+			    	 }else{
+			    		 epMem ="Member";
+			    	 }
+			    	  mcDataJsonDTO.setEpMemberFlag(epMem);
+			    	  
+			          mcDataDtos.add(mcDataJsonDTO);
+					
+				}//while end 
+				
+				return mcDataDtos;
+			}
+		});
+	}
+	
+	private void filterGetMCLookUpForEP(SearchAccount searchAccount, List<Object> params, StringBuffer sbQuery) {
+		
+		sbQuery.append(" AND a.company_name LIKE ? ");
+		params.add(CommonUtils.validateObject(searchAccount.getCompanyName()) + GlobalVariables.PERCENTAGE);
+	
+		sbQuery.append(" AND j.mc_acct_no = a.account_no ");
+		sbQuery.append(" AND (a.uiia_status <>'DELETED' AND a.uiia_status <>'PENDING') ");
+			
+		sbQuery.append(" AND a.scac_code LIKE ? ");
+		params.add(CommonUtils.validateObject(searchAccount.getScac()) + GlobalVariables.PERCENTAGE);
 	}
 	
 	

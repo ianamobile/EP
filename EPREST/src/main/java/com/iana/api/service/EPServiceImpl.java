@@ -1,5 +1,6 @@
 package com.iana.api.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -10,9 +11,12 @@ import org.springframework.stereotype.Service;
 
 import com.iana.api.dao.EPDao;
 import com.iana.api.domain.JoinRecord;
+import com.iana.api.domain.LabelValueForm;
+import com.iana.api.domain.MCDataJsonDTO;
 import com.iana.api.domain.Pagination;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SecurityObject;
+import com.iana.api.domain.SetupMCDataJsonDTO;
 import com.iana.api.utils.CommonUtils;
 import com.iana.api.utils.GlobalVariables;
 
@@ -59,5 +63,28 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 		return epDao.getEPMotorCarriers(securityObject, searchAccount);
 	}
 
+	@Override
+	public void validateMCLookUpForEP(SecurityObject securityObject, SearchAccount searchAccount, List<String> errorList) throws Exception {
+		if(!GlobalVariables.ROLE_EP.equalsIgnoreCase(securityObject.getRoleName())) {
+			errorList.add(env.getProperty("msg_error_unauthorized_access"));
+			return;
+		}
+	}
 
+	@Override
+	public SetupMCDataJsonDTO getMCLookUpForEP(SecurityObject securityObject, SearchAccount searchAccount) throws Exception {
+		
+		List<MCDataJsonDTO> mcData = epDao.getMCLookUpForEP(securityObject, searchAccount);
+		List<LabelValueForm> result = new ArrayList<>();
+		for(MCDataJsonDTO mcDataJsonDTO : mcData ){
+			result.add(new LabelValueForm((mcDataJsonDTO.getCompanyName()+":"+mcDataJsonDTO.getMcScac()+":"+mcDataJsonDTO.getMcEPStatus()+":"+mcDataJsonDTO.getEpMemberFlag()), 
+					(mcDataJsonDTO.getCompanyName()+":"+mcDataJsonDTO.getMcScac()+":"+mcDataJsonDTO.getAccountNumber())));
+		}
+		
+		SetupMCDataJsonDTO setupMCDataJsonDTO = new SetupMCDataJsonDTO();
+		setupMCDataJsonDTO.setResults(result);
+		
+		return setupMCDataJsonDTO;
+	}
+	
 }

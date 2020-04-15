@@ -20,6 +20,7 @@ import com.iana.api.domain.Pagination;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SearchResult;
 import com.iana.api.domain.SecurityObject;
+import com.iana.api.domain.SetupMCDataJsonDTO;
 import com.iana.api.service.EPService;
 import com.iana.api.utils.ApiException;
 import com.iana.api.utils.ApiResponseMessage;
@@ -42,6 +43,7 @@ public class EPRest extends CommonUtils {
 	Logger log = LogManager.getLogger(this.getClass().getName());
 	
 	public static final String URI_EP_MOTOR_CARRIERS  			= "epMotorCarriers";
+	public static final String URI_GET_MCLOOKUP_FOR_EP			= "getMCLookUpForEP";
 	
 	@Autowired
 	private EPService epService;
@@ -96,6 +98,53 @@ public class EPRest extends CommonUtils {
 				return sendUnprocessableEntity(errors);
 			} else {
 				return new ResponseEntity<SearchResult<JoinRecord>>(new SearchResult<>(joinRecords, pagination), HttpStatus.OK);
+			}
+
+		} catch (ApiException e) {
+			return sendValidationError(e);
+	
+		} catch (Exception e) {
+			return sendServerError(e,GlobalVariables.FAIL);
+		}
+		
+	}
+	
+	@GetMapping(path = URI_GET_MCLOOKUP_FOR_EP, produces = {MediaType.APPLICATION_JSON_VALUE})
+	@ApiOperation(value = "GET MC LOOKUP FOR EP REQUEST "+ CLASS_NAME, responseContainer="List", response = SetupMCDataJsonDTO.class, tags = {GlobalVariables.CATEGORY_MC_LOOKUP})
+	@ApiResponses({
+		@ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
+		@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
+		@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class)
+    })
+	public ResponseEntity<?> getMCLookUpForEP (@RequestParam(value = "mcName", defaultValue = "") String mcName,
+											   @RequestParam(value = "mcScac", defaultValue = "") String mcScac,
+											   @RequestParam(value = "epAccNo", defaultValue = "") String epAccNo,
+											   HttpServletRequest request) {
+		
+		List<Errors> errors = null;
+		SetupMCDataJsonDTO setupMCDataJsonDTO = null;
+		
+		List<String> errorList = getListInstance();
+		try {
+			
+			SecurityObject securityObject = (SecurityObject) request.getAttribute(GlobalVariables.SECURITY_OBJECT);
+						
+			SearchAccount searchAccount = new SearchAccount();
+			searchAccount.setCompanyName(decode(mcName));
+			searchAccount.setScac(decode(mcScac));
+			searchAccount.setAccountNumber(decode(epAccNo));
+			searchAccount.setUserType(GlobalVariables.EQUIPMENTPROVIDER);
+						
+			epService.validateMCLookUpForEP(securityObject, searchAccount, errorList);
+			if (isNotNullOrEmpty(errorList)) {
+				errors = setValidationErrors(errorList);
+		    } else {
+			    	setupMCDataJsonDTO = epService.getMCLookUpForEP(securityObject, searchAccount);
+		    }
+			if (isNotNullOrEmpty(errors)) {
+				return sendUnprocessableEntity(errors);
+			} else {
+				return new ResponseEntity<SetupMCDataJsonDTO>(setupMCDataJsonDTO, HttpStatus.OK);
 			}
 
 		} catch (ApiException e) {

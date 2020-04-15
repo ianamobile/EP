@@ -6,6 +6,7 @@ import com.iana.api.domain.JoinRecord;
 import com.iana.api.domain.Pagination;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SecurityObject;
+import com.iana.api.domain.SetupMCDataJsonDTO;
 
 public interface EPService {
 	
@@ -14,6 +15,10 @@ public interface EPService {
 	void epMotorCarriersBusinessValidation(SecurityObject securityObject, SearchAccount searchAccount, Pagination pagination, List<String> errorList) throws Exception;
 
 	List<JoinRecord> getEPMotorCarriers(SecurityObject securityObject, SearchAccount searchAccount) throws Exception;
+
+	void validateMCLookUpForEP(SecurityObject securityObject, SearchAccount searchAccount, List<String> errorList) throws Exception;
 	
+	SetupMCDataJsonDTO getMCLookUpForEP(SecurityObject securityObject, SearchAccount searchAccount) throws Exception;
+
 }
 
