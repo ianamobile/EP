@@ -1,0 +1,248 @@
+{
+	"info": {
+		"_postman_id": "8e9a69f8-af99-45ec-b083-f12d57a76faa",
+		"name": "EPREST - UAT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login - EP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"APLU\",\n\t\"password\":\"UIIA\",\n\t\"roleName\":\"EP\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "forgotPassword",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"scac\":\"IC\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/forgotPassword",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"forgotPassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "validateForgotPwdLink",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/validateForgotPwdLink?q=eyJhbGciOiJIUzUxMiJ9.eyJmaXJzdE5hbWUiOiJDaGFyaXNzZSIsImxhc3ROYW1lIjoiSGFsbCIsImVtYWlsIjoiaW50ZXJtb2RhbC5lcEBnbWFpbC5jb20iLCJpZCI6MTkyNTAsImV4cCI6MTU4NjQzMzQ4NH0.lxnu0gECsmbgEnuYeEK_VZ9xaNqbzEcSDoVwLywMEIARm0MUJLFXl6Nr_jFzZVd3OG2pn7BM17h_geUQxp-ZJA",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"validateForgotPwdLink"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJmaXJzdE5hbWUiOiJDaGFyaXNzZSIsImxhc3ROYW1lIjoiSGFsbCIsImVtYWlsIjoiaW50ZXJtb2RhbC5lcEBnbWFpbC5jb20iLCJpZCI6MTkyNTAsImV4cCI6MTU4NjQzMzQ4NH0.lxnu0gECsmbgEnuYeEK_VZ9xaNqbzEcSDoVwLywMEIARm0MUJLFXl6Nr_jFzZVd3OG2pn7BM17h_geUQxp-ZJA"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "resetPassword",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"newPassword\":\"uiia\",\n\t\"confirmPassword\":\"uiia\",\n\t\"q\":\"eyJhbGciOiJIUzUxMiJ9.eyJmaXJzdE5hbWUiOiJDaGFyaXNzZSIsImxhc3ROYW1lIjoiSGFsbCIsImVtYWlsIjoiaW50ZXJtb2RhbC5lcEBnbWFpbC5jb20iLCJpZCI6MTkyNTAsImV4cCI6MTU4NjQzMzQ4NH0.lxnu0gECsmbgEnuYeEK_VZ9xaNqbzEcSDoVwLywMEIARm0MUJLFXl6Nr_jFzZVd3OG2pn7BM17h_geUQxp-ZJA\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/resetPassword",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"resetPassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "changePassword",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkdlbmUiLCJsYXN0TmFtZSI6IktlbW1lcmVyIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSJ9.N_GyOBb6qhfrEbTzlyjx0rrnYhfzaEBt8xzJkqutCXppBZORQ0e_2DiF5cLjr5UQ9LNrYd-vja_1mO9xX5MF8g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"newPassword\":\"uiia\",\n\t\"confirmPassword\":\"uiia\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/changePassword",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"changePassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MC Lookup - epMotorCarriers",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkdlbmUiLCJsYXN0TmFtZSI6IktlbW1lcmVyIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSJ9.N_GyOBb6qhfrEbTzlyjx0rrnYhfzaEBt8xzJkqutCXppBZORQ0e_2DiF5cLjr5UQ9LNrYd-vja_1mO9xX5MF8g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/epMotorCarriers?mcName=2&mcScac=&knownAs=&pageIndex=2&pageSize=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"epMotorCarriers"
+					],
+					"query": [
+						{
+							"key": "mcName",
+							"value": "2"
+						},
+						{
+							"key": "mcScac",
+							"value": ""
+						},
+						{
+							"key": "knownAs",
+							"value": ""
+						},
+						{
+							"key": "pageIndex",
+							"value": "2"
+						},
+						{
+							"key": "pageSize",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -76,10 +76,8 @@ public class GlobalVariables {
 	public static final String RESPONSE_MSG_422 = "This code is returned by the server when Validation/Business Validation Fails";
 	public static final String RESPONSE_MSG_500 = "Internal Server Error";
 	public static final String CATEGORY_SETUP = "SETUP";
-	public static final String CATEGORY_SELF_REGISTRATION = "SELF-REGISTRATION";
-	public static final String CATEGORY_VIEW_NAME_SCAC_CHANGES = "VIEW NAME & SCAC CHANGES";
-	public static final String CATEGORY_ADD_OTHER_CONTACTS = "ADD OTHER CONTACTS";
-	public static final String CATEGORY_SECONDARY_USER = "SECONDARY USER";
+	
+	public static final String CATEGORY_MC_LOOKUP = "MC LOOKUP";
 	
 	public static final String URI_PATH_EP_MC_USDOT_STATUS_REPORTS = "epMcUsdotStatusReports/report";
 	
@@ -314,5 +312,11 @@ public class GlobalVariables {
 	public static final String FLAG_REPORT = "report";
 	
 	public static final String CATEGORY_LIST_OF_DELETED_MCS = "LIST OF DELETED MCS";
-	
+
+	   public static final String TRAC_ACCOUNT_NO ="EP200025";
+	//   public static final String TRAC_ACCOUNT_NO ="EP200036";
+	   //public static final String TRAC_ACCOUNT_NO ="EP200031";
+
+	   public static final String APPRVD_STATUS="APPROVED";
+	   public static final String NOT_APPRVD_STATUS="NOT APPROVED";
 }

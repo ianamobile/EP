@@ -9,11 +9,14 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import com.iana.api.dao.GenericDAO;
+import com.iana.api.domain.CommonFieldsSearch;
 import com.iana.api.domain.FpToken;
+import com.iana.api.domain.Pagination;
 import com.iana.api.utils.APIReqErrors;
 import com.iana.api.utils.ApiResponseMessage;
 import com.iana.api.utils.CommonUtils;
 import com.iana.api.utils.Errors;
+import com.iana.api.utils.GlobalVariables;
 
 @Service
 public class BaseRestService extends GenericDAO {
@@ -118,4 +121,43 @@ public class BaseRestService extends GenericDAO {
 		return sb.toString();
 	}
 
+	public void pageSetup(CommonFieldsSearch search, List<String> errorList, Pagination page, Long recordCount){
+		if (search.getPageSize() <= 0) {
+			search.setPageSize(Integer.valueOf(GlobalVariables.DEFAULT_TEN));
+		}
+		
+		if (search.getPageIndex() <= 0) {
+			search.setPageIndex(1);
+		}
+		
+		if (recordCount != 0) {
+			int totalPage = (int) Math.ceil((float) recordCount / Long.valueOf(search.getPageSize()));
+
+			if (totalPage == 0 && Integer.valueOf(search.getPageIndex()).intValue() == 1) {
+				search.setRecordFrom(0);
+
+			} else {
+				if (totalPage < search.getPageIndex()) {
+//					errorList.add(env.getProperty("msg_error_change_search"));
+					search.setRecordFrom(0);
+					search.setPageIndex(1);
+					
+				} else if (search.getPageIndex() != 0) {
+					search.setRecordFrom((search.getPageIndex() - 1) * search.getPageSize());
+
+				}
+
+				page.setTotalPages(totalPage);
+				page.setTotalElements(recordCount.intValue());
+				page.setCurrentPage(search.getPageIndex());
+				page.setSize(search.getPageSize());
+			}
+
+		} else {
+			errorList.add(env.getProperty("msg_error_no_records_found"));
+		}
+		
+	}
+
+	
 }
