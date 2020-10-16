@@ -1,5 +1,6 @@
 package com.iana.api.token;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,7 +56,15 @@ public class JwtTokenValidator {
 			userObject.setFirstName((String)body.get("firstName"));
 			userObject.setLastName((String)body.get("lastName"));
 			userObject.setEmail((String)body.get("email"));
+			userObject.setExtraParam((String)body.get("extraParam"));
+			
+			String uiiaStaff = (String) body.get("uiiaStaff");
+			userObject.setUiiaStaff(StringUtils.isBlank(uiiaStaff) || "false".equalsIgnoreCase(uiiaStaff) ? false : true );
+			
+			String groupId = (String) body.get("groupId");
+			userObject.setGroupId(Integer.valueOf(groupId));
 
+			
 		} catch (JwtException e) {
 			// Simply print the exception and null will be returned for the userDto
 			log.error("JwtException::", e);

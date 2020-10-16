@@ -45,6 +45,9 @@ public class SecurityObject implements UserDetails{
 	private String innerScac;
 	private String innerEmail;
 	private String requestFrom; // This field is indicating originSource(web/ mobile)
+
+	private int groupId;
+	private String extraParam;
 	
 	public SecurityObject(){
 		
@@ -71,7 +74,9 @@ public class SecurityObject implements UserDetails{
 		      String innerCompanyName,
 		      String innerScac,
 		      String innerEmail,
-		      String requestFrom
+		      String requestFrom,
+		      int groupId,
+		      String extraParam
 	    ) {
 	        this.accountNumber = accountNumber;
 	        this.username = username;
@@ -95,7 +100,9 @@ public class SecurityObject implements UserDetails{
 	        this.innerScac = innerScac;
 	        this.innerEmail = innerEmail;
 	        this.requestFrom = requestFrom;
-	    }
+	        this.groupId = groupId;
+	        this.extraParam = extraParam;
+	}
 	
     @JsonIgnore
     @Override

@@ -111,6 +111,7 @@ public class CommonUtils extends ValidationUtils {
 		securityObject.setInnerCompanyName(StringUtils.EMPTY);
 		securityObject.setInnerScac(StringUtils.EMPTY);
 		securityObject.setInnerEmail(StringUtils.EMPTY);
+		securityObject.setExtraParam(StringUtils.EMPTY);
 
 		return securityObject;
 	}

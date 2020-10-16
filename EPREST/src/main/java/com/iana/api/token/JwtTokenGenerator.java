@@ -59,6 +59,9 @@ public class JwtTokenGenerator {
 		claims.put("firstName", CommonUtils.validateObject(securityObject.getFirstName()));
 		claims.put("lastName", CommonUtils.validateObject(securityObject.getLastName()));
 		claims.put("email", CommonUtils.validateObject(securityObject.getEmail()));
+		claims.put("uiiaStaff", CommonUtils.validateObject(securityObject.isUiiaStaff()));
+		claims.put("groupId", CommonUtils.validateObject(securityObject.getGroupId()));
+		claims.put("extraParam", CommonUtils.validateObject(securityObject.getExtraParam()));
 		
 		return Jwts.builder()
 					.setClaims(claims)
