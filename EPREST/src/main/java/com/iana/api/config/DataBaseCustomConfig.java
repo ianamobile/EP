@@ -2,85 +2,74 @@ package com.iana.api.config;
 
 import java.beans.PropertyVetoException;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @PropertySource(value = { "classpath:jdbc.properties" }, ignoreResourceNotFound = true)
 public class DataBaseCustomConfig {
 
 	/* COMMON DATABASE CONFIGURATION PROPERTIES START */
-	@Value("${c3p0.driverClassName}")
+	
+	@Value("${jdbc.driverClassName}")
 	private String driverClassName;
-
-	@Value("${c3p0.minPoolSize}")
-	private int minSize;
-
-	@Value("${c3p0.maxPoolSize}")
-	private int maxSize;
-
-	@Value("${c3p0.acquireIncrement}")
-	private int acquireIncrement;
-
-	@Value("${c3p0.maxStatements}")
-	private int maxStatements;
-
-	@Value("${c3p0.testConnectionOnCheckin}")
-	boolean testConnectionOnCheckin;
-
-	@Value("${c3p0.testConnectionOnCheckout}")
-	boolean testConnectionOnCheckout;
-
-	@Value("${c3p0.maxIdleTime}")
-	private int maxIdleTime;
-
-	@Value("${c3p0.idleConnectionTestPeriod}")
-	private int idleTestPeriod;
+	
+	@Value("${jdbc.maxPoolSize}")
+	private int maxPoolSize;
+	
+	@Value("${jdbc.idealTimeOut}")
+	private long idealTimeOut;
+	
+	@Value("${jdbc.maxLifeTime}")
+	private long maxLifeTime;
+	
+	@Value("${jdbc.cachePrepStmts}")
+	private String cachePrepStmts;
+	
+	@Value("${jdbc.prepStmtCacheSize}")
+	private String prepStmtCacheSize;
+	
+	@Value("${jdbc.prepStmtCacheSqlLimit}")
+	private String prepStmtCacheSqlLimit;
+	
+	@Value("${jdbc.useServerPrepStmts}")
+	private String useServerPrepStmts;
+	
 
 	/* COMMON DATABASE CONFIGURATION PROPERTIES END */
 
 	/* INIDIVIDUAL DATABASE CONNECTION PROPERTIES START */
-	@Value("${c3p0.datasource.uiia.url}")
+	@Value("${jdbc.url.uiia}")
 	private String uiiaJdbcUrl;
 
-	@Value("${c3p0.datasource.uiia.username}")
+	@Value("${jdbc.username.uiia}")
 	private String uiiaJdbcUsername;
 
-	@Value("${c3p0.datasource.uiia.password}")
+	@Value("${jdbc.password.uiia}")
 	private String uiiaJdbcPassword;
 
-	@Value("${c3p0.datasource.notifemail.url}")
+	@Value("${jdbc.url.notifemail}")
 	private String notifEmailJdbcUrl;
 
-	@Value("${c3p0.datasource.notifemail.username}")
+	@Value("${jdbc.username.notifemail}")
 	private String notifEmailJdbcUsername;
 
-	@Value("${c3p0.datasource.notifemail.password}")
+	@Value("${jdbc.password.notifemail}")
 	private String notifEmailJdbcPassword;
 	
-	@Value("${c3p0.datasource.notifications.url}")
-	private String notificationsJdbcUrl;
-
-	@Value("${c3p0.datasource.notifications.username}")
-	private String notificationsJdbcUsername;
-
-	@Value("${c3p0.datasource.notifications.password}")
-	private String notificationsJdbcPassword;
-
-	@Value("${c3p0.datasource.pwss.url}")
+	@Value("${jdbc.url.pwss}")
 	private String pwssJdbcUrl;
 
-	@Value("${c3p0.datasource.pwss.username}")
+	@Value("${jdbc.username.pwss}")
 	private String pwssJdbcUsername;
 
-	@Value("${c3p0.datasource.pwss.password}")
+	@Value("${jdbc.password.pwss}")
 	private String pwssJdbcPassword;
 
 	
@@ -89,53 +78,47 @@ public class DataBaseCustomConfig {
 
 	@Bean(name = "uiiaDataSource", destroyMethod = "close")
 	@Primary
-	public DataSource getUiiaDataSource() throws PropertyVetoException {
+	public HikariDataSource getUiiaDataSource() throws PropertyVetoException {
 
-		ComboPooledDataSource dataSource = new ComboPooledDataSource();
-		setDataSourceConfiguration(dataSource, this.uiiaJdbcUrl, this.uiiaJdbcUsername, this.uiiaJdbcPassword);
-		return dataSource;
+		HikariConfig configuration = setDataSourceConfiguration(this.uiiaJdbcUrl, this.uiiaJdbcUsername, this.uiiaJdbcPassword);
+		return new HikariDataSource(configuration);
 	}
 
 	@Bean(name = "notifEmailDataSource", destroyMethod = "close")
-	public DataSource getNotifEmailDataSource() throws PropertyVetoException {
+	public HikariDataSource getNotifEmailDataSource() throws PropertyVetoException {
 
-		ComboPooledDataSource dataSource = new ComboPooledDataSource();
-		setDataSourceConfiguration(dataSource, this.notifEmailJdbcUrl, this.notifEmailJdbcUsername, this.notifEmailJdbcPassword);
-		return dataSource;
-	}
-	
-	@Bean(name = "notificationsDataSource", destroyMethod = "close")
-	public DataSource getNotificationsDataSource() throws PropertyVetoException {
-
-		ComboPooledDataSource dataSource = new ComboPooledDataSource();
-		setDataSourceConfiguration(dataSource, this.notificationsJdbcUrl, this.notificationsJdbcUsername, this.notificationsJdbcPassword);
-		return dataSource;
+		HikariConfig configuration = setDataSourceConfiguration(this.notifEmailJdbcUrl, this.notifEmailJdbcUsername, this.notifEmailJdbcPassword);
+		return new HikariDataSource(configuration);
 	}
 	
 	@Bean(name = "pwssDataSource", destroyMethod = "close")
-	public DataSource getPwssDataSource() throws PropertyVetoException {
+	public HikariDataSource getPwssDataSource() throws PropertyVetoException {
 
-		ComboPooledDataSource dataSource = new ComboPooledDataSource();
-		setDataSourceConfiguration(dataSource, this.pwssJdbcUrl, this.pwssJdbcUsername, this.pwssJdbcPassword);
-		return dataSource;
+		HikariConfig configuration = setDataSourceConfiguration(this.pwssJdbcUrl, this.pwssJdbcUsername, this.pwssJdbcPassword);
+		return new HikariDataSource(configuration);
 	}
  	
-	private void setDataSourceConfiguration(ComboPooledDataSource dataSource, String url, String username, String password) throws PropertyVetoException {
+	private HikariConfig setDataSourceConfiguration(String url, String username, String password) throws PropertyVetoException {
 
-		dataSource.setDriverClass(this.driverClassName);
-		dataSource.setJdbcUrl(url);
-		dataSource.setUser(username);
-		dataSource.setPassword(password);
-
-		dataSource.setMinPoolSize(this.minSize);
-		dataSource.setMaxPoolSize(this.maxSize);
-		dataSource.setAcquireIncrement(this.acquireIncrement);
-		dataSource.setMaxStatements(this.maxStatements);
-
-		dataSource.setTestConnectionOnCheckin(this.testConnectionOnCheckin);
-		dataSource.setTestConnectionOnCheckout(this.testConnectionOnCheckout);
-		dataSource.setIdleConnectionTestPeriod(this.idleTestPeriod);
-		dataSource.setMaxIdleTime(this.maxIdleTime);
+		
+	    HikariConfig jdbcConfig = new HikariConfig();
+        jdbcConfig.setPoolName("springHikariCP");
+        jdbcConfig.setConnectionTestQuery("SELECT 1");
+        jdbcConfig.setMaximumPoolSize(this.maxPoolSize);
+        jdbcConfig.setIdleTimeout(this.idealTimeOut);
+        jdbcConfig.setMaxLifetime(this.maxLifeTime);
+        
+        jdbcConfig.setDriverClassName(this.driverClassName);
+        jdbcConfig.setJdbcUrl(url);
+        jdbcConfig.setUsername(username);
+        jdbcConfig.setPassword(password);
+        
+        jdbcConfig.addDataSourceProperty("cachePrepStmts", this.cachePrepStmts);
+        jdbcConfig.addDataSourceProperty("prepStmtCacheSize", this.prepStmtCacheSize);
+        jdbcConfig.addDataSourceProperty("prepStmtCacheSqlLimit", this.prepStmtCacheSqlLimit);
+        jdbcConfig.addDataSourceProperty("useServerPrepStmts", this.useServerPrepStmts);
+        
+        return jdbcConfig;
 
 	}
 
