@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.iana.api.domain.AccountMaster;
 import com.iana.api.domain.JoinRecord;
 import com.iana.api.domain.Pagination;
 import com.iana.api.domain.SearchAccount;
@@ -48,6 +49,8 @@ public class EPRest extends CommonUtils {
 
 	public static final String URI_SETUP 						= "/setup";
 	public static final String URI_EP_TEMPLATES					= "epTemplates";
+	public static final String URI_MANAGE_ACCOUNT_INFO			= "loadEPSelfReg";
+	
 	
 	@Autowired
 	private EPService epService;
@@ -182,5 +185,30 @@ public class EPRest extends CommonUtils {
 		}
 	
 	}
+	
+	@GetMapping(path = URI_MANAGE_ACCOUNT_INFO, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "GET MANAGE ACCOUNT INFORMATION IN "+ CLASS_NAME, response  = AccountMaster.class)
+	@ApiResponses({
+		@ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
+		@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
+		@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class)
+    })	
+	public ResponseEntity<?> getManageAccountInfo(HttpServletRequest request) {
+	
+		try {
+			
+			SecurityObject securityObject = (SecurityObject) request.getAttribute(GlobalVariables.SECURITY_OBJECT);
+			AccountMaster accountMaster = epService.getEPAccountInfo(securityObject.getAccountNumber());
+			return new ResponseEntity<AccountMaster>(accountMaster, HttpStatus.OK);
+	
+		} catch (ApiException e) {
+			return sendValidationError(e);
+	
+		} catch (Exception e) {
+			return sendServerError(e,GlobalVariables.FAIL);
+		}
+	
+	}
+
  	
 }

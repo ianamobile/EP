@@ -2,6 +2,7 @@ package com.iana.api.service;
 
 import java.util.List;
 
+import com.iana.api.domain.AccountMaster;
 import com.iana.api.domain.JoinRecord;
 import com.iana.api.domain.Pagination;
 import com.iana.api.domain.SearchAccount;
@@ -22,6 +23,10 @@ public interface EPService {
 	SetupMCDataJsonDTO getMCLookUpForEP(SecurityObject securityObject, SearchAccount searchAccount) throws Exception;
 
 	SetupEpTemplates setupEpTemplates() throws Exception;
+	
+	AccountMaster getEPAccountInfo(String acctNo) throws Exception;
+	
+	
 	
 }
 
