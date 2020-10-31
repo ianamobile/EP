@@ -318,6 +318,18 @@ public class GlobalVariables {
 	//   public static final String TRAC_ACCOUNT_NO ="EP200036";
 	   //public static final String TRAC_ACCOUNT_NO ="EP200031";
 
-	   public static final String APPRVD_STATUS="APPROVED";
-	   public static final String NOT_APPRVD_STATUS="NOT APPROVED";
+	public static final String APPRVD_STATUS="APPROVED";
+	public static final String NOT_APPRVD_STATUS="NOT APPROVED";
+	   
+	 //Equipment provider types
+	public static final String IMC="IMC";
+	public static final String LEASING_COMPANY="Leasing Company";
+	public static final String OCEAN_CARRIER="Ocean Carrier";
+	public static final String RAIL_ROAD="Railroad";
+	public static final String TERMINAL="Terminal";
+	
+	public static final String ROLE_IDD_MC= "IDD_MC";
+	public static final String ROLE_NON_UIIA_MC = "NON_UIIA_MC";
+	
+	   
 }

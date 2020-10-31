@@ -3,7 +3,9 @@ package com.iana.api.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -18,6 +20,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
 import com.iana.api.domain.AccountInfo;
+import com.iana.api.domain.AccountMaster;
 import com.iana.api.domain.AddressDet;
 import com.iana.api.domain.ContactDet;
 import com.iana.api.domain.EPAcctInfo;
@@ -29,6 +32,7 @@ import com.iana.api.domain.SecurityObject;
 import com.iana.api.utils.CommonUtils;
 import com.iana.api.utils.DateTimeFormater;
 import com.iana.api.utils.GlobalVariables;
+import com.iana.api.utils.Utility;
 
 @Repository
 public class EPDaoImpl extends GenericDAO implements EPDao {
@@ -333,9 +337,7 @@ public class EPDaoImpl extends GenericDAO implements EPDao {
 		qry1.append(
 				"a.re_instated_dt,a.mem_type,a.comp_url,a.modified_date,a.uiia_member,a.idd_member,e.ep_entities  FROM account_info a LEFT JOIN ep_basic_details e ON (e.ep_acct_no = a.account_no) WHERE a.account_no = ?"); // prarit
 
-		System.out.println("---qry1=" + qry1);
 		AccountInfo acctInfo = findBean(this.uiiaDataSource, qry1.toString(), AccountInfo.class, acctNo);
-//		System.out.println("---acctInfo=" + acctInfo);
 
 		return acctInfo;
 
@@ -346,9 +348,7 @@ public class EPDaoImpl extends GenericDAO implements EPDao {
 		sbQry.append(
 				"addr_city,addr_zip,addr_state,addr_country,SAME_BILL_ADDR,ATTR1 as same_dispute_addr FROM address_master WHERE account_no = ?");
 		sbQry.append(" AND addr_type = ?");
-		System.out.println("---sbQry=" + sbQry);
 		AddressDet address = findBean(this.uiiaDataSource, sbQry.toString(), AddressDet.class, acctNo, addressType);
-//		System.out.println("---address=" + address);
 		return address;
 
 	}
@@ -360,124 +360,345 @@ public class EPDaoImpl extends GenericDAO implements EPDao {
 		sbQry.append(
 				"contct_prm_email,contct_sec_email,SAME_BILL_CONTCT,ATTR1 as same_dispute_cntct FROM contacts_master WHERE account_no = ?");
 		sbQry.append(" AND contct_type = ?");
-		System.out.println("---sbQry=" + sbQry);
 		ContactDet contact = findBean(this.uiiaDataSource, sbQry.toString(), ContactDet.class, acctNo, contactType);
-//		System.out.println("---contact=" + contact);
 		return contact;
 
 	}
-	
-	public EPAcctInfo getEpAcctDtls(String acctNo) throws Exception
-	{
-		//log.info("Entering method getBasicAcctDtls("+conn.toString()+","+acctNo+") of class EPAccountDetails");
 
-//		EPAcctInfo epAcctInfo = new EPAcctInfo();		
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//		int iCounter = 0;
-		
+	public EPAcctInfo getEpAcctDtls(String acctNo) throws Exception {
 		StringBuffer qry1 = new StringBuffer("SELECT e.ep_basic_info_id,e.ep_type,e.ep_notes,");
-		qry1.append("e.ep_rmrks,e.ep_idd_flg,e.ep_inv_req_flg,e.ep_rportng_req,e.ep_lvl_service,e.ep_entities,p.lst_bill_dt,e.admin_fee_flag ");   //prarit
+		qry1.append(
+				"e.ep_rmrks,e.ep_idd_flg,e.ep_inv_req_flg,e.ep_rportng_req,e.ep_lvl_service,e.ep_entities,p.lst_bill_dt,e.admin_fee_flag "); // prarit
 		qry1.append("FROM ep_basic_details e LEFT JOIN gnrl_pymnt_dtls p ON(p.account_no = e.ep_acct_no) ");
 		qry1.append("WHERE e.ep_acct_no = ?");
-		System.out.println("---qry1=" + qry1);
 		EPAcctInfo epAcctInfo = findBean(this.uiiaDataSource, qry1.toString(), EPAcctInfo.class, acctNo);
-		
-//		
-//		try
-//		{
-//			pstmt = conn.prepareStatement(qry1.toString());
-//			pstmt.setString(1,acctNo);
-//			
-//			log.debug("Select query fired for EP basic details is "+pstmt.toString());
-//			rs = pstmt.executeQuery();
-//			while(rs.next())
-//			{
-//				log.debug("Getting values from resultset , counter value is "+iCounter);
-//				iCounter++;
-//				inst_epacctinfo.setEpId(rs.getInt("ep_basic_info_id"));
-//				if(rs.getString("ep_type") != null)
-//				{
-//					inst_epacctinfo.setEpType(rs.getString("ep_type"));
-//				}
-//				if(rs.getString("ep_notes") != null)
-//				{
-//					inst_epacctinfo.setPrevNotes(utility.removePaddingFrmNotes(rs.getString("ep_notes")));
-//				}
-//				if(rs.getString("ep_rmrks") != null)
-//				{
-//					inst_epacctinfo.setRemarks(rs.getString("ep_rmrks"));
-//				}
-//				if(rs.getString("ep_idd_flg") != null)
-//				{
-//					inst_epacctinfo.setIddFlag(rs.getString("ep_idd_flg"));
-//				}
-//				if(rs.getString("ep_inv_req_flg") != null)
-//				{
-//					inst_epacctinfo.setInvReqFlag(rs.getString("ep_inv_req_flg"));
-//				}
-//				if(rs.getString("ep_rportng_req") != null)
-//				{
-//					inst_epacctinfo.setReportReq(rs.getString("ep_rportng_req"));
-//				}
-//				if(rs.getString("ep_lvl_service") != null)
-//				{
-//					inst_epacctinfo.setLvlOfService(rs.getString("ep_lvl_service"));
-//				}
-//				//prarit
-//				if(rs.getString("ep_entities") != null)
-//				{
-//					inst_epacctinfo.setEntitiesName(rs.getString("ep_entities"));
-//				}
-//				if(rs.getDate("lst_bill_dt") != null)
-//				{
-//					inst_epacctinfo.setLstBillDate(utility.formatSqlDate(rs.getDate("lst_bill_dt"),utility.FORMAT4));
-//				}
-//				if(rs.getString("admin_fee_flag") != null)//EP Annual Invoice Breakdown - Pulkit
-//				{
-//					inst_epacctinfo.setAdminFeeFlag(rs.getString("admin_fee_flag"));
-//				}
-//			}
-//			if(iCounter == 0)
-//			{
-//				log.error("No EP specific basic data found");
-//				NoRecordFoundException nrecexp = new NoRecordFoundException();
-//				nrecexp.setContext("nodata.get.epbasicdetails");
-//				throw nrecexp;
-//			}
-//			else if(iCounter > 1)
-//			{
-//				log.error("Multiple EP specific basic data  found for same EP");
-//				MoreRecordFoundException mrecexp = new MoreRecordFoundException();
-//				mrecexp.setContext("moredata.get.epbasicdetails");
-//				throw mrecexp;
-//			}
-//			
-//		}
-//		catch(SQLException exp)
-//		{
-//			log.error("Caught SQL Exception :" , exp);
-//			throw new DBException(exp);
-//		}
-//		finally
-//		{
-//			try
-//			{
-//				if(pstmt != null)
-//				pstmt.close();
-//				if(rs != null)
-//				rs.close();
-//			}
-//			catch(SQLException exp)
-//			{
-//				log.error("Caught SQL Exception :" , exp);
-//				throw new UiiaException(exp);
-//			}
-//		}
-		//log.info("Exiting method getBasicAcctDtls(String,Connection) of class EPAccountDetails with return value "+inst_epacctinfo.toString());
+
 		return epAcctInfo;
-		
+
 	}
 
+	@Override
+	public boolean ifExistsSameScac(String scac, String accountNumber) throws Exception {
+		StringBuilder sbQuery = new StringBuilder();
+		sbQuery.append(" SELECT COUNT(account_no) CNT ");
+		sbQuery.append(" FROM account_info ");
+		sbQuery.append(
+				" WHERE scac_code = ? AND uiia_status <> ? AND account_no <> ? AND mem_type IN ('MC', 'NON_UIIA_MC', 'IDD_MC')");
+		return findTotalRecordCount(this.uiiaDataSource, sbQuery.toString(), scac, GlobalVariables.DELETEDMEMBER,
+				accountNumber) > 0 ? true : false;
+	}
+
+	@Override
+	public int countEPBasicAcctDtls(int id, String accountNumber) throws Exception {
+		String query = " SELECT COUNT(*) FROM ep_basic_details WHERE ep_basic_info_id = ? AND ep_acct_no = ? ";
+		return findTotalRecordCount(this.uiiaDataSource, query, id, accountNumber).intValue();
+	}
+
+	@Override
+	public int countContactDtls(int contactId, String accountNumber, String contactType) throws Exception {
+		String query = " SELECT COUNT(*) FROM contacts_master WHERE contct_id = ? AND account_no = ? AND contct_type = ?";
+		return findTotalRecordCount(this.uiiaDataSource, query, contactId, accountNumber, contactType).intValue();
+	}
+
+	@Override
+	public int countAddressDtls(int addrId, String accountNumber, String contactType) throws Exception {
+		String query = " SELECT COUNT(*) FROM address_master WHERE addr_id = ? AND account_no = ? AND addr_type = ?";
+		return findTotalRecordCount(this.uiiaDataSource, query, addrId, accountNumber, contactType).intValue();
+	}
+
+	@Override
+	public int updateAcctDtls(DataSource lUIIADataSource, SecurityObject securityObject, AccountMaster acctbean,
+			boolean enableTransMgmt) throws Exception {
+
+		// log.info("Entering method
+		// updateAcctDtls("+conn.toString()+","+acctbean.toString()+","+securityObject.toString()+")
+		// of AccountDetails class");
+		int dbStatus = 0;
+		StringBuffer updateQry = new StringBuffer("UPDATE account_info set ");
+		updateQry.append("company_name = ?,scac_code =?,iana_mem = ?,uiia_status = ?,uiia_status_cd = ?,");
+		updateQry.append("mem_eff_dt = ?,cancelled_dt = ?,deleted_date = ?,re_instated_dt = ?,comp_url = ?,");
+		updateQry.append(
+				"AUDIT_TRAIL_EXTRA = ?,attr1 = ?,attr2 = ?,attr3 = ?,modified_by = ?,modified_date = ?, non_uiia_ep = ?  ");
+
+		// swati----14/9----UIIA/IDD membership related changes
+		if (GlobalVariables.DELETEDMEMBER.equals(acctbean.getAcctInfo().getUiiaStatus())) {
+			log.debug("If Uiia status = deleted");
+			updateQry.append(" ,mem_type = IF(idd_member = ?,?,mem_type),");
+			updateQry.append(" uiia_member = ? ");
+		}
+		if (acctbean.getAcctInfo().getIddStatus() != null
+				&& GlobalVariables.DELETEDMEMBER.equals(acctbean.getAcctInfo().getIddStatus())) {
+			log.debug("If IDD status = deleted");
+			updateQry.append("  ,idd_member = ? ");
+		}
+		// Added By Tushar on 07/02/2008
+		if (acctbean.getAcctInfo().getIddStatus() != null
+				&& GlobalVariables.ACTIVEMEMBER.equalsIgnoreCase(acctbean.getAcctInfo().getIddStatus())) {
+			log.debug("If IDD status = Active");
+			updateQry.append("  ,idd_member = ? ");
+		}
+
+		if (GlobalVariables.YES.equals(acctbean.getAcctInfo().getApplyUiiaMem())
+				|| (GlobalVariables.ROLE_IDD_MC.equalsIgnoreCase(securityObject.getRoleName())
+						&& GlobalVariables.ROLE_NON_UIIA_MC.equals(acctbean.getAcctInfo().getMemType()))) {
+			log.debug("If IDD member has applied for UIIA membership");
+			updateQry.append(" ,mem_type = ?,uiia_member = ? ");
+		}
+		updateQry.append(" WHERE account_no = ?");
+
+		java.sql.Date effDate = Utility.stringToSqlDate(acctbean.getAcctInfo().getMemEffDt(), Utility.FORMAT4);
+		java.sql.Date canDate = Utility.stringToSqlDate(acctbean.getAcctInfo().getCancelledDt(), Utility.FORMAT4);
+		java.sql.Date reinstDate = Utility.stringToSqlDate(acctbean.getAcctInfo().getReInstatedDt(), Utility.FORMAT4);
+		java.sql.Date delDate = Utility.stringToSqlDate(acctbean.getAcctInfo().getDeletedDate(), Utility.FORMAT4);
+
+		List<Object> params = new ArrayList<>();
+
+		params.add(acctbean.getAcctInfo().getCompanyName());
+		params.add(StringUtils.isBlank(acctbean.getAcctInfo().getScacCode()) ? null
+				: acctbean.getAcctInfo().getScacCode());
+
+		params.add(acctbean.getAcctInfo().getIanaMem());
+		params.add(acctbean.getAcctInfo().getUiiaStatus());
+
+		if (acctbean.getAcctInfo().getUiiaStatus().equalsIgnoreCase(GlobalVariables.ACTIVEMEMBER)) {
+			params.add("");
+		} else {
+			params.add(acctbean.getAcctInfo().getUiiaStatus());
+		}
+		params.add(effDate);
+		params.add(canDate);
+		params.add(delDate);
+		params.add(reinstDate);
+		params.add(acctbean.getAcctInfo().getCompUrl());
+		params.add(securityObject.getIpAddress());
+		params.add(acctbean.getAcctInfo().getAttr1());
+		params.add(acctbean.getAcctInfo().getAttr2());
+		params.add(acctbean.getAcctInfo().getAttr3());
+		params.add(securityObject.getUsername());
+		params.add(DateTimeFormater.getSqlSysTimestamp());
+		params.add(acctbean.getAcctInfo().getNonUiiaEp());
+
+		// swati----14/9----UIIA/IDD membership related changes
+		if (GlobalVariables.DELETEDMEMBER.equals(acctbean.getAcctInfo().getUiiaStatus())) {
+			log.debug("If Uiia status = deleted");
+			params.add(GlobalVariables.YES);
+			params.add(GlobalVariables.IDDUSER + "_" + acctbean.getAcctInfo().getMemType());
+			params.add(GlobalVariables.NO);
+			params.add(acctbean.getAcctInfo().getAccountNo());
+		} else if (GlobalVariables.DELETEDMEMBER.equals(acctbean.getAcctInfo().getIddStatus())) {
+			log.debug("If IDD status = deleted");
+			params.add(GlobalVariables.NO);
+			params.add(acctbean.getAcctInfo().getAccountNo());
+		}
+		// Added By Tushar On 07/02/2008------------
+		else if (acctbean.getAcctInfo().getIddStatus() != null
+				&& GlobalVariables.ACTIVEMEMBER.equals(acctbean.getAcctInfo().getIddStatus())) {
+			log.debug("If IDD status = active");
+			params.add(GlobalVariables.YES);
+			params.add(acctbean.getAcctInfo().getAccountNo());
+		} else if (GlobalVariables.YES.equals(acctbean.getAcctInfo().getApplyUiiaMem())
+				|| (GlobalVariables.ROLE_IDD_MC.equalsIgnoreCase(securityObject.getRoleName())
+						&& GlobalVariables.ROLE_NON_UIIA_MC.equals(acctbean.getAcctInfo().getMemType()))) {
+			log.debug("If IDD member has applied for UIIA membership");
+			params.add(acctbean.getAcctInfo().getMemType());
+			params.add(GlobalVariables.YES);
+			params.add(acctbean.getAcctInfo().getAccountNo());
+		} // end----14/9
+		else // swati---18/9
+		{
+			params.add(acctbean.getAcctInfo().getAccountNo());
+		}
+
+		dbStatus = saveOrUpdate((enableTransMgmt ? lUIIADataSource : this.uiiaDataSource), updateQry.toString(),
+				params.toArray(), enableTransMgmt);
+
+		return dbStatus;
+
+	}
+
+	@Override
+	public int updateAddress(DataSource lUIIADataSource, AddressDet addr, SecurityObject securityObject,
+			boolean enableTransMgmt) throws Exception {
+		List<Object> params = new ArrayList<>();
+		StringBuilder sbQuery = new StringBuilder();
+		sbQuery.append(" UPDATE address_master ");
+		sbQuery.append(" SET driver_id = ?, addr_street1 = ?, addr_street2 = ?,");
+		sbQuery.append(
+				" addr_city = ?, addr_zip = ?, addr_state =?, addr_country = ?, addr_type = ?, SAME_BILL_ADDR = ?, ATTR1 = ?,");
+		// added by Anirban -- ATTR1 = ? added
+		sbQuery.append(" AUDIT_TRAIL_EXTRA = ?, modified_by = ?, modified_date = ? ");
+		sbQuery.append(" WHERE addr_id = ? ");
+
+		if (addr.getDriverId() == 0) {
+			params.add(null);
+		} else {
+			params.add(addr.getDriverId());
+		}
+
+		params.add(addr.getAddrStreet1());
+		params.add(addr.getAddrStreet2());
+		params.add(addr.getAddrCity());
+		params.add(addr.getAddrZip());
+		params.add(addr.getAddrState());
+		params.add(addr.getAddrCountry());
+		params.add(addr.getAddrType());
+		params.add(CommonUtils.validateObject(addr.getSameBillAddr()));
+		params.add(CommonUtils.validateObject(addr.getSameDisputeAddr()));
+		params.add(securityObject.getIpAddress());
+		params.add(securityObject.getUsername());
+		params.add(DateTimeFormater.getSqlSysTimestamp());
+
+		params.add(addr.getAddrId());
+
+		return saveOrUpdate((enableTransMgmt ? lUIIADataSource : this.uiiaDataSource), sbQuery.toString(),
+				params.toArray(), enableTransMgmt);
+
+	}
+
+	@Override
+	public int updateContact(DataSource lUIIADataSource, ContactDet contact, SecurityObject securityObject,
+			boolean enableTransMgmt) throws Exception {
+		List<Object> params = new ArrayList<>();
+
+		StringBuilder sbQuery = new StringBuilder();
+		sbQuery.append(" UPDATE contacts_master ");
+		sbQuery.append(
+				" SET contct_fname = ?,contct_mname = ?,contct_lname = ?,contct_title = ?,contct_salutation = ?, ");
+		sbQuery.append(
+				" contct_mr_ms = ?,contct_suffix = ?,contct_prm_phone = ?,contct_sec_phone = ?,contct_prm_fax = ?,contct_sec_fax = ?, ");
+		sbQuery.append(" contct_prm_email = ?,contct_sec_email = ?,contct_type = ?,SAME_BILL_CONTCT = ?,ATTR1 = ?, ");
+		sbQuery.append(" AUDIT_TRAIL_EXTRA = ?,modified_by = ?, modified_date = ? ");
+		sbQuery.append(" WHERE contct_id = ? ");
+
+		params.add(contact.getContctFname());
+		params.add(contact.getContctMname());
+		params.add(contact.getContctLname());
+		params.add(contact.getContctTitle());
+		params.add(contact.getContctSalutation());
+		params.add(contact.getContctMrMs());
+		params.add(contact.getContctSuffix());
+		params.add(contact.getContctPrmPhone());
+		params.add(contact.getContctSecPhone());
+		params.add(contact.getContctPrmFax());
+		params.add(contact.getContctSecFax());
+		params.add(contact.getContctPrmEmail());
+		params.add(contact.getContctSecEmail());
+		params.add(contact.getContctType());
+		params.add(contact.getSameBillContct());
+		params.add(contact.getSameDisputeCntct());
+		params.add(securityObject.getIpAddress());
+		params.add(securityObject.getUsername());
+		params.add(DateTimeFormater.getSqlSysTimestamp());
+
+		params.add(contact.getContctId());
+
+		return saveOrUpdate((enableTransMgmt ? lUIIADataSource : this.uiiaDataSource), sbQuery.toString(),
+				params.toArray(), enableTransMgmt);
+
+	}
+
+	@Override
+	public int insertAddress(DataSource lUIIADataSource, AddressDet addr, String accountNumber,
+			SecurityObject securityObject, boolean enableTransMgmt) throws Exception {
+
+		Map<String, Object> paramMap = new HashMap<>();
+
+		paramMap.put("ACCOUNT_NO", accountNumber);
+		paramMap.put("ADDR_STREET1", addr.getAddrStreet1());
+		paramMap.put("ADDR_STREET2", CommonUtils.validateObject(addr.getAddrStreet2()));
+		paramMap.put("ADDR_CITY", addr.getAddrCity());
+		paramMap.put("ADDR_ZIP", addr.getAddrZip());
+		paramMap.put("ADDR_STATE", addr.getAddrState());
+		paramMap.put("ADDR_COUNTRY", addr.getAddrCountry());
+		paramMap.put("ADDR_TYPE", addr.getAddrType());
+		paramMap.put("SAME_BILL_ADDR", addr.getSameBillAddr());
+		paramMap.put("ATTR1", StringUtils.EMPTY); // added by Anirban
+		paramMap.put("AUDIT_TRAIL_EXTRA", securityObject.getIpAddress());
+		paramMap.put("CREATED_BY", CommonUtils.validateObject(securityObject.getUsername()));
+		paramMap.put("CREATED_DATE", DateTimeFormater.getSqlSysTimestamp());
+
+		return insertAndReturnGeneratedKey((enableTransMgmt ? lUIIADataSource : this.uiiaDataSource), "address_master",
+				paramMap, "ADDR_ID").intValue();
+
+	}
+
+	@Override
+	public int insertContact(DataSource lUIIADataSource, ContactDet contact, String accountNumber,
+			SecurityObject securityObject, boolean enableTransMgmt) throws Exception {
+		Map<String, Object> paramMap = new HashMap<>();
+
+		paramMap.put("ACCOUNT_NO", accountNumber);
+		paramMap.put("CONTCT_FNAME", contact.getContctFname());
+		paramMap.put("CONTCT_MNAME", CommonUtils.validateObject(contact.getContctMname()));
+		paramMap.put("CONTCT_LNAME", contact.getContctLname());
+		paramMap.put("CONTCT_TITLE", contact.getContctTitle());
+		paramMap.put("CONTCT_SALUTATION", CommonUtils.validateObject(contact.getContctSalutation()));
+		paramMap.put("CONTCT_MR_MS", CommonUtils.validateObject(contact.getContctMrMs()));
+		paramMap.put("CONTCT_SUFFIX", CommonUtils.validateObject(contact.getContctSuffix()));
+		paramMap.put("CONTCT_PRM_PHONE", contact.getContctPrmPhone());
+		paramMap.put("CONTCT_SEC_PHONE", CommonUtils.validateObject(contact.getContctSecPhone()));
+		paramMap.put("CONTCT_PRM_FAX", contact.getContctPrmFax());
+		paramMap.put("CONTCT_SEC_FAX", CommonUtils.validateObject(contact.getContctSecFax()));
+		paramMap.put("CONTCT_PRM_EMAIL", contact.getContctPrmEmail());
+		paramMap.put("CONTCT_SEC_EMAIL", CommonUtils.validateObject(contact.getContctSecEmail()));
+		paramMap.put("CONTCT_TYPE", contact.getContctType());
+		paramMap.put("SAME_BILL_CONTCT", contact.getSameBillContct());
+		paramMap.put("ATTR1", StringUtils.EMPTY); // added by Anirban
+		paramMap.put("AUDIT_TRAIL_EXTRA", securityObject.getIpAddress());
+		paramMap.put("CREATED_BY", CommonUtils.validateObject(securityObject.getUsername()));
+		paramMap.put("CREATED_DATE", DateTimeFormater.getSqlSysTimestamp());
+
+		return insertAndReturnGeneratedKey((enableTransMgmt ? lUIIADataSource : this.uiiaDataSource), "contacts_master",
+				paramMap, "CONTCT_ID").intValue();
+
+	}
+
+	/**
+	 * inserts the basic details for EP
+	 * 
+	 * @param Connection     conn
+	 * @param EPAcctInfoBean epacctbean
+	 * @param String         accountNo
+	 * @param UserBean       userInfo
+	 * @return int
+	 * @throws UiiaException
+	 */
+	@Override
+	public int updateRegDetailsEP(DataSource lUIIADataSource, EPAcctInfo epAcctInfo, SecurityObject securityObject,
+			boolean enableTransMgmt) throws Exception {
+
+		List<Object> params = new ArrayList<>();
+		String sAllNotes = "";
+
+		StringBuffer updateqry = new StringBuffer("UPDATE ep_basic_details set ");
+		updateqry.append("ep_type = ?,ep_notes = CONCAT(?,ep_notes),ep_rmrks = ?,ep_idd_flg = ?,ep_inv_req_flg = ?,");
+		updateqry.append("ep_rportng_req = ?,ep_lvl_service = ?,AUDIT_TRAIL_EXTRA = ?,ATTR1 = ?,ATTR2 = ?,ATTR3 = ?,");
+		updateqry
+				.append("modified_by = ?,modified_date = ?,ep_entities =?,admin_fee_flag=? WHERE ep_basic_info_id = ?"); // prarit
+
+		params.add(epAcctInfo.getEpType());
+		if (!epAcctInfo.getNotes().equals("")) {
+			sAllNotes = Utility.addPaddingToNotes(epAcctInfo.getNotes(), securityObject.getUsername());
+		}
+		params.add(sAllNotes);
+		params.add(epAcctInfo.getEpRmrks());
+		params.add(epAcctInfo.getEpIddFlg());
+		params.add(epAcctInfo.getEpInvReqFlg());
+		params.add(epAcctInfo.getEpRportngReq());
+		params.add(epAcctInfo.getEpLvlService());
+		params.add(securityObject.getIpAddress());
+		params.add(epAcctInfo.getAttr1());
+		params.add(epAcctInfo.getAttr2());
+		params.add(epAcctInfo.getAttr3());
+		params.add(CommonUtils.validateObject(securityObject.getUsername()));
+		params.add(DateTimeFormater.getSqlSysTimestamp());
+		params.add(epAcctInfo.getEpEntities().trim());
+		params.add(epAcctInfo.getAdminFeeFlag());// EP Annual Invoice Breakdown
+		params.add(epAcctInfo.getEpBasicInfoId());
+
+		return saveOrUpdate((enableTransMgmt ? lUIIADataSource : this.uiiaDataSource), updateqry.toString(),
+				params.toArray(), enableTransMgmt);
+
+	}
 
 }

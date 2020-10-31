@@ -3,6 +3,7 @@ package com.iana.api.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -170,6 +171,42 @@ public class BaseRestService extends GenericDAO {
 		epTemplatesList.add(new LabelValueForm("Past", GlobalVariables.PASTTEMPLATE ));
 		
 		return epTemplatesList;
+	}
+	
+	public List<LabelValueForm> populateUiiaStatusList() {
+		List<LabelValueForm> uiiaStatus = new ArrayList<>();
+			uiiaStatus.add(new LabelValueForm("Active", GlobalVariables.ACTIVE));
+			uiiaStatus.add(new LabelValueForm("Cancelled", GlobalVariables.CANCELLEDMEMBER));
+			uiiaStatus.add(new LabelValueForm("Deleted", GlobalVariables.DELETEDMEMBER));
+			uiiaStatus.add(new LabelValueForm("Pending", GlobalVariables.PENDINGMEMBER));
+		return uiiaStatus;
+	}
+	
+	public List<LabelValueForm> populateEquipProviderTypeList() {
+		List<LabelValueForm> uiiaStatus = new ArrayList<>();
+		uiiaStatus.add(new LabelValueForm("IMC", GlobalVariables.IMC));
+		uiiaStatus.add(new LabelValueForm("Leasing Company", GlobalVariables.LEASING_COMPANY));
+		uiiaStatus.add(new LabelValueForm("Ocean Carrier", GlobalVariables.OCEAN_CARRIER));
+		uiiaStatus.add(new LabelValueForm("Railroad", GlobalVariables.RAIL_ROAD));
+		uiiaStatus.add(new LabelValueForm("Terminal", GlobalVariables.TERMINAL));
+		return uiiaStatus;
+	}
+	
+	public List<LabelValueForm> populateNamePrefixList() {
+		List<LabelValueForm> namePrefixes = new ArrayList<>();
+		
+		namePrefixes.add(new LabelValueForm("--", StringUtils.EMPTY));
+		namePrefixes.add(new LabelValueForm("Mr", "Mr"));
+		namePrefixes.add(new LabelValueForm("Mrs", "Mrs"));
+		namePrefixes.add(new LabelValueForm("Ms", "Ms"));
+		return namePrefixes;
+	}
+	
+	public List<LabelValueForm> populateServiceLevelList() {
+		List<LabelValueForm> namePrefixes = new ArrayList<>();
+		namePrefixes.add(new LabelValueForm("Level1", "Level1"));
+		namePrefixes.add(new LabelValueForm("Level2", "Level2"));
+		return namePrefixes;
 	}
 
 }
