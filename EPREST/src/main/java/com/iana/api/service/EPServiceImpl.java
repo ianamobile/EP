@@ -14,6 +14,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 
 import com.iana.api.dao.EPDao;
+import com.iana.api.dao.UserDao;
 import com.iana.api.domain.AccountInfo;
 import com.iana.api.domain.AccountMaster;
 import com.iana.api.domain.AddressDet;
@@ -39,6 +40,9 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 
 	@Autowired
 	private EPDao epDao;
+
+	@Autowired
+	private UserDao userDao;
 
 	@Autowired
 	private DataSource uiiaDataSource;
@@ -742,7 +746,17 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 			}
 
 			epDao.updateRegDetailsEP(this.uiiaDataSource, epAcctInfo, securityObject, true);
-			//TODO: need to discuss with Vipul
+			boolean bLoginUpdReqd = true;
+			if ((!epAcctInfo.getAcctInfo().getPassword().equals("")
+					|| !epAcctInfo.getAcctInfo().getOldUiiaStatus().equals(epAcctInfo.getAcctInfo().getUiiaStatus())
+					|| GlobalVariables.DELETEDMEMBER.equals(epAcctInfo.getAcctInfo().getIddStatus()))
+					&& bLoginUpdReqd) {
+
+				log.debug("IF password is changing or status is changing");
+				userDao.updateLoginTbl(this.uiiaDataSource, securityObject, epAcctInfo.getAcctInfo(), true);
+
+			}
+			// TODO: need to discuss with Vipul
 			// swati-----------14/9------login permissions related changes
 //			if(GlobalVariables.DELETEDMEMBER.equals(epAcctInfo.getAcctBean().getUiiaStatus()) && (GlobalVariables.DELETEDMEMBER.equals(epAcctInfo.getAcctBean().getIddStatus()) || epAcctInfo.getAcctBean().getIddStatus().equals("")))
 //			{

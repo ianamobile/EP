@@ -31,4 +31,6 @@ public interface UserDao {
 
 	int changePassword(ResetPassword resetPassword, SecurityObject securityObject) throws Exception;
 	
+	int updateLoginTbl(DataSource lUIIADataSource, SecurityObject securityObject, AccountInfo accountInfo, boolean enableTransMgmt) throws Exception;
+	
 }
