@@ -1,6 +1,7 @@
 package com.iana.api.service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -13,23 +14,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 
-import com.iana.api.dao.EPDao;
+import com.iana.api.dao.EpAddendumDao;
+import com.iana.api.dao.EpAdditonalReqDao;
+import com.iana.api.dao.EpDao;
+import com.iana.api.dao.EpInsuranceDao;
+import com.iana.api.dao.EpSwitchesDao;
 import com.iana.api.dao.UserDao;
 import com.iana.api.domain.AccountInfo;
 import com.iana.api.domain.AccountMaster;
+import com.iana.api.domain.AdditionalReq;
 import com.iana.api.domain.AddressDet;
 import com.iana.api.domain.ContactDet;
 import com.iana.api.domain.EPAcctInfo;
+import com.iana.api.domain.EPAddendum;
+import com.iana.api.domain.EPAddendumDetForm;
+import com.iana.api.domain.EPInsNeeds;
+import com.iana.api.domain.EPTemplate;
 import com.iana.api.domain.JoinRecord;
 import com.iana.api.domain.LabelValueForm;
 import com.iana.api.domain.MCDataJsonDTO;
+import com.iana.api.domain.MultipleLimit;
 import com.iana.api.domain.Pagination;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SecurityObject;
+import com.iana.api.domain.SetupAddendumDetails;
 import com.iana.api.domain.SetupEpTemplates;
 import com.iana.api.domain.SetupMCDataJsonDTO;
 import com.iana.api.domain.SetupManageAccountInfo;
 import com.iana.api.utils.CommonUtils;
+import com.iana.api.utils.CommonValidations;
 import com.iana.api.utils.GlobalVariables;
 import com.iana.api.utils.Utility;
 
@@ -39,13 +52,27 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 	Logger log = LogManager.getLogger(this.getClass().getName());
 
 	@Autowired
-	private EPDao epDao;
+	private EpDao epDao;
 
 	@Autowired
 	private UserDao userDao;
 
 	@Autowired
+	private EpAddendumDao epAddendumDao;
+
+	@Autowired
+	private EpAdditonalReqDao epAdditonalReqDao;
+
+	@Autowired
+	private EpInsuranceDao epInsuranceDao;
+
+	@Autowired
+	private EpSwitchesDao epSwitchesDao;
+
+	@Autowired
 	private DataSource uiiaDataSource;
+
+	EPAddendumDetForm epAddendumDetForm = new EPAddendumDetForm();
 
 	@Override
 	public void validateEPMotorCarriers(SecurityObject securityObject, SearchAccount searchAccount,
@@ -756,46 +783,12 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 				userDao.updateLoginTbl(this.uiiaDataSource, securityObject, epAcctInfo.getAcctInfo(), true);
 
 			}
-			// TODO: need to discuss with Vipul
-			// swati-----------14/9------login permissions related changes
-//			if(GlobalVariables.DELETEDMEMBER.equals(epAcctInfo.getAcctBean().getUiiaStatus()) && (GlobalVariables.DELETEDMEMBER.equals(epAcctInfo.getAcctBean().getIddStatus()) || epAcctInfo.getAcctBean().getIddStatus().equals("")))
-//			{
-//				log.debug("IF uiia status is deleted and IDD status is deleted or empty string");
-//				epAcctInfo.getAcctBean().setLoginAllwd(GlobalVariables.NO);
-//			}
-//			else if(GlobalVariables.DELETEDMEMBER.equals(epAcctInfo.getAcctBean().getIddStatus()) && (GlobalVariables.DELETEDMEMBER.equals(epAcctInfo.getAcctBean().getUiiaStatus()) || epAcctInfo.getAcctBean().getUiiaStatus().equals("") ))
-//			{
-//				log.debug("IF IDD status is deleted and UIIA status is deleted or empty string");
-//				epAcctInfo.getAcctBean().setLoginAllwd(GlobalVariables.NO);
-//			}
-//			else
-//			{
-//				epAcctInfo.getAcctBean().setLoginAllwd(GlobalVariables.YES);
-//			}
-//			
-//			
-//			//added by Swati----11/09---to avoid updating login table if IDD member turned UIIA member is deleted from UIIA
-//			//Since the role related changes are done by trigger updating login table in this case will cause role related conflicts
-//			boolean bLoginUpdReqd = true;
-//			if(GlobalVariables.DELETEDMEMBER.equals(epAcctInfo.getAcctBean().getUiiaStatus()) && GlobalVariables.ACTIVEMEMBER.equals(epAcctInfo.getAcctBean().getIddStatus()))
-//			{
-//				log.debug("If member has been deleted from UIIA but is still an active IDD member");
-//				bLoginUpdReqd = false;
-//			}
-//			
-//			if((StringUtils.isNotBlank(epAcctInfo.getAcctBean().getPassword()) || !epAcctInfo.getAcctBean().getOldScac().equals(epAcctInfo.getAcctBean().getScac()) ||!epAcctInfo.getAcctBean().getOldUiiaStatus().equals(epAcctInfo.getAcctBean().getUiiaStatus()) || GlobalVariables.DELETEDMEMBER.equals(epAcctInfo.getAcctBean().getIddStatus())) && bLoginUpdReqd)
-//			{
-//				log.debug("IF password is changing or status is changing");
-//				userDao.updateLoginTbl(securityObject, epAcctInfo.getAcctBean(), true);
-//			}
-//
-//			
-//			//start----swati-----6/9
+
+			// TODO: Need to implement email notification feature in future - Vrajesh
 //			if(StringUtils.isNotBlank(epAcctInfo.getAcctBean().getPassword()))
 //			{
-//				// TODO
-////				NotificationSender notifInst = new NotificationSender();
-////				notifInst.notify(acctInfo,userInfo,GlobalVariables.MC_CHG_PW);
+//				NotificationSender notifInst = new NotificationSender();
+//				notifInst.notify(acctInfo,userInfo,GlobalVariables.MC_CHG_PW);
 //			}
 
 			// if all statement execute successfully then commit the transactions.
@@ -806,6 +799,182 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 			transactionManager.rollback(status);
 			throw e;
 		}
+
+	}
+
+	@Override
+	public SetupAddendumDetails setupCurrentAddendumDetails() {
+		SetupAddendumDetails setupAddendumDetails = new SetupAddendumDetails();
+		setupAddendumDetails.setYesNoOptions(restService.populateRequiredAndAllowed());
+		return setupAddendumDetails;
+	}
+
+	@Override
+	public EPAddendumDetForm getCurrentAddendumDetails(SecurityObject securityObject) throws Exception {
+
+		List<EPInsNeeds> resultList = null;
+		List<MultipleLimit> multiLimList = null;
+		List<AdditionalReq> addReqList = null;
+
+		log.debug("Getting addendumBean for current addendum from sessionfacade method getActiveTemplate(uBean) :");
+		EPAddendum epAddendum = getActiveTemplate(securityObject.getAccountNumber(), "");
+		List<EPInsNeeds> needsList = epAddendum.getEpNeeds();
+
+		EPInsNeeds addAuto = new EPInsNeeds();
+		EPInsNeeds addGeneral = new EPInsNeeds();
+		EPInsNeeds addCargo = new EPInsNeeds();
+		EPInsNeeds addContCargo = new EPInsNeeds();
+		EPInsNeeds addTI = new EPInsNeeds();
+		EPInsNeeds addRefTI = new EPInsNeeds();
+		EPInsNeeds addWC = new EPInsNeeds();
+		EPInsNeeds addEL = new EPInsNeeds();
+		EPInsNeeds addEDB = new EPInsNeeds();
+		// EPInsNeeds addUL = new EPInsNeeds();
+		for (int i = 0; i < needsList.size(); i++) {
+			EPInsNeeds insBean = needsList.get(i);
+			if (insBean.getEpNeedsId() > 0) {
+				log.info("YES insBean.getPolicyType():" + insBean.getPolicyType());
+				insBean.setPolicyReq(GlobalVariables.YES);
+			} else {
+				log.info("NO insBean.getPolicyType():" + insBean.getPolicyType());
+				insBean.setPolicyReq(GlobalVariables.NO);
+			}
+			if (insBean.getPolicyType().equals(GlobalVariables.AUTOPOLICY)) {
+				addAuto = insBean;
+			} else if (insBean.getPolicyType().equals(GlobalVariables.GENPOLICY)) {
+				addGeneral = insBean;
+			} else if (insBean.getPolicyType().equals(GlobalVariables.CARGOPOLICY)) {
+				addCargo = insBean;
+			} else if (insBean.getPolicyType().equals(GlobalVariables.CONTCARGO)) {
+				addContCargo = insBean;
+			} else if (insBean.getPolicyType().equals(GlobalVariables.TRAILERPOLICY)) {
+				addTI = insBean;
+			} else if (insBean.getPolicyType().equals(GlobalVariables.REFTRAILER)) {
+				addRefTI = insBean;
+			} else if (insBean.getPolicyType().equals(GlobalVariables.WORKCOMP)) {
+				if (insBean.getPolicyReq().equals(GlobalVariables.YES)) {
+					insBean.setMinLimit(GlobalVariables.STATUTORY);
+					// insBean.setMaxDed(GlobalVariables.STATUTORY);
+				}
+				addWC = insBean;
+			} else if (insBean.getPolicyType().equals(GlobalVariables.EMPLIABILITY)) {
+				addEL = insBean;
+			} else if (insBean.getPolicyType().equals(GlobalVariables.EMPDISHBOND)) {
+				addEDB = insBean;
+			}
+		}
+
+		log.info("AL:" + addAuto.toString());
+		log.info("GL:" + addGeneral.toString());
+		log.info("CR:" + addCargo.toString());
+		log.info("TI:" + addTI.toString());
+
+		log.debug("Setting policy type to be displyaed on screen :");
+		addAuto.setPolicyType(GlobalVariables.AUTOPOLICY);
+		addGeneral.setPolicyType(GlobalVariables.GENPOLICY);
+		addCargo.setPolicyType(GlobalVariables.CARGOPOLICY);
+		addTI.setPolicyType(GlobalVariables.TRAILERPOLICY);
+		addContCargo.setPolicyType(GlobalVariables.CONTCARGO);
+		addRefTI.setPolicyType(GlobalVariables.REFTRAILER);
+		addWC.setPolicyType(GlobalVariables.WORKCOMP);
+		addEL.setPolicyType(GlobalVariables.EMPLIABILITY);
+		addEDB.setPolicyType(GlobalVariables.EMPDISHBOND);
+		// addUL.setPolicyType(GlobalVariables.UMBRELLA);
+
+		resultList = new ArrayList<EPInsNeeds>();
+
+		resultList.add(addAuto);
+		resultList.add(addGeneral);
+		resultList.add(addCargo);
+		resultList.add(addContCargo);
+		resultList.add(addTI);
+		resultList.add(addRefTI);
+		resultList.add(addWC);
+		resultList.add(addEL);
+		resultList.add(addEDB);
+		// resultList.add(addUL);
+
+		log.debug("Setting epNeedsList in addendumBean :");
+		epAddendum.setEpNeeds(resultList);
+
+		multiLimList = epAddendum.getMultiLimits();
+		if (multiLimList.size() == 0) {
+			log.debug("Setting new MultipleLimitBean in multipleLimitList if no record exist :");
+			MultipleLimit mul1 = new MultipleLimit();
+			multiLimList.add(mul1);
+		}
+		log.debug("Setting multipleLimitList in addendumBean :");
+		epAddendum.setMultiLimits(multiLimList);
+
+		addReqList = epAddendum.getAddReq();
+		if (addReqList.size() == 0) {
+			log.debug("Setting new AdditionalReqBean in additionalReqList if no record exist :");
+			AdditionalReq endrs1 = new AdditionalReq();
+			addReqList.add(endrs1);
+		}
+		log.debug("Setting additionalReqList in addendumBean :");
+		epAddendum.setAddReq(addReqList);
+		// request.setAttribute("addendumBean", epAddendum);//Not required for view only
+		// data
+		populateFormBean(epAddendum);
+//		request.setAttribute("copyTmplt", "true");//Not required for view only data
+		log.info(
+				"Action: Exiting method load(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)  of SaveAddendumDetAction class");
+		return epAddendumDetForm;
+	}
+
+	public EPAddendum getActiveTemplate(String epAcctNo, String uvalidFlg) throws Exception {
+
+		EPTemplate epTemplate = new EPTemplate();
+		EPTemplate epTemplate1 = new EPTemplate();
+
+		List<EPTemplate> tempLst = null;
+
+		epTemplate.setTempStatus(GlobalVariables.PRESENTTEMPLATE);
+		// this is called to get the template ID of the active template
+		tempLst = epAddendumDao.getTemplateList(epTemplate, epAcctNo);
+		if (CommonValidations.isNotNullOrEmpty(tempLst)) {
+			Iterator<EPTemplate> iter = tempLst.iterator();
+			while (iter.hasNext()) {
+				epTemplate1 = iter.next();
+			}
+
+		}
+		// getting the EP active addendum based on template ID
+		return getTemplateDetails(epTemplate1, uvalidFlg);
+
+	}
+
+	@Override
+	public EPAddendum getTemplateDetails(EPTemplate epTemplate, String uvalidFlg) throws Exception {
+
+		EPAddendum templateDetails = new EPAddendum();
+
+		List<EPInsNeeds> insLst = epInsuranceDao.getEPInsuranceDetails(epTemplate);
+		List<MultipleLimit> multLimLst = epInsuranceDao.getEPMultipleLim(epTemplate);
+		templateDetails.setEpNeeds(insLst);
+		templateDetails.setMultiLimits(multLimLst);
+		templateDetails.setEpSwitches(epSwitchesDao.getEPSwitches(epTemplate));
+		templateDetails.setAddReq(epAdditonalReqDao.getEPAddlReq(epTemplate, uvalidFlg));
+		templateDetails.setEffDate(epTemplate.getEffDate());
+		templateDetails.setTemplateID(epTemplate.getTemplateID());
+		templateDetails.setTemplateStatus(epTemplate.getDbTemplateStatus());
+
+		return templateDetails;
+
+	}
+
+	private void populateFormBean(EPAddendum addendumBean) {
+		epAddendumDetForm.setAddendumEffDate(addendumBean.getEffDate());
+		epAddendumDetForm.setTemplateId(String.valueOf(addendumBean.getTemplateID()));
+		epAddendumDetForm.setAddendumId(String.valueOf(addendumBean.getEpSwitches().getAddendumId()));
+		epAddendumDetForm.setMemberSpecific(addendumBean.getEpSwitches().getMemberSpecific());
+		epAddendumDetForm.setKnownAs(addendumBean.getEpSwitches().getKnownAs());
+		epAddendumDetForm.setRampDetReq(addendumBean.getEpSwitches().getRampDetReq());
+		epAddendumDetForm.setBlanketAllwd(addendumBean.getEpSwitches().getBlanketAllwd());
+		epAddendumDetForm.setEpNeeds(addendumBean.getEpNeeds());
+		epAddendumDetForm.setMultiLimits(addendumBean.getMultiLimits());
+		epAddendumDetForm.setAddReq(addendumBean.getAddReq());
 
 	}
 

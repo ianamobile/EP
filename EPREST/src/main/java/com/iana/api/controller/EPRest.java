@@ -20,11 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.iana.api.domain.AccountMaster;
 import com.iana.api.domain.EPAcctInfo;
+import com.iana.api.domain.EPAddendumDetForm;
 import com.iana.api.domain.JoinRecord;
 import com.iana.api.domain.Pagination;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SearchResult;
 import com.iana.api.domain.SecurityObject;
+import com.iana.api.domain.SetupAddendumDetails;
 import com.iana.api.domain.SetupEpTemplates;
 import com.iana.api.domain.SetupMCDataJsonDTO;
 import com.iana.api.domain.SetupManageAccountInfo;
@@ -56,6 +58,7 @@ public class EPRest extends CommonUtils {
 	public static final String URI_SETUP = "/setup";
 	public static final String URI_EP_TEMPLATES = "epTemplates";
 	public static final String URI_MANAGE_ACCOUNT_INFO = "loadEPSelfReg";
+	public static final String URI_CURRENT_ADDENDUM_DETAILS = "loadAddendumDetails";
 
 	@Autowired
 	private EPService epService;
@@ -286,5 +289,43 @@ public class EPRest extends CommonUtils {
 		}
 
 	}
+	
+	@GetMapping(path = URI_CURRENT_ADDENDUM_DETAILS + URI_SETUP, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "SETUP MANAGE ACCOUNT INFORMATION IN " + CLASS_NAME, response = SetupManageAccountInfo.class)
+	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
+			@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
+			@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class) })
+	public ResponseEntity<?> setupCurrentAddendumDetails(HttpServletRequest request) {
+
+		try {
+
+			SetupAddendumDetails setupAddendumDetails = epService.setupCurrentAddendumDetails();
+			return new ResponseEntity<SetupAddendumDetails>(setupAddendumDetails, HttpStatus.OK);
+
+		} catch (Exception e) {
+			return sendServerError(e, GlobalVariables.FAIL);
+		}
+
+	}
+	
+	@GetMapping(path = URI_CURRENT_ADDENDUM_DETAILS, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "SETUP MANAGE ACCOUNT INFORMATION IN " + CLASS_NAME, response = EPAddendumDetForm.class)
+	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
+			@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
+			@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class) })
+	public ResponseEntity<?> getCurrentAddendumDetails(HttpServletRequest request) {
+
+		try {
+			SecurityObject securityObject = (SecurityObject) request.getAttribute(GlobalVariables.SECURITY_OBJECT);
+
+			EPAddendumDetForm epAddendumDetForm = epService.getCurrentAddendumDetails(securityObject);
+			return new ResponseEntity<EPAddendumDetForm>(epAddendumDetForm, HttpStatus.OK);
+
+		} catch (Exception e) {
+			return sendServerError(e, GlobalVariables.FAIL);
+		}
+
+	}
+
 
 }

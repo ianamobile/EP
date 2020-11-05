@@ -16,6 +16,7 @@ public class GlobalVariables {
 
 	public static final String YES="Y";
 	public static final String NO="N";
+	public static final String EMPTY = "";
 	
 	public static final String HASH = "#";
 	public static final String PERCENTAGE = "%";
@@ -330,6 +331,8 @@ public class GlobalVariables {
 	
 	public static final String ROLE_IDD_MC= "IDD_MC";
 	public static final String ROLE_NON_UIIA_MC = "NON_UIIA_MC";
+	
+	public static final int LIMIT=10;
 	
 	   
 }

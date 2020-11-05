@@ -35,7 +35,7 @@ import com.iana.api.utils.GlobalVariables;
 import com.iana.api.utils.Utility;
 
 @Repository
-public class EPDaoImpl extends GenericDAO implements EPDao {
+public class EpDaoImpl extends GenericDAO implements EpDao {
 
 	Logger log = LogManager.getLogger(this.getClass().getName());
 

@@ -14,7 +14,7 @@ import com.iana.api.domain.MCDataJsonDTO;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SecurityObject;
 
-public interface EPDao {
+public interface EpDao {
 
 	Long countEPMotorCarriers(SecurityObject securityObject, SearchAccount searchAccount) throws Exception;
 	

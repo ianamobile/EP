@@ -208,5 +208,13 @@ public class BaseRestService extends GenericDAO {
 		namePrefixes.add(new LabelValueForm("Level2", "Level2"));
 		return namePrefixes;
 	}
+	
+	public List<LabelValueForm> populateRequiredAndAllowed() {
+		List<LabelValueForm> optionsRequiredAllowed = new ArrayList<>();
+		optionsRequiredAllowed.add(new LabelValueForm("Yes", GlobalVariables.YES));
+		optionsRequiredAllowed.add(new LabelValueForm("No", GlobalVariables.NO));
+		
+		return optionsRequiredAllowed;
+	}
 
 }
