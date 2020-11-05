@@ -1,0 +1,108 @@
+<div id="login" fxLayout="column" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+
+    <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+        <div class="logo text-center" [@animate]="{value:'*',params:{scale:'0.2'}}">
+            <img class="left-logo" src="assets/images/UIIALogo.png" height="85">
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="boxshadow">
+
+            <div flex="33%" fxFlex fxHide fxShow.gt-xs>
+                <div id="login-form" class="leftBox" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+
+                    <div class="title text-center uiia" 
+                        [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
+                        <b> UIIA</b>
+                    </div>
+
+                    <div class="description text-center" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+                        UNIFORM INTERMODEL INTERCHANGE AND FACILITIES ACCESS AGREEMENT
+                    </div>
+
+                </div>
+            </div>
+
+            <div flex="33%">
+                <div id="login-form" class="rightBox" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+
+
+
+                    <div class="title text-center" style="font-size: 18px;"
+                        [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
+                        <b>Equipment Provider</b>
+                    </div>
+
+                    <!-- <form name="loginForm" [formGroup]="loginForm" novalidate> -->
+                    <form name="loginForm" novalidate>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Account Number/SCAC Code</mat-label>
+                            <!-- <input autocomplete="off" matInput formControlName="username"> -->
+                            <input autocomplete="off" matInput>
+                            <mat-icon matSuffix class="secondary-text">person_outline</mat-icon>
+                            <!-- <mat-error *ngIf="loginForm.get('username').hasError('required')">
+                                Account Number is required.
+                            </mat-error>
+                            <mat-error *ngIf="loginForm.get('username').hasError('pattern')">
+                                Please enter a valid Account Number.
+                            </mat-error>
+                            <mat-error *ngIf="loginForm.get('username').hasError('maxlength')">
+                                Account Number should be less than 50 character.
+                            </mat-error> -->
+                        </mat-form-field> 
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Password</mat-label>
+                            <!-- <input matInput type="password" formControlName="password"> -->
+                            <input matInput type="password" >
+                            <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                            <!-- <mat-error *ngIf="loginForm.get('password').hasError('required')">
+                                Password is required
+                            </mat-error>
+                            <mat-error *ngIf="loginForm.get('password').hasError('maxlength')">
+                                Password should be less than 35 character.
+                            </mat-error> -->
+                        </mat-form-field>
+
+
+                        <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column"
+                            fxLayoutAlign="space-between center">
+                            <a class="forgot-password" [routerLink]="'/EPWEB/auth/forgotPassword'">
+                                Forgot Password?
+                            </a>
+                        </div>
+
+
+                        <button mat-raised-button color="accent" class="submit-button" aria-label="LOG IN"
+                        [routerLink]="'/EPWEB/user/dashboard'">
+                             <mat-icon class="login_icon">login</mat-icon><span> Login</span> 
+                           <!-- <i *ngIf="loader" class="loader-show">
+                                <mat-spinner style="display: inline;" strokeWidth="3" [diameter]="20"></mat-spinner>
+                            </i> -->
+                        </button>
+
+                        <div class="remember-forgot-password register" fxLayout="row" fxLayout.xs="column"
+                            fxLayoutAlign="space-between center">
+                           <a class="forgot-password" [routerLink]="['/EPWEB/auth/secondaryUserLogin']">
+                            <span>Login </span> <span style="color: rgba(0, 0, 0, 0.87);">to UIIA Secondary User Section </span>
+                            </a> 
+
+                            <br>
+                            <a class="forgot-password" [routerLink]="['/EPWEB/auth/billingUserLogin']">
+                                <span>Login </span> <span style="color: rgba(0, 0, 0, 0.87);">to Billing User Section</span>
+                                </a> 
+
+                        </div>
+
+                       
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+</div>

@@ -1,0 +1,196 @@
+<div class="dialog-content-wrapper expiring-modal">
+
+
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{data.tableTitle}}</span>
+            <button tabindex="-1" mat-icon-button (click)="close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+
+
+
+    <div mat-dialog-content class="pb-0 m-0">
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="widget-front">
+
+               
+
+                <mat-table matSort [dataSource]="dataSource">
+
+                    <ng-container matColumnDef="mcName">
+                        <mat-header-cell *matHeaderCellDef>MC Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="MC Name">
+                            <div class="MB-cell-width">
+                                {{i.mcName}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="alExpDate">
+                        <mat-header-cell *matHeaderCellDef>AL
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="AL">
+                            <div class="MB-cell-width">
+                                <mat-chip-list *ngIf="i.alExpDate">
+                                    <mat-chip class="status-deleted chip-status">
+                                        {{i.alExpDate}}</mat-chip>
+                                </mat-chip-list>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="glExpDate">
+                        <mat-header-cell *matHeaderCellDef>GL
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="GL">
+                            <div class="MB-cell-width">
+                                <mat-chip-list *ngIf="i.glExpDate">
+                                    <mat-chip class="status-deleted chip-status">
+                                        {{i.glExpDate}}</mat-chip>
+                                </mat-chip-list>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="cargoExpDate">
+                        <mat-header-cell *matHeaderCellDef>CARGO
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="CARGO">
+                            <div class="MB-cell-width">
+                                <mat-chip-list *ngIf="i.cargoExpDate">
+                                    <mat-chip class="status-deleted chip-status">
+                                        {{i.cargoExpDate}}</mat-chip>
+                                </mat-chip-list>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="tiExpDate">
+                        <mat-header-cell *matHeaderCellDef>TI
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="TI">
+                            <div class="MB-cell-width">
+                                <mat-chip-list *ngIf="i.tiExpDate">
+                                    <mat-chip class="status-deleted chip-status">
+                                        {{i.tiExpDate}}</mat-chip>
+                                </mat-chip-list>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="wcExpDate">
+                        <mat-header-cell *matHeaderCellDef>WC
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="WC">
+                            <div class="MB-cell-width">
+                                <mat-chip-list *ngIf="i.wcExpDate">
+                                    <mat-chip class="status-deleted chip-status">
+                                        {{i.wcExpDate}}</mat-chip>
+                                </mat-chip-list>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="empLiabExpDate">
+                        <mat-header-cell *matHeaderCellDef>Emp. Liab
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Emp. Liab">
+                            <div class="MB-cell-width">
+                                <mat-chip-list *ngIf="i.empLiabExpDate">
+                                    <mat-chip class="status-deleted chip-status">
+                                        {{i.empLiabExpDate}}</mat-chip>
+                                </mat-chip-list>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="contCargoExpDate">
+                        <mat-header-cell *matHeaderCellDef>Cont Cargo
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Cont Cargo">
+                            <div class="MB-cell-width">
+                                <mat-chip-list *ngIf="i.contCargoExpDate">
+                                    <mat-chip class="status-deleted chip-status">
+                                        {{i.contCargoExpDate}}</mat-chip>
+                                </mat-chip-list>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="refTrailerExpDate">
+                        <mat-header-cell *matHeaderCellDef>Ref. Trailer
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Ref. Trailer">
+                            <div class="MB-cell-width">
+                                <mat-chip-list *ngIf="i.refTrailerExpDate">
+                                    <mat-chip class="status-deleted chip-status">
+                                        {{i.refTrailerExpDate}}</mat-chip>
+                                </mat-chip-list>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="empDishHonestyExpDate">
+                        <mat-header-cell *matHeaderCellDef>Emp. Dishonesty
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Emp. Dishonesty">
+                            <div class="MB-cell-width">
+                                <mat-chip-list *ngIf="i.empDishHonestyExpDate">
+                                    <mat-chip class="status-deleted chip-status">
+                                        {{i.empDishHonestyExpDate}}</mat-chip>
+                                </mat-chip-list>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="umbExpDate">
+                        <mat-header-cell *matHeaderCellDef>Umbrella
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Umbrella">
+                            <div class="MB-cell-width">
+                                <mat-chip-list *ngIf="i.umbExpDate">
+                                    <mat-chip class="status-deleted chip-status">
+                                        {{i.umbExpDate}}</mat-chip>
+                                </mat-chip-list>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="noRecord">
+                        <mat-footer-cell attr.colspan="{{dataSource.data.length}}" class="tableNoRecord"
+                            *matFooterCellDef>
+                            No record found.
+                        </mat-footer-cell>
+                    </ng-container>
+
+                    <mat-footer-row *matFooterRowDef="['noRecord']"
+                        [ngClass]="{'tableFooterHide':!(dataSource.data!=null && dataSource.data.length==0)}">
+                    </mat-footer-row>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let i; columns: displayedColumns">
+                    </mat-row>
+                </mat-table>
+
+                <!-- <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator> -->
+                
+
+            </div>
+            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                <ng-container *ngIf="dataSource.data.length > 0" >
+                    <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="5"
+                        [pageSizeOptions]="[5, 10, 25, 100]">
+                    </mat-paginator>
+                </ng-container>
+            </div>
+        </div>
+
+    </div>
+
+</div>

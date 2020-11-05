@@ -1,0 +1,113 @@
+#LeftNavbar{
+
+    height: 100%;
+
+.sidebar {background: #fafafa;}
+.sidebar .navbar-sidebar {overflow: hidden;}
+.navbar-sidebar {height: 100%;}
+.navbar-top {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: row;
+    -webkit-box-flex: 1;
+    flex: 1 0 auto;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    min-height: 64px;
+    max-height: 64px;
+    height: 64px;
+    padding: 12px 12px 12px 20px;
+    min-width: 280px;
+}
+.navbar-top .logo .logo-text {
+    margin-left: 12px;
+    font-size: 16px;
+    letter-spacing: .4px;
+    line-height: normal;
+    font-weight: bolder;
+    color: #1d2959!important;
+}
+.navbar-top .buttons {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.navbar-scroll-container {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    -webkit-box-flex: 1;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: -webkit-gradient(linear,left top,left bottom,color-stop(30%,rgba(0,0,0,0)),color-stop(30%,rgba(0,0,0,0))),-webkit-gradient(linear,left top,left bottom,color-stop(0,rgba(0,0,0,.25)),color-stop(40%,rgba(0,0,0,0)));
+    background: linear-gradient(rgba(0,0,0,0) 30%,rgba(0,0,0,0) 30%),linear-gradient(rgba(0,0,0,.25) 0,rgba(0,0,0,0) 40%);
+    background-repeat: no-repeat;
+    background-size: 100% 40px,100% 10px;
+    background-attachment: local,scroll;
+    background-color: #1d2959!important;
+    overflow: hidden;
+}
+.navbar-scroll-container .user {
+    position: relative;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    width: 100%;
+    height: 136px;
+    min-height: 136px;
+    max-height: 136px;
+    padding: 24px 0 64px;
+    background-color: #fff!important;
+    color: rgba(0,0,0,.87)!important;
+}
+
+
+.navbar-scroll-container .user .avatar-container {
+    position: absolute;
+    top: 92px;
+    border-radius: 50%;
+    padding: 8px;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    left: 50%;
+    background-color: #1d2959!important;
+    color: #fff!important;
+}
+.avatar {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    line-height: 40px;
+    margin: 0 8px 0 0;
+    border-radius: 50%;
+    font-size: 17px;
+    font-weight: 600;
+    text-align: center;
+}
+.navbar-scroll-container .user .avatar-container .avatar {
+    width: 72px;
+    height: 72px;
+    margin: 0;
+}
+.navbar-scroll-container .navbar-content {
+    -webkit-box-flex: 1;
+    flex: 1 1 auto;
+    padding-top: 32px;
+}
+
+
+   .mat-icon-button ::ng-deep .mat-button-focus-overlay { display: none;}
+
+}

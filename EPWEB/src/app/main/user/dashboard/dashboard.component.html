@@ -1,0 +1,474 @@
+<div id="dashboard" >
+
+<div class="page-layout" fxLayout="row wrap"  class="p-15">
+    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayoutAlign="start start">
+     
+        <h1 class="d_titel">Dashboard</h1>
+
+
+        <br>
+        <a class="forgot-password" [routerLink]="['/EPWEB/user/addendumDetails']">
+            <span style="color: rgba(0, 0, 0, 0.87);">addendum-details</span>
+        </a> 
+        
+
+
+                <!-- 
+                     <mat-tab-group mat-align-tabs="start" dynamicHeight>
+        <mat-tab label="Dashboard">
+
+            <div class="p-12" fxLayout="row wrap" fxFlex="100" [@animateStagger]="{value:'50'}">
+                    <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-md="25">
+                    <div class="widget-front box_sdw">
+                        <div class="pl-16 pr-8 py-16 h-52" fxLayout="row" fxLayoutAlign="space-between center">
+                            <span class="simplified exp_moth">
+                                Expiring within a month
+                            </span>
+                        </div>
+                        <div class="count_box" fxLayout="column" fxLayoutAlign="center center">
+                            <div class="monthcount light-blue-fg" (click)="openModel('month')">
+                                {{dashBoardData.policyExpWithinMonthMCCount ? dashBoardData.policyExpWithinMonthMCCount : 0}}
+                            </div>
+                            <div class="desk_info">Test Info</div>
+                        </div>
+                        <div class="total_box" fxLayout="row" fxLayoutAlign="start center">
+                            <span>Test:</span>
+                            <span class="num">789</span>
+                        </div>
+                    </div>
+                </div> -->
+
+
+                <!-- <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-md="25">
+                    <div class="widget-front box_sdw">
+                        <div class="pl-16 pr-8 py-16 h-52" fxLayout="row" fxLayoutAlign="space-between center">
+                            <span class="simplified exp_week">
+                                Expiring within a week
+                            </span>
+                        </div>
+                        <div class="count_box" fxLayout="column" fxLayoutAlign="center center">
+                            <div class="monthcount red-fg" (click)="openModel('week')">
+                                {{dashBoardData.policyExpWithinWeekMCCount ? dashBoardData.policyExpWithinWeekMCCount : 0}}
+                            </div>
+                            <div class="desk_info">Test Info</div>
+                        </div>
+                        <div class="total_box" fxLayout="row" fxLayoutAlign="start center">
+                            <span>Test:</span>
+                            <span class="num">789</span>
+                        </div>
+                    </div>
+                </div> -->
+
+
+                <!-- <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-md="25">
+                    <div class="widget-front box_sdw">
+                        <div class="pl-16 pr-8 py-16 h-52" fxLayout="row" fxLayoutAlign="space-between center">
+                            <span class="simplified exp_Expired">
+                                Already Expired
+                            </span>
+                        </div>
+                        <div class="count_box" fxLayout="column" fxLayoutAlign="center center">
+                            <div class="monthcount orange-fg" >
+                                {{dashBoardData.alreadyExpPolicyMCCount ? dashBoardData.alreadyExpPolicyMCCount : 0}}
+                            </div>
+                            <div class="desk_info">Test Info</div>
+                        </div>
+                        <div class="total_box" fxLayout="row" fxLayoutAlign="start center">
+                            <span>Test:</span>
+                            <span class="num">979</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-md="25">
+                    <div class="widget-front box_sdw">
+                        <div class="pl-16 pr-8 py-16 h-52" fxLayout="row" fxLayoutAlign="space-between center">
+                            <span class="simplified exp_Insureds">
+                                No. of Insureds
+                            </span>
+                        </div>
+                        <div class="count_box" fxLayout="column" fxLayoutAlign="center center">
+                            <div class="monthcount orange-fg" [routerLink]="[MC_LOOK_UP]">
+                                {{dashBoardData.noOfInsuredMCCount ? dashBoardData.noOfInsuredMCCount : 0}}
+                            </div>
+                            <div class="desk_info">Test Info</div>
+                        </div>
+                        <div class="total_box" fxLayout="row" fxLayoutAlign="start center">
+                            <span>Test:</span>
+                            <span class="num">979</span>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+            
+            <h1 class="d_titel">Up Coming Expiration</h1>
+            
+            
+            <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row" fxFlex="100" class="p-t-b-r-l-0-20">
+                <div class="widget-front wid_none">
+                    <mat-table matSort [dataSource]="dataSource">
+
+                        <ng-container matColumnDef="mcName">
+                            <mat-header-cell *matHeaderCellDef>MC Name
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let i" data-label="MC Name">
+                                <div class="MB-cell-width">
+                                    {{i.mcName}}
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="alExpDate">
+                            <mat-header-cell *matHeaderCellDef class="cellValueCenter">AL
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let i" class="cellValueCenter" data-label="AL">
+                                <div class="MB-cell-width">
+                                    <mat-chip-list *ngIf="i.alExpDate">
+                                        <mat-chip  class="chip-status status-deleted">
+                                            {{i.alExpDate}}</mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="glExpDate">
+                            <mat-header-cell *matHeaderCellDef class="cellValueCenter" data-label="">GL
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let i" class="cellValueCenter" data-label="GL">
+                                <div class="MB-cell-width">
+                                    <mat-chip-list *ngIf="i.glExpDate">
+                                        <mat-chip  class="chip-status status-deleted">
+                                            {{i.glExpDate}}</mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="cargoExpDate">
+                            <mat-header-cell *matHeaderCellDef class="cellValueCenter">CARGO
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let i" class="cellValueCenter" data-label="CARGO">
+                                <div class="MB-cell-width">
+                                    <mat-chip-list *ngIf="i.cargoExpDate">
+                                        <mat-chip  class="chip-status status-deleted">
+                                            {{i.cargoExpDate}}</mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="tiExpDate">
+                            <mat-header-cell *matHeaderCellDef class="cellValueCenter">TI
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let i" class="cellValueCenter" data-label="TI">
+                                <div class="MB-cell-width">
+                                    <mat-chip-list *ngIf="i.tiExpDate">
+                                        <mat-chip  class="chip-status status-deleted">
+                                            {{i.tiExpDate}}</mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="wcExpDate">
+                            <mat-header-cell *matHeaderCellDef class="cellValueCenter">WC
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let i" class="cellValueCenter" data-label="WC">
+                                <div class="MB-cell-width">
+                                    <mat-chip-list *ngIf="i.wcExpDate">
+                                        <mat-chip  class="chip-status status-deleted">
+                                            {{i.wcExpDate}}</mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="empLiabExpDate">
+                            <mat-header-cell *matHeaderCellDef class="cellValueCenter">Emp. Liab
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let i" class="cellValueCenter" data-label="Emp. Liab">
+                                <div class="MB-cell-width">
+                                    <mat-chip-list *ngIf="i.empLiabExpDate">
+                                        <mat-chip  class="chip-status status-deleted">
+                                            {{i.empLiabExpDate}}</mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="contCargoExpDate">
+                            <mat-header-cell *matHeaderCellDef class="cellValueCenter">Cont Cargo
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let i" class="cellValueCenter" data-label="Cont Cargo">
+                                <div class="MB-cell-width">
+                                    <mat-chip-list *ngIf="i.contCargoExpDate">
+                                        <mat-chip  class="chip-status status-deleted">
+                                            {{i.contCargoExpDate}}</mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="refTrailerExpDate">
+                            <mat-header-cell *matHeaderCellDef class="cellValueCenter">Ref. Trailer
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let i" class="cellValueCenter" data-label="Ref. Trailer">
+                                <div class="MB-cell-width">
+                                    <mat-chip-list *ngIf="i.refTrailerExpDate">
+                                        <mat-chip  class="chip-status status-deleted">
+                                            {{i.refTrailerExpDate}}</mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="empDishHonestyExpDate">
+                            <mat-header-cell *matHeaderCellDef class="cellValueCenter">Emp. Dishonesty
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let i" class="cellValueCenter" data-label="Emp. Dishonesty">
+                                <div class="MB-cell-width">
+                                    <mat-chip-list *ngIf="i.empDishHonestyExpDate">
+                                        <mat-chip  class="chip-status status-deleted">
+                                            {{i.empDishHonestyExpDate}}</mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="umbExpDate">
+                            <mat-header-cell *matHeaderCellDef class="cellValueCenter">Umbrella
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let i" class="cellValueCenter" data-label="Umbrella">
+                                <div class="MB-cell-width">
+                                    <mat-chip-list *ngIf="i.umbExpDate">
+                                        <mat-chip  class="chip-status status-deleted">
+                                            {{i.umbExpDate}}</mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="noRecord">
+                            <mat-footer-cell attr.colspan="{{dataSource.data.length}}" class="tableNoRecord text-center"
+                                *matFooterCellDef>
+                                No record found.
+                            </mat-footer-cell>
+                        </ng-container>
+
+                        <mat-footer-row *matFooterRowDef="['noRecord']"
+                            [ngClass]="{'tableFooterHide':!(dataSource.data!=null && dataSource.data.length==0)}">
+                        </mat-footer-row>
+                       
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let i; columns: displayedColumns">
+                        </mat-row>
+
+                    </mat-table>
+                </div>
+            </div>
+           
+            <div flex="100%" fxLayout="row wrap" fxLayoutAlign="end center" [@animateStagger]="{value:'50'}" class="pgn">
+                <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+            </div>
+        
+        </mat-tab>
+    -->
+
+        
+        <!-- <mat-tab label="Company Information">
+
+            <div fxLayout="row" fxFlex="100" fxLayoutAlign="end" class="p-r-15">
+                <button type="submit" [routerLink]="[COMPANY_PROFILE]" mat-raised-button color="accent" >
+                    <mat-icon class="cursorPointer edit_icon">edit</mat-icon>
+                    <span>Edit</span>
+                </button>
+            </div>
+
+            <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row" fxFlex="100" >
+         
+                <div class="widthfull">
+                    <div flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+                        <ng-container matColumnDef="expandedDetail">
+                            <div class="card-companyinfo widthfull">
+                                <div class="title divider-header">
+                                    <span> Company Information </span>
+                                </div>
+                                <mat-divider></mat-divider>
+                                <div class="compny_content" fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="widthfull " flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+                                        <div class="p-10" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="25%">
+                                            <span class="heading-lable">
+                                                Company Name
+                                            </span> <br> <span class="heading-value">
+                                                {{companyInfoData.companyName}} </span>
+                                        </div>
+                                        <div class="p-10" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="25%">
+                                            <span class="heading-lable">
+                                                Account Number
+                                            </span> <br> <span class="heading-value">{{companyInfoData.accountNumber}}
+                                            </span>
+                                        </div>
+                                        <div class="p-10" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="25%">
+                                            <span class="heading-lable">
+                                                License Number
+                                            </span> <br> <span class="heading-value">
+                                                {{companyInfoData.iaLicenseNo}} </span>
+                                        </div>
+                                        <div class="p-10" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="25%">
+                                            <span class="heading-lable">
+                                                Title
+                                            </span> <br> <span class="heading-value">
+                                                {{companyInfoData.title ? companyInfoData.title : '-'}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="card-companyinfo widthfull">
+                                <div class="title divider-header">Contact Information</div>
+                                <mat-divider></mat-divider>
+                                <div class="compny_content" fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="widthfull" flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+                                        <div class="p-10" fxFlex="12.5%" fxFlex.xs="25%" fxFlex.sm="12.5%">
+                                            <span class="heading-lable"> Suffix </span><br><span class="heading-value">
+                                                {{companyInfoData.contactSuffix ? companyInfoData.contactSuffix : '-'}}
+                                            </span>
+                                        </div>
+                                        <div class="p-10" fxFlex="12.5%" fxFlex.xs="25%" fxFlex.sm="12.5%">
+                                            <span class="heading-lable"> Prefix</span><br><span class="heading-value">
+                                                {{companyInfoData.prefix ? companyInfoData.prefix : '-'}}
+                                            </span>
+                                        </div>
+                                        <div class="p-10" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="25%">
+                                            <span class="heading-lable">
+                                                First Name
+                                            </span> <br> <span class="heading-value">
+                                                {{companyInfoData.contactFirstName?companyInfoData.contactFirstName:'-'}}
+                                            </span>
+                                        </div>
+                                        <div class="p-10" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="25%">
+                                            <span class="heading-lable">
+                                                Middle Name
+                                            </span> <br> <span class="heading-value">
+                                                {{companyInfoData.contactMiddleName? companyInfoData.contactMiddleName:'-'}}
+                                            </span>
+                                        </div>
+                                        <div class="p-10" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="25%">
+                                            <span class="heading-lable">
+                                                Last Name
+                                            </span> <br> <span class="heading-value">
+                                                {{companyInfoData.contactLastName? companyInfoData.contactLastName : '-'}}
+                                            </span>
+                                        </div>
+                        
+                                        <div class="p-10" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="25%">
+                                            <span class="heading-lable">Phone
+                                            </span> <br><span class="heading-value">
+                                                {{companyInfoData.phone? companyInfoData.phone:'-'}}
+                                            </span>
+                                        </div>
+                                        <div class="p-10" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="25%">
+                                            <span class="heading-lable">Fax
+                                            </span> <br> <span class="heading-value">
+                                                {{companyInfoData.fax?companyInfoData.fax:"-"}}
+                                            </span>
+                                        </div>
+                                        <div class="p-10" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="25%">
+                                            <span class="heading-lable">Email
+                                            </span><br><span class="heading-value">
+                                                {{companyInfoData.contactEmail?companyInfoData.contactEmail:'-'}}
+                                            </span>
+                                        </div>
+                                        <div class="p-10" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="25%">
+                                            <span class="heading-lable">URL
+                                            </span> <br> <span class="heading-value">
+                                                {{companyInfoData.url? companyInfoData.url : '-'}}
+                                            </span>
+                                        </div>
+                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-companyinfo widthfull">
+                                <div class="title divider-header">Address Information</div>
+                                <mat-divider></mat-divider>
+                                <div class="compny_content" fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="widthfull " flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+                        
+                                        <div class="p-10" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <span class="heading-lable">
+                                                Address Line1
+                                            </span> <br><span class="heading-value">{{companyInfoData.busaddln1?companyInfoData.busaddln1:'-'}}
+                                            </span>
+                                        </div>
+                                        <div class="p-10" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <span class="heading-lable">
+                                                Address Line2
+                                            </span><br> <span class="heading-value">
+                                                {{companyInfoData.busaddln2?companyInfoData.busaddln2:'-'}}
+                                            </span>
+                                        </div>
+                                        <div class="p-10" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="25%">
+                                            <span class="heading-lable">License
+                                                Zip/Postal Code
+                                            </span> <br><span class="heading-value">
+                                                {{companyInfoData.pinCode?companyInfoData.pinCode:'-'}}
+                                            </span>
+                                        </div>
+                        
+                        
+                                        <div class="p-10" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="25%">
+                                            <span class="heading-lable">
+                                                City
+                                            </span><br> <span class="heading-value">
+                                                {{companyInfoData.city?companyInfoData.city:'-'}}
+                                            </span>
+                                        </div>
+                                        <div class="p-10" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="25%">
+                                            <span class="heading-lable">
+                                                State/Province
+                                            </span><br><span class="heading-value">
+                                                {{companyInfoData.state?companyInfoData.state:'-'}}
+                                            </span>
+                                        </div>
+                                        <div class="p-10" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="25%">
+                                            <span class="heading-lable">
+                                                Country</span><br> <span class="heading-value">
+                                                {{companyInfoData.country? companyInfoData.country:'-'}}</span>
+                                        </div>
+                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-companyinfo widthfull">
+                                <div class="title divider-header">Remarks</div>
+                                <mat-divider></mat-divider>
+                                <div class="compny_content" fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="widthfull " flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+                        
+                                        <div class="p-10" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                            <span class="heading-value">
+                                                {{companyInfoData.remarks? companyInfoData.remarks : '-'}}
+                                            </span>
+                                        </div>
+                        
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        </ng-container>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+        </mat-tab>
+      </mat-tab-group>
+     -->
+    
+    </div>
+</div>
+</div>

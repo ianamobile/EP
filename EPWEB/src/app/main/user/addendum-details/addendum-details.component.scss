@@ -1,0 +1,34 @@
+#addendumDetails {
+  
+    .card-companyinfo {
+        border: 1px solid rgba(0, 0, 0, 0.12) !important;
+        margin-bottom: 0px;
+        border-radius: 8px !important;
+    }
+    .divider-header {
+        padding: 10px 20px;
+        color: #039be5;
+        font-weight: bolder;
+        letter-spacing: normal;
+        font-size: 15px;
+        background: #f7f7f7;
+        border-radius: 8px 8px 0 0px;
+    }
+    .compny_content {
+        flex: 0 1 auto;
+        min-height: 56px;
+        border-radius: 10px;
+        margin: 11px;
+    }
+    .table_input{min-height: 40px !important;}
+    .mat-form-field-wrapper{padding:  0!important;}
+   
+    ::ng-deep .mat-form-field-wrapper{
+        padding:  0px !important;
+     }
+
+     .mat-row:hover > .mat-cell {
+        background-color: transparent !important;
+        color: #000000 !important;
+    }
+}

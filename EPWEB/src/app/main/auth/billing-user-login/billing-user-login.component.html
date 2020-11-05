@@ -1,0 +1,70 @@
+<div id="billingUserLogin" fxLayout="column" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+
+    <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+        <div class="logo text-center" [@animate]="{value:'*',params:{scale:'0.2'}}">
+            <img class="left-logo" src="assets/images/UIIALogo.png" height="85">
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="boxshadow">
+
+            <div flex="33%" fxFlex fxHide fxShow.gt-xs>
+                <div id="login-form" class="leftBox" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+
+                    <div class="title text-center uiia" 
+                        [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
+                        <b> UIIA</b>
+                    </div>
+
+                    <div class="description text-center" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+                        UNIFORM INTERMODEL INTERCHANGE AND FACILITIES ACCESS AGREEMENT
+                    </div>
+
+                </div>
+            </div>
+
+            <div flex="33%">
+                <div id="login-form" class="rightBox" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+
+                    <div class="title text-center" style="font-size: 18px;"
+                        [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
+                        <b>Billing User Section</b>
+                    </div>
+
+                    
+                    <form>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Account Number/SCAC Code</mat-label>
+                            <input autocomplete="off" matInput>
+                            <mat-icon matSuffix class="secondary-text">person_outline</mat-icon>
+                        </mat-form-field> 
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>User Name</mat-label>
+                            <input autocomplete="off" matInput>
+                            <mat-icon matSuffix class="secondary-text">person_outline</mat-icon>
+                        </mat-form-field> 
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Password</mat-label>
+                            <input matInput type="password" >
+                            <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                        </mat-form-field>
+
+
+                        <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column"
+                            fxLayoutAlign="space-between center">
+                            <a class="forgot-password" [routerLink]="'/EPWEB/auth/billingUserForgotPassword'">
+                                Forgot Password?
+                            </a>
+                        </div>
+
+                        <button mat-raised-button color="accent" class="submit-button" aria-label="LOG IN"
+                        [routerLink]="[ '/EPWEB//user/dashboard' ]" >
+                             <mat-icon class="login_icon">login</mat-icon><span> Login</span> 
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

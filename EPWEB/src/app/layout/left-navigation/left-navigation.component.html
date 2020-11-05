@@ -1,0 +1,95 @@
+<div id="LeftNavbar" fxLayout="column" fxLayoutAlign="space-between stretch" >
+    <div class="navbar-sidebar" fxLayout="column" fxLayoutAlign="space-between stretch">
+    <div class="navbar-top" >
+        <div class="logo">
+            <span class="logo-text secondary-text">UIIA</span>
+        </div>
+        <div class="buttons">
+            <button mat-icon-button class="toggle-sidebar-folded" fxHide.lt-lg matRippleDisabled="disabled">
+                <mat-icon class="secondary-text">menu</mat-icon>
+            </button>
+            <button mat-icon-button class="toggle-sidebar-opened" fxHide.gt-md >
+                <mat-icon class="secondary-text">arrow_back</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="navbar-scroll-container">
+        <div class="user" fxLayout="column" >
+            <div class="h3 username">IA112764</div>
+            <div class="avatar-container">
+                <img class="avatar" src="assets/images/profile.jpg">
+            </div>
+        </div>
+        <div class="navbar-content">
+
+
+       
+
+            <a mat-list-item  class="menu-list-item">
+                <mat-icon class="routeIcon">add</mat-icon>
+                testt
+                <span fxFlex >
+                    <span fxFlex></span>
+                    <mat-icon>
+                        expand_more
+                    </mat-icon>
+                </span>
+            </a>
+            <div>
+                <a mat-list-item  class="menu-list-item">
+                    <mat-icon class="routeIcon">add</mat-icon>
+                    testt
+                    <span fxFlex >
+                        <span fxFlex></span>
+                        <mat-icon>
+                            expand_more
+                        </mat-icon>
+                    </span>
+                </a>
+            </div>
+
+
+            <mat-list class="app-class">
+                <mat-list-item>Item 2</mat-list-item>
+                <mat-list-item>Item 3</mat-list-item>
+              </mat-list>
+            
+            <span fxShow.lt-md="false" fxShow.gt-sm="true">
+                <button mat-button>
+                  <mat-icon class="mr-1">link</mat-icon>
+                  Link</button>
+                <button mat-button>
+                  <mat-icon class="mr-1">link</mat-icon>
+                  Link</button>
+                <button mat-button [matMenuTriggerFor]="dropDown">
+                  DropDown
+                  <mat-icon class="ml-1">arrow_drop_down</mat-icon>
+                </button>
+                <mat-menu #dropDown="matMenu" overlapTrigger="false">
+                  <button mat-menu-item>
+                    <mat-icon>dialpad</mat-icon>
+                    <span>Dropdown Link 1</span>
+                  </button>
+                  <button mat-menu-item disabled>
+                    <mat-icon>voicemail</mat-icon>
+                    <span>Dropdown Link 2</span>
+                  </button>
+                </mat-menu>
+              </span>
+
+        </div>    
+    </div>
+</div>
+    
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+</div>

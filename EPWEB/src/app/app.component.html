@@ -1,0 +1,42 @@
+
+<ng-container
+  *ngIf="this.ianaConfig.isUserLoggedIn; then loggedIn; else loggedOut">
+</ng-container>
+
+<ng-template #loggedOut>
+    <app-splash-screen></app-splash-screen>
+    <router-outlet></router-outlet>
+</ng-template>
+<ng-template #loggedIn>
+        <app-header></app-header>
+        <mat-drawer-container class="example-container" autosize>
+         
+          <mat-drawer #drawer mode="side" position="start" mode="over">
+              <app-left-navigation></app-left-navigation>
+          </mat-drawer>
+        
+          <div class="example-sidenav-content">
+           
+
+            <ng-container><app-top-navigation></app-top-navigation></ng-container>
+
+           
+
+            <div class="main_container other_container">
+              <!-- <button type="button" mat-button (click)="drawer.toggle()">
+                Toggle sidenav
+              </button> -->
+              <router-outlet></router-outlet>
+            </div>
+
+            <ng-container><app-footer></app-footer></ng-container>
+          </div>
+        </mat-drawer-container>
+</ng-template>  
+
+<!---Adding some extra components -->
+<ng-snotify></ng-snotify>
+<!-- https://napster2210.github.io/ngx-spinner/ -->
+<ngx-spinner bdOpacity = 0.9 bdColor = "rgba(51,51,51,0.3)" size = "medium" color = "#fff" type = "ball-fussion" [fullScreen] = "true">
+  <p style="color: white" > Loading... </p>
+</ngx-spinner>

@@ -1,0 +1,60 @@
+// =================================  mobile view deisgn ==================================
+.mat-table {
+    border: 0;
+    vertical-align: middle;
+}
+
+mat-header-row {
+    display: none;
+}
+
+.mat-table caption {
+    font-size: 1em;
+}
+
+.mat-table .mat-row {
+    border-bottom: 5px solid #ddd;
+    display: block;
+}
+
+.mat-table .mat-cell {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: 1em;
+    //   text-align: right;
+    font-weight: bold;
+    height: unset;
+    margin-bottom: 2%;
+    // justify-content: space-between;
+    display: flex;
+    padding: 0px 5px;
+}
+
+.mat-table .mat-cell:before {
+    content: attr(data-label);
+    float: left;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 0.85em;
+    width: 40%;
+    padding: 0px 5px;
+}
+
+.mat-table .mat-cell:last-child {
+    border-bottom: 0;
+}
+
+.mat-table .mat-cell:first-child {
+    margin-top: 2%;
+}
+
+.MB-cell-width {
+    width: 60%;
+    // text-align: right;
+}
+
+.cellValueCenter {
+    place-content: unset;
+}
+
+// =================================  mobile view deisgn ==================================

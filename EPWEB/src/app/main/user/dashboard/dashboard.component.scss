@@ -1,0 +1,92 @@
+#dashboard {
+
+    .widget{padding: 12px;}
+    .widget-front {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        position: relative;
+        overflow: hidden;
+        visibility: visible;
+        width: 100%;
+        opacity: 1;
+        z-index: 10;
+        border-radius: 8px !important;
+        transition: transform 0.5s ease-out 0s, visibility 0s ease-in 0.2s, opacity 0s ease-in 0.2s;
+        transform: rotateY(0deg);
+        backface-visibility: hidden;
+        // border: 1px solid rgba(0,0,0,.12) !important;
+        border: 1px solid #efefef !important;
+    }
+    .widget-back {
+        display: block;
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        bottom: 12px;
+        left: 12px;
+        overflow: hidden;
+        visibility: hidden;
+        opacity: 0;
+        z-index: 10;
+        border-radius: 8px;
+        transition: transform 0.5s ease-out 0s, visibility 0s ease-in 0.2s, opacity 0s ease-in 0.2s;
+        transform: rotateY(180deg);
+        backface-visibility: hidden;
+        border: 1px solid;
+        [fuseWidgetToggle] {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    }
+    .desk_info{font-size: 16px;font-weight: 500;color: rgba(0, 0, 0, 0.54);}
+    // .total_box{    border-top: 1px solid rgba(0, 0, 0, 0.12);padding: 16px !important;}
+    .total_box{    border-top: 1px solid  #efefef !important;padding: 16px !important;}
+    .total_box > span{display: block;overflow: hidden;text-overflow: ellipsis;padding-right: 8px;white-space: nowrap;color: rgba(0, 0, 0, 0.54);}
+    .total_box > span.num{font-size: 15px;font-weight: bold;}
+    .count_box{ padding-bottom: 32px !important;padding-top: 8px;}
+    .monthcount{ font-size: 72px; line-height: 72px;}
+    .monthcount:hover {
+        cursor: pointer;
+        font-size: 76px !important;
+    }
+    .h-52 {
+        height: 52px !important;
+        min-height: 52px !important;
+        max-height: 52px !important;
+    }
+.light-blue-fg {color: #03a9f4 !important;}
+.red-fg {color: #f44336 !important;}
+.orange-fg {color: #ff9800 !important;}
+.blue-grey-fg {color: #607d8b !important;}
+.d_titel{font-size: 20px;padding: 0 25px 0 25px;font-weight: 600;}  
+.pgn{background: none !important;
+    padding-right: 20px !important;
+    padding: 0 23px!important;
+    margin: 0 0 15px 0!important;}
+
+
+.p-t-b-r-l-0-20{padding: 0px 20px;}
+
+.edit_icon{margin-right: 5px; font-size: 17px;    vertical-align: bottom;}
+
+/*********************/
+.divider-header {padding: 10px 20px;color: #039be5;font-weight: bolder;letter-spacing: normal;font-size: 15px;background: #f7f7f7;border-radius: 8px 8px 0 0px;}
+.compny_content {-webkit-box-flex: 0;flex: 0 1 auto;min-height: 56px;border-radius: 10px;margin: 11px;}
+.compny_content .heading-lable {letter-spacing: normal;color: #1e2129;font-weight: bolder;font-size: 14px;}
+.compny_content .heading-value {line-height: 1.67 !important;color: #707276;font-size: 14px;}
+.card-companyinfo{border: 1px solid rgba(0, 0, 0, 0.12) !important;margin-bottom: 15px;border-radius: 8px !important;}
+.wid_none{background: none !important;border: none !important;border-radius: 0 !important;}
+
+.mat-tab-body-wrapper{border: 1px solid #efefef !important;}
+.mat-tab-nav-bar, .mat-tab-header {border-bottom: 1px solid #efefef !important;}
+
+.box_sdw{box-shadow: 1px 4px 5px 1px rgba(0, 0, 0, 0.03), 0px 1px 5px 0px rgba(0, 0, 0, 0.04), 0px 2px 3px 0px rgba(0, 0, 0, 0.02);}
+
+.exp_moth{background: #ddf0ff;padding: 5px 10px;border-radius: 28px;font-weight: bold;color: #03a9f4 !important;font-size: 13px;}
+.exp_week{background:#fbd5d2;padding: 5px 10px;border-radius: 28px;font-weight: bold;color:#f44336 !important;font-size: 13px;}
+.exp_Expired{background: #faecd6;padding: 5px 10px;border-radius: 28px;font-weight: bold;color:#ff9800 !important;font-size: 13px;}
+.exp_Insureds{background: #fdf2e0;padding: 5px 10px;border-radius: 28px;font-weight: bold;color: #ff9800 !important;font-size: 13px;}
+
+}
