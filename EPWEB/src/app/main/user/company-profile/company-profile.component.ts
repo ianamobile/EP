@@ -1,13 +1,4 @@
-import { MessageService } from './../../../shared/services/message.service';
-import { IanaConfig } from '../../../shared/models/iana-config';
-import { SecurityObject } from './../../../shared/models/security-object';
-import { ValidationError } from './../../../shared/models/validation-error';
-import { CONSTANTS } from './../../../core/constants';
-import { StorageService } from './../../../shared/services/storage.service';
-import { LoginService } from './../../../shared/services/login.service';
-import { CompanyProfileService } from './../../../shared/services/company-profile.service';
-import { CompanyInfoForm } from './../../../shared/forms/companyInfo-form';
-import { ianaAnimations } from './../../../core/iana-animation';
+
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import {
     AbstractControl,
@@ -18,10 +9,13 @@ import {
     Validators
 } from "@angular/forms";
 import { Router } from "@angular/router";
+import { setupPageLayout } from '@app-core/common-funcations';
+import { ianaAnimations } from '@app-core/iana-animation';
+import { IanaConfig } from '@app-models/iana-config';
+import { MessageService } from '@app-services/message.service';
 import { SnotifyService } from "ng-snotify";
 import { NgxSpinnerService } from "ngx-spinner";
-import { setupPageLayout } from 'src/app/core/common-funcations';
-import * as commonFuncation from './../../../core/common-funcations';
+
 
 @Component({
     selector: "app-company-profile",

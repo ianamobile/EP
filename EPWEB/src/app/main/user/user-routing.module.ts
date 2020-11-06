@@ -6,6 +6,7 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { CompanyProfileComponent } from "./company-profile/company-profile.component";
 import { LoginService } from '@app-services/login.service';
 import { AddendumDetailsComponent } from './addendum-details/addendum-details.component';
+ 
 
 const routes = [
     {
@@ -19,7 +20,8 @@ const routes = [
     {
      path: "addendumDetails",
      component: AddendumDetailsComponent
-    }
+    },
+    
 ];
 
 @NgModule({

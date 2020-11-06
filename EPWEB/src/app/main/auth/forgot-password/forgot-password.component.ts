@@ -1,16 +1,17 @@
-import { setupPageLayout } from 'src/app/core/common-funcations';
-import { MessageService } from './../../../shared/services/message.service';
-import { IanaConfig } from './../../../shared/models/iana-config';
-import { ValidationError } from './../../../shared/models/validation-error';
-import { CONSTANTS, NAVIGATE_URI } from './../../../core/constants';
-import { ForgotPassword } from './../../../shared/models/forgot-password';
-import { SubjectService } from './../../../shared/services/subject.service';
-import { ForgotPasswordService } from './../../../shared/services/forgot-password.service';
-import { RestService } from './../../../shared/services/http-rest.service';
-import { ianaAnimations } from './../../../core/iana-animation';
+
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { setupPageLayout } from '@app-core/common-funcations';
+import { CONSTANTS, NAVIGATE_URI } from '@app-core/constants';
+import { ianaAnimations } from '@app-core/iana-animation';
+import { ForgotPassword } from '@app-models/forgot-password';
+import { IanaConfig } from '@app-models/iana-config';
+import { ValidationError } from '@app-models/validation-error';
+import { ForgotPasswordService } from '@app-services/forgot-password.service';
+import { RestService } from '@app-services/http-rest.service';
+import { MessageService } from '@app-services/message.service';
+import { SubjectService } from '@app-services/subject.service';
 import { SnotifyService } from 'ng-snotify';
 import { Subscription } from 'rxjs';
 

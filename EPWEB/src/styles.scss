@@ -25,6 +25,8 @@ body { margin: 0; background: #F5F5F5 !important;}
 .p-r-15{padding-right: 15px !important;}
 .pt-0{padding-top: 0px !important;}
 .p-t-5{padding-top: 5px !important;}
+.p-tb-24{padding-top: 24px !important;padding-bottom: 24px !important;}
+.pb-0{padding-bottom: 0px !important;}
 .m-l-15{margin-left: 15px !important;}
 .m-r-5{margin-right: 5px !important;}
 .m-t-15{margin-top: 15px !important;}
@@ -35,12 +37,16 @@ body { margin: 0; background: #F5F5F5 !important;}
 .mt-24{margin-top: 24px !important;}
 .mb-20{margin-bottom: 20px !important;}
 .mb-24{margin-bottom: 24px !important;}
+.mr-16{margin-right: 16px !important;}
 .m-tb-10{margin-top: 10px !important;margin-bottom: 10px !important;}
 .m-b-10{margin-bottom: 10px !important;}
+.mlr-10{margin-left: 10px !important;margin-right: 10px !important;}
 .mr-0{margin-right: 0px !important;}
 .mr-20{margin-right: 20px !important;}
 .widthfull{width: 100%;}
 .hit_45{height: 45px !important;}
+.ptlbr-24{padding: 24px 24px 0px 24px;}
+.fts-24{font-size: 28px !important;}
 
 a {  color: #039be5;text-decoration: none;}
 h1{font-size: 26px;padding: 10px 0;}
@@ -328,6 +334,12 @@ mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat
 .note_list > li {font-size: 12px;font-weight: 600;color: red;padding: 1px 20px;}
 
 .mat-radio-label {    padding: 0 5px 0 5px !important; }
+.txt_center{justify-content:center !important;}
+
+.mat-form-field-appearance-outline .mat-form-field-prefix, .mat-form-field-appearance-outline .mat-form-field-suffix {
+    top: 0 !important;
+}
+
 
 @media only screen and (max-width: 598px), only screen and (max-device-width: 598px) {
     

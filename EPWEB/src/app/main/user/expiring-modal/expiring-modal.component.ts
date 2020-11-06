@@ -1,14 +1,15 @@
-import { CONSTANTS } from './../../../core/constants';
-import { ValidationError } from './../../../shared/models/validation-error';
-import { DashboardService } from './../../../shared/services/dashboard.service';
+
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { ianaAnimations } from './../../../core/iana-animation';
 import { Component, OnInit, Inject, ViewEncapsulation, ViewChild } from '@angular/core';
 import { SnotifyService } from "ng-snotify";
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CONSTANTS } from '@app-core/constants';
+import { ianaAnimations } from '@app-core/iana-animation';
+import { ValidationError } from '@app-models/validation-error';
+import { DashboardService } from '@app-services/dashboard.service';
 
 @Component({
   selector: 'app-expiring-modal',

@@ -30,7 +30,7 @@ import { AfterViewInit } from '@angular/core';
   encapsulation: ViewEncapsulation.None,
   animations: ianaAnimations
 })
-export class NotificationsComponent implements OnInit, AfterViewInit {
+export class NotificationsComponent implements OnInit {
 
   ianaConfig: IanaConfig = new IanaConfig
 
@@ -38,7 +38,7 @@ export class NotificationsComponent implements OnInit, AfterViewInit {
   // displayedColumns = [
   //   "checkbox", "notifName", "status", "mode", "notifDate"
   // ];
-  // dialogRef: any;
+   dialogRef: any;
   // dataSource = new MatTableDataSource();
   // searchSetupData: any = {};
   // notificationsSearchForm = new notificationsSearchForm({});
@@ -52,7 +52,7 @@ export class NotificationsComponent implements OnInit, AfterViewInit {
   constructor(
     private _msgService: MessageService<IanaConfig>,
     // private _storageService: StorageService,
-    // private _matDialog: MatDialog,
+    public _matDialog: MatDialog,
     // private _notificationService: NotificationService,
     // private _snotifyService: SnotifyService,
     // private _spinner: NgxSpinnerService,
@@ -73,24 +73,37 @@ export class NotificationsComponent implements OnInit, AfterViewInit {
     // this.getNotificationList();
   }
 
+  openSearchModel() {
+    this.dialogRef = this._matDialog.open(NotificationSearchDialogComponent, {
+      panelClass: 'notification-dialog-container',
+      disableClose: true,
+      width: '45%',
+    });
+
+    this.dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
   // openSearchModel() {
+
   //   this.dialogRef = this._matDialog.open(NotificationSearchDialogComponent, {
   //     panelClass: 'notification-dialog-container',
   //     disableClose: true,
   //     width: '45%',
   //     data: {
-  //       searchSetupData: this.searchSetupData,
-  //       formData: this.notificationsSearchForm
+  //       //searchSetupData: this.searchSetupData,
+  //       //formData: this.notificationsSearchForm
   //     }
   //   });
-  //   this.dialogRef.afterClosed()
-  //     .subscribe((res) => {
-  //       if (res.close) {
-  //         this.notificationsSearchForm = res.value;
-  //         this.getNotificationList();
-  //       }
-  //     });
-  // }
+  // //   this.dialogRef.afterClosed()
+  // //     .subscribe((res) => {
+  // //       if (res.close) {
+  // //         this.notificationsSearchForm = res.value;
+  // //         this.getNotificationList();
+  // //       }
+  // //     });
+  //  }
 
   // getsetupNotification() {
   //   this._spinner.show();

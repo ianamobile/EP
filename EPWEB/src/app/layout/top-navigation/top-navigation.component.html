@@ -10,7 +10,23 @@
         <button mat-menu-item [routerLink]="['/EPWEB/user/dashboard']">Dashboard</button>
       </mat-menu>
 
+    <!-- ------------------------ Addendum Details ------------------ -->
+    <button mat-button [routerLink]="['/EPWEB/user/addendumDetails']">
+      <mat-icon >view_list</mat-icon> Addendum Details
+    </button>
+
+     <!-- ------------------------ Manage Billing Users ------------------ -->
+     <button mat-button [routerLink]="['/EPWEB/user/manageBillingUsers']">
+      <mat-icon >view_list</mat-icon> Manage Billing Users
+    </button>
+
+<!-- ------------------------ UIIA Invoices ------------------ -->
+<button mat-button [routerLink]="['/EPWEB/user/uiiaInvoices']">
+  <mat-icon >view_list</mat-icon> UIIA Invoices
+</button>
     
+    
+
 
     <!-- ------------------------ Test Menu ------------------ -->
       <button mat-button [matMenuTriggerFor]="animals"><mat-icon class="menu_icon">search</mat-icon> Test Menu </button>

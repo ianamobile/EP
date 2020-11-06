@@ -1,0 +1,93 @@
+<div class="dialog-content-wrapper secoundary-user-form-dialog">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Add User</span>
+            <!-- <button tabindex="-1" mat-icon-button (click)="close(false)" aria-label="Close dialog"> -->
+            <button tabindex="-1" mat-icon-button  (click)="close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+    <form name="formGroup"  novalidate>
+        <div mat-dialog-content  >
+            <div flex="100%" fxLayout="row wrap" fxLayoutAlign="start center" class="p-tb-24 pb-0 m-0">
+               
+                <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>User Name</mat-label>
+                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                        <input  autocomplete="off" name="UserName" required matInput>
+                    </mat-form-field>
+                </div>
+
+                <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Password</mat-label>
+                        <mat-icon matSuffix class="secondary-text">lock</mat-icon>
+                        <input  type="password" autocomplete="off" name="Password" required matInput>
+                      
+                    </mat-form-field>
+                </div>
+
+
+                <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>First Name</mat-label>
+                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                        <input  autocomplete="off" name="FirstName" required matInput>
+                    </mat-form-field>
+                </div>
+
+                <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Last Name</mat-label>
+                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                        <input  autocomplete="off" name="LastName" required matInput>
+                    </mat-form-field>
+                </div>
+
+                <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Title</mat-label>
+                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                        <input  autocomplete="off" name="Title" required matInput>
+                    </mat-form-field>
+                </div>
+
+                <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Phone</mat-label>
+                        <mat-icon matSuffix class="secondary-text">phone</mat-icon>
+                        <input  autocomplete="off" name="Phone" required matInput>
+                    </mat-form-field>
+                </div>
+
+                <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Email</mat-label>
+                        <mat-icon matSuffix class="secondary-text">email</mat-icon>
+                        <input  autocomplete="off" name="Email" matInput>
+                       
+                    </mat-form-field>
+                </div>
+               
+               
+               
+            </div>
+        </div>
+        <mat-divider>
+        </mat-divider>
+        <div mat-dialog-actions class="m-tb-10" fxLayout="row">
+            <div fxFlex="100%" fxLayoutAlign="end center" fxFlex.xs="100%" fxFlex.sm="50%">
+                <div fxLayout="row">
+                    <button mat-raised-button type="submit" color="accent"  class="mr-8" aria-label="SAVE"><mat-icon>save</mat-icon>  Save </button>
+                    <button type="button" mat-raised-button color="primary"  class="mr-8" aria-label="RESET">
+                        <mat-icon>refresh</mat-icon> Reset
+                </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>

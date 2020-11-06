@@ -1,19 +1,14 @@
-import { MessageService } from './../../../shared/services/message.service';
-import { IanaConfig } from '../../../shared/models/iana-config';
-import { ianaAnimations } from './../../../core/iana-animation';
-import { ValidationError } from './../../../shared/models/validation-error';
-import { Login } from './../../../shared/models/login';
-import { CONSTANTS, NAVIGATE_URI } from './../../../core/constants';
-import { SubjectService } from './../../../shared/services/subject.service';
-import { LoginService } from './../../../shared/services/login.service';
-import { StorageService } from './../../../shared/services/storage.service';
-import { SecurityObject } from './../../../shared/models/security-object';
+
 import { Component, ComponentFactoryResolver, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { setupPageLayout } from '@app-core/common-funcations';
+import { ianaAnimations } from '@app-core/iana-animation';
+import { IanaConfig } from '@app-models/iana-config';
+import { MessageService } from '@app-services/message.service';
 import { SnotifyService } from 'ng-snotify';
 import { Subscription } from 'rxjs';
-import { setupPageLayout } from 'src/app/core/common-funcations';
+
  
 
 @Component({

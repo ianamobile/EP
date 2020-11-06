@@ -1,17 +1,18 @@
-import { ResetPassword } from './../../../shared/models/reset-passsword';
-import { ValidationError } from './../../../shared/models/validation-error';
-import { HashMap } from './../../../core/hashmap';
-import { NAVIGATE_URI, CONSTANTS } from './../../../core/constants';
-import { setupPageLayout } from 'src/app/core/common-funcations';
-import { SubjectService } from './../../../shared/services/subject.service';
-import { ResetPasswordService } from './../../../shared/services/reset-password.service';
-import { RestService } from './../../../shared/services/http-rest.service';
-import { MessageService } from './../../../shared/services/message.service';
-import { IanaConfig } from './../../../shared/models/iana-config';
-import { ianaAnimations } from './../../../core/iana-animation';
+
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { setupPageLayout } from '@app-core/common-funcations';
+import { CONSTANTS, NAVIGATE_URI } from '@app-core/constants';
+import { HashMap } from '@app-core/hashmap';
+import { ianaAnimations } from '@app-core/iana-animation';
+import { IanaConfig } from '@app-models/iana-config';
+import { ResetPassword } from '@app-models/reset-passsword';
+import { ValidationError } from '@app-models/validation-error';
+import { RestService } from '@app-services/http-rest.service';
+import { MessageService } from '@app-services/message.service';
+import { ResetPasswordService } from '@app-services/reset-password.service';
+import { SubjectService } from '@app-services/subject.service';
 import { SnotifyService } from 'ng-snotify';
 import { Subject, Subscription } from 'rxjs';
 

@@ -7,8 +7,7 @@
 
     <div fxLayout="row wrap">
 
-        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" style="padding: 24px 24px 0px 24px;">
-
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" class="ptlbr-24">
             <div class="widget-back1">
 
                 <div fxLayout="row">
@@ -62,19 +61,20 @@
                     </button>
                 </div>
                 <div>
-                    <!-- <button (click)="openSearchModel()" mat-icon-button aria-label="more"  class=" search-btn-icon-font m-l-15"> -->
-                    <button mat-icon-button aria-label="more" class=" search-btn-icon-font m-l-15">
+                    <button (click)="openSearchModel()" mat-icon-button aria-label="more"  class=" search-btn-icon-font m-l-15">
+                    <!-- <button mat-icon-button aria-label="more" class=" search-btn-icon-font m-l-15"> -->
                         <mat-icon class="fwb">search</mat-icon>
                         Search Your Notifications
                     </button>
+
+                    
                 </div>
             </div>
         </div>
 
 
 
-        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100"
-            fxFlex.gt-xs="100" fxFlex.gt-md="100">
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-md="100">
             <div class="widget-front">
 
                 <table mat-table [dataSource]="dataSource" class="widthfull m-10">

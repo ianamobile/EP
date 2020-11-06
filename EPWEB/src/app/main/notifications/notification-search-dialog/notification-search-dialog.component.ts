@@ -8,51 +8,51 @@ import { notificationsSearchForm } from '@app-forms/notifications-search-form';
   selector: 'app-notification-search-dialog',
   templateUrl: './notification-search-dialog.component.html',
   styleUrls: ['./notification-search-dialog.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+ // encapsulation: ViewEncapsulation.None,
   animations: ianaAnimations
 })
 export class NotificationSearchDialogComponent implements OnInit {
 
-  searchForm: FormGroup;
-  searchSetupData: any;
-  notificationsSearchForm: notificationsSearchForm;
+  // searchForm: FormGroup;
+  // searchSetupData: any;
+  // notificationsSearchForm: notificationsSearchForm;
 
   constructor(
-    public matDialogRef: MatDialogRef<NotificationSearchDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private _data: any,
-    private _formBuilder: FormBuilder,
+     public matDialogRef: MatDialogRef<NotificationSearchDialogComponent>,
+    // @Inject(MAT_DIALOG_DATA) private _data: any,
+    // private _formBuilder: FormBuilder,
   ) {
-    var _data = JSON.parse(JSON.stringify(_data));
-    this.searchSetupData = _data.searchSetupData;
-    this.notificationsSearchForm = _data.formData;
-    this.searchSetupData.notfStartDt = new Date(_data.searchSetupData.notfStartDt);
-    this.searchSetupData.notfEndDt = new Date(_data.searchSetupData.notfEndDt);
+    // var _data = JSON.parse(JSON.stringify(_data));
+    // this.searchSetupData = _data.searchSetupData;
+    // this.notificationsSearchForm = _data.formData;
+    // this.searchSetupData.notfStartDt = new Date(_data.searchSetupData.notfStartDt);
+    // this.searchSetupData.notfEndDt = new Date(_data.searchSetupData.notfEndDt);
   }
 
   ngOnInit() {
 
-    this.searchForm = this._formBuilder.group({
-      fromDate: [this.notificationsSearchForm.fromDate ? new Date(this.notificationsSearchForm.fromDate) : ""],
-      toDate: [this.notificationsSearchForm.toDate ? new Date(this.notificationsSearchForm.toDate) : ""],
-      mode: [this.notificationsSearchForm.mode],
-      status: [this.notificationsSearchForm.status]
-    });
+    // this.searchForm = this._formBuilder.group({
+    //   fromDate: [this.notificationsSearchForm.fromDate ? new Date(this.notificationsSearchForm.fromDate) : ""],
+    //   toDate: [this.notificationsSearchForm.toDate ? new Date(this.notificationsSearchForm.toDate) : ""],
+    //   mode: [this.notificationsSearchForm.mode],
+    //   status: [this.notificationsSearchForm.status]
+    // });
   }
 
-  search() {
-    this.matDialogRef.close({ value: this.searchForm.value, close: true });
-  }
+  // search() {
+  //   this.matDialogRef.close({ value: this.searchForm.value, close: true });
+  // }
 
-  clear() {
-    this.searchForm.controls.fromDate.setValue('');
-    this.searchForm.controls.toDate.setValue('');
-    this.searchForm.controls.mode.setValue('');
-    this.searchForm.controls.status.setValue('');
-  }
+  // clear() {
+  //   this.searchForm.controls.fromDate.setValue('');
+  //   this.searchForm.controls.toDate.setValue('');
+  //   this.searchForm.controls.mode.setValue('');
+  //   this.searchForm.controls.status.setValue('');
+  // }
 
 
   close() {
-    this.matDialogRef.close({ value: this.searchForm.value, close: false });
+    this.matDialogRef.close({  close: false });
   }
 
 }

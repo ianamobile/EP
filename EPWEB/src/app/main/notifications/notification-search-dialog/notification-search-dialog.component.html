@@ -9,7 +9,7 @@
     </mat-toolbar>
     <mat-divider></mat-divider>
     <div mat-dialog-content style="padding: 24px 12px !important;">
-        <form name="searchForm" [formGroup]="searchForm" novalidate>
+        <form name="searchForm"  novalidate>
             <div flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
                 <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="100%">
                     <mat-form-field class="widthfull" appearance="outline" fxFlex>
@@ -55,7 +55,7 @@
         <button mat-raised-button color="accent"  class="dialog-footer-btn" aria-label="ADD">
             <mat-icon>search</mat-icon> Search
         </button>
-        <button mat-raised-button color="primary" (click)="clear()" class="dialog-footer-btn" aria-label="RESET">
+        <button mat-raised-button color="primary" class="dialog-footer-btn" aria-label="RESET">
             <mat-icon >refresh</mat-icon> Reset
         </button>
     </div>
