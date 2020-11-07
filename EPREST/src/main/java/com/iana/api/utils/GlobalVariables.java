@@ -334,5 +334,7 @@ public class GlobalVariables {
 	
 	public static final int LIMIT=10;
 	
+	public static final String CATEGORY_MANAGE_BILLING_USERS 	= "Manage Billing Users";
+	
 	   
 }

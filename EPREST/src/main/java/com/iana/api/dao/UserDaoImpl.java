@@ -1,5 +1,7 @@
 package com.iana.api.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +15,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
 import com.iana.api.domain.AccountInfo;
@@ -21,12 +25,15 @@ import com.iana.api.domain.FpToken;
 import com.iana.api.domain.Login;
 import com.iana.api.domain.LoginHistory;
 import com.iana.api.domain.ResetPassword;
+import com.iana.api.domain.Role;
 import com.iana.api.domain.SecurityObject;
 import com.iana.api.domain.User;
+import com.iana.api.domain.billing.payment.BillingUser;
 import com.iana.api.utils.CommonUtils;
 import com.iana.api.utils.DateTimeFormater;
 import com.iana.api.utils.EncryptionUtils;
 import com.iana.api.utils.GlobalVariables;
+import com.iana.api.utils.Utility;
 
 @Repository
 public class UserDaoImpl extends GenericDAO implements UserDao {
@@ -356,6 +363,77 @@ public class UserDaoImpl extends GenericDAO implements UserDao {
 				params.toArray(), enableTransMgmt);
 		log.info("user_login: updatedCnt:" + updatedCnt);
 		return updatedCnt;
+
+	}
+
+	@Override
+	public User user(String accountNumber, String userName) throws Exception {
+		StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT LOGIN_ID, STATUS, PASSWORD, USER_NAME ");
+		sb.append(" FROM user_login ");
+		sb.append(" WHERE ACCOUNT_NUMBER = ? AND USER_NAME = ? AND STATUS = ? ");
+
+		return getSpringJdbcTemplate(this.uiiaDataSource).query(sb.toString(),
+				new Object[] { accountNumber, userName, GlobalVariables.YES }, new ResultSetExtractor<User>() {
+					@Override
+					public User extractData(ResultSet rs) throws SQLException, DataAccessException {
+						User user = new User();
+						while (rs.next()) {
+							user.setLoginId(rs.getLong("LOGIN_ID"));
+							user.setStatus(rs.getString("STATUS"));
+							user.setUsername(rs.getString("USER_NAME"));
+							try {
+								user.setPassword(EncryptionUtils.decrypt(rs.getString("PASSWORD")));
+							} catch (Exception e) {
+								log.error("user(): extractData:" + e);
+							}
+						}
+						return user;
+					}
+				});
+	}
+
+	@Override
+	public void updateUserForDeleteBillingUser(DataSource lUIIADataSource, SecurityObject securityObject,
+			BillingUser billingUser) throws Exception {
+		String query = "UPDATE user_login SET STATUS = 'N', MODIFIED_BY = ?, MODIFIED_DATE = ? WHERE ACCOUNT_NUMBER = ? AND USER_NAME = ? ";
+		saveOrUpdate(lUIIADataSource, query, true, securityObject.getUsername(), DateTimeFormater.getSqlSysTimestamp(),
+				securityObject.getAccountNumber(), billingUser.getUserName());
+	}
+
+	@Override
+	public Role getRole(String roleName) throws Exception {
+		String query = " SELECT ROLE_ID, ROLE_NAME FROM role_master WHERE ROLE_NAME = ? ";
+		return findBean(this.uiiaDataSource, query, Role.class, roleName);
+	}
+
+	@Override
+	public int insertUserForCreateBillingUser(DataSource lUIIADataSource, SecurityObject securityObject,
+			BillingUser billingUser, long roleId) throws Exception {
+		StringBuilder query = new StringBuilder(" INSERT INTO user_login ");
+		query.append(
+				" (USER_NAME, SCAC_CODE, PASSWORD, ACCOUNT_NUMBER, ROLE_ID, STATUS, AUDIT_TRAIL_EXTRA, CREATED_BY, CREATED_DATE) ");
+		query.append(" VALUES (?,?,?,?,?,?,?,?,?) ");
+
+		Object[] params = new Object[] { billingUser.getUserName(), securityObject.getScac(),
+				EncryptionUtils.encrypt(billingUser.getPassword().toUpperCase()), securityObject.getAccountNumber(),
+				roleId, GlobalVariables.YES, securityObject.getIpAddress(), securityObject.getUsername(),
+				Utility.getSqlSysTimestamp(), };
+
+		return saveOrUpdate(lUIIADataSource, query.toString(), true, params);
+	}
+
+	@Override
+	public int updateUserForCreateBillingUser(DataSource lUIIADataSource, SecurityObject securityObject,
+			BillingUser billingUser) throws Exception {
+
+		String query = "UPDATE user_login SET PASSWORD = ?, MODIFIED_BY =?, MODIFIED_DATE = ? WHERE ACCOUNT_NUMBER =? AND USER_NAME = ?";
+
+		Object[] params = new Object[] { EncryptionUtils.encrypt(billingUser.getPassword()),
+				securityObject.getUsername(), Utility.getSqlSysTimestamp(), securityObject.getAccountNumber(),
+				billingUser.getUserName() };
+
+		return saveOrUpdate(lUIIADataSource, query.toString(), true, params);
 
 	}
 
