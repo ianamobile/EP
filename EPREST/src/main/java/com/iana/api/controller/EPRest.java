@@ -289,7 +289,7 @@ public class EPRest extends CommonUtils {
 		}
 
 	}
-	
+
 	@GetMapping(path = URI_CURRENT_ADDENDUM_DETAILS + URI_SETUP, produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "SETUP MANAGE ACCOUNT INFORMATION IN " + CLASS_NAME, response = SetupManageAccountInfo.class)
 	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
@@ -307,7 +307,7 @@ public class EPRest extends CommonUtils {
 		}
 
 	}
-	
+
 	@GetMapping(path = URI_CURRENT_ADDENDUM_DETAILS, produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "SETUP MANAGE ACCOUNT INFORMATION IN " + CLASS_NAME, response = EPAddendumDetForm.class)
 	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
@@ -326,6 +326,5 @@ public class EPRest extends CommonUtils {
 		}
 
 	}
-
 
 }

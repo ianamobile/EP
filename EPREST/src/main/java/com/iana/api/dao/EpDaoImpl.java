@@ -336,13 +336,12 @@ public class EpDaoImpl extends GenericDAO implements EpDao {
 				"a.uiia_status,a.uiia_status_cd,a.mem_eff_dt,a.cancelled_dt,a.deleted_date, a.attr1, a.attr2, a.attr3, ");
 		qry1.append(
 				"a.re_instated_dt,a.mem_type,a.comp_url,a.modified_date,a.uiia_member,a.idd_member,e.ep_entities  FROM account_info a LEFT JOIN ep_basic_details e ON (e.ep_acct_no = a.account_no) WHERE a.account_no = ?"); // prarit
-
 		AccountInfo acctInfo = findBean(this.uiiaDataSource, qry1.toString(), AccountInfo.class, acctNo);
 
 		return acctInfo;
 
 	}
-
+	
 	public AddressDet getAddress(String acctNo, String addressType) throws Exception {
 		StringBuffer sbQry = new StringBuffer("SELECT addr_id,addr_street1,addr_street2,");
 		sbQry.append(

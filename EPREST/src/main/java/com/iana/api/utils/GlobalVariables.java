@@ -335,6 +335,9 @@ public class GlobalVariables {
 	public static final int LIMIT=10;
 	
 	public static final String CATEGORY_MANAGE_BILLING_USERS 	= "Manage Billing Users";
+	public static final String CATEGORY_UIIA_INVOICES 			= "UIIA Invoices";
+	public static final String TEMP="TEMP";
+	public static final String ROLE_MC= "MC";
 	
 	   
 }
