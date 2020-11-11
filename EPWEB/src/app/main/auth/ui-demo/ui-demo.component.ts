@@ -4,13 +4,15 @@ import { FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { setupPageLayout } from '@app-core/common-funcations';
+import { ianaAnimations } from '@app-core/iana-animation';
 import { IanaConfig } from '@app-models/iana-config';
 import { MessageService } from '@app-services/message.service';
 
 @Component({
   selector: 'app-ui-demo',
   templateUrl: './ui-demo.component.html',
-  styleUrls: ['./ui-demo.component.scss']
+  styleUrls: ['./ui-demo.component.scss'],
+  animations: ianaAnimations
 })
 export class UiDemoComponent implements OnInit, AfterViewInit {
   ianaConfig: IanaConfig = new IanaConfig

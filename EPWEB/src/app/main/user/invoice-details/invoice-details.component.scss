@@ -1,5 +1,7 @@
-#addendumDetails {
-  
+#invoicedetails{
+
+    textarea{height: 20px !important;}
+    .widthfull_99 {width: -webkit-fill-available;width: 98.9% !important;}
     .card-companyinfo {
         border: 1px solid rgba(0, 0, 0, 0.12) !important;
         margin-bottom: 0px;
@@ -7,8 +9,7 @@
     }
     .divider-header {
         padding: 10px 20px;
-        color: #e75622;
-        // color: #039be5;
+        color: #039be5;
         font-weight: bolder;
         letter-spacing: normal;
         font-size: 15px;
@@ -27,17 +28,20 @@
     ::ng-deep .mat-form-field-wrapper{
         padding:  0px !important;
      }
+
      .mat-row:hover  {
         background-color: transparent !important;
         color: #000000 !important;
     }
+
      .mat-row:hover > .mat-cell {
         background-color: transparent !important;
         color: #000000 !important;
     }
 
-    .mat-button.mat-warn, .mat-icon-button.mat-warn, .mat-stroked-button.mat-warn {
-        border: 1px solid #ffc7c3;
-        color: #f44336;
+    .wt_hover > .mat-row:hover > .mat-cell {
+        background-color:  #039be5 !important;
+        color: #ffffff !important;
     }
-}
+
+} 

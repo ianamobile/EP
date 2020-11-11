@@ -1,0 +1,76 @@
+<div class="dialog-content-wrapper search-dialog">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">View Payment Failure Attempt(s)</span>
+            <button tabindex="-1" mat-icon-button (click)="close()"  aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+
+    <div mat-dialog-content style="padding: 10px !important;">
+      
+        <mat-table matSort [dataSource]="dataSource">
+
+            <ng-container matColumnDef="SrNo">
+                <mat-header-cell *matHeaderCellDef>Sr No</mat-header-cell>
+                <mat-cell *matCellDef="let i" data-label="SrNo">
+                    <div class="MB-cell-width" >
+                       {{i.SrNo}}
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Errordic">
+                <mat-header-cell *matHeaderCellDef>Error </mat-header-cell>
+                <mat-cell *matCellDef="let i" data-label="Error	">
+                    <div class="MB-cell-width">
+                        {{i.Errordic}}
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="ErrorDescription">
+                <mat-header-cell *matHeaderCellDef>Error Description</mat-header-cell>
+                <mat-cell *matCellDef="let i" data-label="Error Description">
+                    <div class="MB-cell-width">
+                        {{i.ErrorDescription}}
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="PaymentAttemptBy">
+                <mat-header-cell *matHeaderCellDef>Payment Attempt By</mat-header-cell>
+                <mat-cell *matCellDef="let i" data-label="Payment Attempt By">
+                    <div class="MB-cell-width">
+                        {{i.PaymentAttemptBy}}
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="PaymentAttemptDate">
+                <mat-header-cell *matHeaderCellDef>Payment Attempt Date</mat-header-cell>
+                <mat-cell *matCellDef="let i" data-label="Payment Attempt Date">
+                    <div class="MB-cell-width">
+                        {{i.PaymentAttemptDate}}
+                    </div>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let i; columns: displayedColumns">
+            </mat-row>
+        </mat-table>
+
+    </div>
+    <mat-divider>
+    </mat-divider>
+    <!-- <div mat-dialog-actions class="m-0" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-raised-button color="accent"  class="dialog-footer-btn" aria-label="Search">
+            <mat-icon>search</mat-icon> Search
+        </button>
+        <button mat-raised-button color="primary" class="dialog-footer-btn" aria-label="RESET">
+            <mat-icon >refresh</mat-icon> Reset
+        </button>
+    </div> -->
+</div>

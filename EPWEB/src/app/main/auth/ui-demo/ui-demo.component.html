@@ -200,8 +200,9 @@
   
           <h1 >Table</h1>
       
-          <div>
-            <table mat-table [dataSource]="dataSource" >
+        
+          <div class="widget-front" style="padding: 1px 0;">
+            <table mat-table [dataSource]="dataSource" class="m-10" style="width:98.7%;" >
           
               <!-- Position Column -->
               <ng-container matColumnDef="position">
@@ -231,10 +232,10 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
           </div>
-          
-          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="app-paginator"></mat-paginator>
-  
-    </div>
+       
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="app-paginator"></mat-paginator>
+  </div>
+   
   
   
   

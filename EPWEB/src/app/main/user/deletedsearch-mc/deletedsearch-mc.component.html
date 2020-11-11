@@ -1,0 +1,47 @@
+<div class="dialog-content-wrapper search-dialog">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Search</span>
+            <!-- <button tabindex="-1" mat-icon-button (click)="close()" aria-label="Close dialog"> -->
+            <button tabindex="-1" mat-icon-button (click)="close()"  aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content style="padding: 24px 12px !important;">
+        <form name="searchForm"  novalidate>
+            <div flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+                <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                        <mat-label>Date From</mat-label>
+                        <mat-icon matSuffix class="secondary-text" (click)="fromDate.open()">date_range</mat-icon>
+                        <input autocomplete="off" matInput (click)="fromDate.open()" [matDatepicker]="fromDate" readonly  placeholder="From Date">
+                        <mat-datepicker #fromDate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                        <mat-label>Date To</mat-label>
+                        <mat-icon matSuffix class="secondary-text" (click)="toDate.open()">date_range</mat-icon>
+                        <input autocomplete="off" matInput (click)="toDate.open()" [matDatepicker]="toDate" readonly  placeholder="Date To">
+                        <mat-datepicker #toDate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+              
+                
+            </div>
+        </form>
+
+    </div>
+    <mat-divider>
+    </mat-divider>
+    <div mat-dialog-actions class="m-0" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-raised-button color="accent"  class="dialog-footer-btn" aria-label="Search">
+            <mat-icon>search</mat-icon> Search
+        </button>
+        <button mat-raised-button color="primary" class="dialog-footer-btn" aria-label="RESET">
+            <mat-icon >refresh</mat-icon> Reset
+        </button>
+    </div>
+</div>

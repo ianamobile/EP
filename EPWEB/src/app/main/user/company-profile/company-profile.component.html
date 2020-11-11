@@ -416,6 +416,380 @@
                     </div>
                 </mat-tab>
 
+                <mat-tab label="Billing Contact Information">
+                    <div id="uiiaContactInfo">
+                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                            <form name="companyForm">
+                                <div class="content" fxLayout="row wrap">
+                                    <div fxFlex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <div flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+
+                                                <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%" style="margin-right: 10px;">
+                                                    <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                        <mat-select id="contactMrMs" placeholder="Mr./Ms.">
+                                                            <mat-option>
+                                                                MR
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <div fxFlex="67.6%" fxFlex.xs="100%" fxFlex.sm="65%">
+                                                    <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                        <mat-label>First Name</mat-label>
+                                                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                                        <input name="contactFirstName" matInput required />
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Middle Name</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                                <input name="contactMiddleName" matInput />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Last Name</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                                <input name="contactLastName" matInput required />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Salutation </mat-label>
+                                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                                <input name="Salutation" matInput required />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Suffix</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                                <input matInput name="contactSuffix" />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Title</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">edit</mat-icon>
+                                                <input readonly name="title" matInput />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Email</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">email</mat-icon>
+                                                <input name="contactEmail" class="text-box-lower-case" matInput
+                                                    required />
+                                            </mat-form-field>
+                                        </div>
+
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Address Line 1</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                                <input name="busaddln1" matInput required />
+
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Address Line 2</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                                <input name="busaddln2" matInput />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Zip/Postal Code</mat-label>
+                                                <input matInput required />
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>City</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">location_city</mat-icon>
+                                                <input name="city" matInput />
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>State/Province</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">location_city</mat-icon>
+                                                <input name="state" class="text-box-upper-case" matInput required />
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Country</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">outlined_flag</mat-icon>
+                                                <input name="country" class="text-box-upper-case" matInput required />
+
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Phone No.</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">local_phone</mat-icon>
+                                                <input name="phone" matInput required />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Secondary Phone No.</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">local_phone</mat-icon>
+                                                <input name="secondaryPhone" matInput required />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Fax No</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">print</mat-icon>
+                                                <input name="fax" matInput required />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Secondary Fax No</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">print</mat-icon>
+                                                <input name="secondaryFax" matInput required />
+                                            </mat-form-field>
+                                        </div>
+
+
+
+                                    </div>
+
+                                    <div fxFlex="100%" fxLayout="row wrap" class="p-l-r-15 mt-20 mb-20">
+                                        <div fxFlex="100%" fxLayoutAlign="center center" fxFlex.xs="100%" fxFlex.sm="100%">
+                                            
+                                            <button mat-raised-button class="mlr-10"><mat-icon>chevron_left</mat-icon> Previous</button>
+                                            
+                                            <button type="submit" mat-raised-button color="accent" class="Update-btn">
+                                                    <mat-icon>edit</mat-icon> Update
+                                                    <!-- <i *ngIf="loader" class="loader-show">
+                                                    <mat-spinner style="display: inline;" strokeWidth="3"
+                                                        [diameter]="20">
+                                                    </mat-spinner>
+                                                     </i> -->
+                                                </button>
+                                                <button mat-raised-button type="button" color="warn" class="Back-btn">
+                                                    <mat-icon>refresh</mat-icon> Reset</button>
+                                                
+                                                <button mat-raised-button class="mlr-10">Next <mat-icon>chevron_right</mat-icon></button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </mat-tab>
+
+
+                <mat-tab label="Dispute Contact Information">
+                    <div id="uiiaContactInfo">
+                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                            <form name="companyForm">
+                                <div class="content" fxLayout="row wrap">
+                                    <div fxFlex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <div flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+
+                                                <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%" style="margin-right: 10px;">
+                                                    <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                        <mat-select id="contactMrMs" placeholder="Mr./Ms.">
+                                                            <mat-option>
+                                                                MR
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <div fxFlex="67.6%" fxFlex.xs="100%" fxFlex.sm="65%">
+                                                    <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                        <mat-label>First Name</mat-label>
+                                                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                                        <input name="contactFirstName" matInput required />
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Middle Name</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                                <input name="contactMiddleName" matInput />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Last Name</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                                <input name="contactLastName" matInput required />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Salutation </mat-label>
+                                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                                <input name="Salutation" matInput required />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Suffix</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                                <input matInput name="contactSuffix" />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Title</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">edit</mat-icon>
+                                                <input readonly name="title" matInput />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Email</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">email</mat-icon>
+                                                <input name="contactEmail" class="text-box-lower-case" matInput
+                                                    required />
+                                            </mat-form-field>
+                                        </div>
+
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Address Line 1</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                                <input name="busaddln1" matInput required />
+
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Address Line 2</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                                <input name="busaddln2" matInput />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Zip/Postal Code</mat-label>
+                                                <input matInput required />
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>City</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">location_city</mat-icon>
+                                                <input name="city" matInput />
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>State/Province</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">location_city</mat-icon>
+                                                <input name="state" class="text-box-upper-case" matInput required />
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Country</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">outlined_flag</mat-icon>
+                                                <input name="country" class="text-box-upper-case" matInput required />
+
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Phone No.</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">local_phone</mat-icon>
+                                                <input name="phone" matInput required />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Secondary Phone No.</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">local_phone</mat-icon>
+                                                <input name="secondaryPhone" matInput required />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Fax No</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">print</mat-icon>
+                                                <input name="fax" matInput required />
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                                <mat-label>Secondary Fax No</mat-label>
+                                                <mat-icon matSuffix class="secondary-text">print</mat-icon>
+                                                <input name="secondaryFax" matInput required />
+                                            </mat-form-field>
+                                        </div>
+
+                                      
+
+
+                                    </div>
+
+                                    <div fxFlex="100%" fxLayout="row wrap" class="p-l-r-15 mt-20 mb-20">
+                                        <div fxFlex="100%" fxLayoutAlign="center center" fxFlex.xs="100%" fxFlex.sm="100%">
+                                            
+                                            <button mat-raised-button class="mlr-10"><mat-icon>chevron_left</mat-icon> Previous</button>
+                                            
+                                            <button type="submit" mat-raised-button color="accent" class="Update-btn">
+                                                    <mat-icon>edit</mat-icon> Update
+                                                    <!-- <i *ngIf="loader" class="loader-show">
+                                                    <mat-spinner style="display: inline;" strokeWidth="3"
+                                                        [diameter]="20">
+                                                    </mat-spinner>
+                                                     </i> -->
+                                                </button>
+                                                <button mat-raised-button type="button" color="warn" class="Back-btn">
+                                                    <mat-icon>refresh</mat-icon> Reset</button>
+                                                
+                                                <button mat-raised-button class="mlr-10">Next <mat-icon>chevron_right</mat-icon></button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </mat-tab>
+
                 <mat-tab label="Change Password">
                     <div id="ChangePassowrd">
                         <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">

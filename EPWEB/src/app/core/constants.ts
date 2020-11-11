@@ -52,6 +52,25 @@ export const APP_URI = {
     IN_PLACE_POLICIES_BY_MC: "inPlacePoliciesByMC",
     CERTIFICATE_TABS: "showcertificate",
 
+    ADDENDUM_DETAILS :"addendumDetails",
+    MANAG_BILLING_USERS :"manageBillingUsers",
+    UIIA_INVOICES:"uiiaInvoices",
+    INVOICE_DETAILS:"invoiceDetails",
+    LIST_OF_DELETED_MC:"listOfDeletedMC",
+    SECONDARYUSERDETAILS :"secondaryuserdetails",
+    TERMINALFEEDLOCATIONS :"terminalFeedLocations",
+    BILLING_PAYMENT:"billingPayment",
+
+    BILLING_USER_LOGIN : "billingUserLogin",
+    SECONDARY_USER_LOGIN : "secondaryUserLogin",
+    SECONDARY_USER_FORGOT_PASSWORD : "secondaryUserForgotPassword",
+    BILLING_USER_FORGOT_PASSWORD : "billingUserForgotPassword",
+
+    
+    
+    
+    
+
     /* NEWLY ADDED AFTER MERGING CODE FROM POC WS*/
     POLICY_SELECTION: "policyselection",
     ACORD_PAGE: "acordpage",

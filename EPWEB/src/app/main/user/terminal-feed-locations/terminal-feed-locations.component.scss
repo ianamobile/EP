@@ -1,0 +1,40 @@
+#terminalFeed{
+
+    .card-companyinfo {
+        border: 1px solid rgba(0, 0, 0, 0.12) !important;
+        margin-bottom: 0px;
+        border-radius: 8px !important;
+    }
+    .divider-header {
+        padding: 10px 20px;
+        color: #e75622;
+        // color: #039be5;
+        font-weight: bolder;
+        letter-spacing: normal;
+        font-size: 15px;
+        background: #f7f7f7;
+        border-radius: 8px 8px 0 0px;
+    }
+    .compny_content {
+        flex: 0 1 auto;
+        min-height: 56px;
+        border-radius: 10px;
+        margin: 11px;
+    }
+
+    .fedd_name{
+        padding: 15px 15px;
+        margin: 10px 0px 10px 15px !important;
+        display: inline-block;
+        border: 1px solid #e9e9e9;
+        box-shadow: 0 5px 20px rgba(83, 83, 83, 0.1);
+        border-radius: 8px;
+        min-width: 170px;
+        justify-content: left;
+        background: #fcfcfc;
+        font-weight: 600;
+        transition: transform .2s;
+
+    }
+    .fedd_name:hover{background: #e75622;color: #fff;transform: scale(1.1);}
+}

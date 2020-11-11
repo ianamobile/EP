@@ -11,7 +11,7 @@
       </mat-menu>
 
     <!-- ------------------------ Addendum Details ------------------ -->
-    <button mat-button [routerLink]="['/EPWEB/user/addendumDetails']">
+    <button mat-button [routerLink]="['/EPWEB/user/addendumDetails']" class="menu-hover">
       <mat-icon >view_list</mat-icon> Addendum Details
     </button>
 
@@ -24,8 +24,23 @@
 <button mat-button [routerLink]="['/EPWEB/user/uiiaInvoices']">
   <mat-icon >view_list</mat-icon> UIIA Invoices
 </button>
+
+
+<!-- ------------------------ UIIA Invoices ------------------ -->
+<button mat-button [routerLink]="['/EPWEB/user/listOfDeletedMC']">
+  <mat-icon >view_list</mat-icon> List Of Deleted MC
+</button>
     
-    
+
+<!-- ------------------------ Manage Secondary User  ------------------ -->
+<button mat-button [routerLink]="['/EPWEB/user/secondaryuserdetails']">
+  <mat-icon >view_list</mat-icon> Manage Secondary User
+</button>
+
+<!-- ------------------------ Terminal Feed Locations  ------------------ -->
+<button mat-button [routerLink]="['/EPWEB/user/terminalFeedLocations']">
+  <mat-icon >view_list</mat-icon> Terminal Feed Locations
+</button>
 
 
     <!-- ------------------------ Test Menu ------------------ -->

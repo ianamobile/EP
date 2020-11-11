@@ -1,0 +1,234 @@
+<div id="invoicedetails">
+    <div fxLayout="row wrap">
+
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout.xs="column" fxLayout="row"
+            class="p-lr-24 m-tb-10">
+            <h1 fxFlex="25%" class="main_title">Invoice Details</h1>
+
+            <div fxFlex="75%" fxLayoutAlign="end center">
+                <div>
+                    <button type="submit" mat-raised-button color="accent" class="download_btn">
+                        <mat-icon>download</mat-icon> Download Invoice
+                    </button>
+                </div>
+                <div>
+                    <button type="submit" mat-raised-button color="accent" class="download_btn m-l-15">
+                        <mat-icon>download</mat-icon> Download Receipt
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100"
+            fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="widget-front">
+
+                <div fxFlex="100%" fxLayout="row wrap" fxLayoutAlign="start center" class="mt-20">
+                    <div class="p-l-r-15" fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Invoice No.</p>
+                        <p class="view_dt_data">296446</p>
+                    </div>
+
+                    <div class="p-l-r-15" fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Invoice Date</p>
+                        <p class="view_dt_data">11/03/2020</p>
+                    </div>
+
+                    <div class="p-l-r-15" fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Status</p>
+                        <p class="view_dt_data">CLOSED</p>
+                    </div>
+
+                    <div class="p-l-r-15" fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Invoice Template</p>
+                        <p class="view_dt_data">UIIA</p>
+                    </div>
+
+                    <div class="p-l-r-15" fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Bill To</p>
+                        <p class="view_dt_data">APL Limited</p>
+                    </div>
+
+                    <div class="p-l-r-15" fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Account Number</p>
+                        <p class="view_dt_data">EP001012</p>
+                    </div>
+                    <div class="p-l-r-15" fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Invoice Amount</p>
+                        <p class="view_dt_data">44,556.90</p>
+                    </div>
+
+                    <div class="p-l-r-15" fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Paid Amount </p>
+                        <p class="view_dt_data">44,556.90</p>
+                    </div>
+
+                    <div class="p-l-r-15" fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Member </p>
+                        <p class="view_dt_data">Yes</p>
+                    </div>
+
+                    <div class="p-l-r-15" fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Add To WorkSet </p>
+                        <p class="view_dt_data">3749</p>
+                    </div>
+
+                    <div class="p-l-r-15" fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Balance due </p>
+                        <p class="view_dt_data">0.00</p>
+                    </div>
+
+                    <div class="p-l-r-15" fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Remarks </p>
+                        <p class="view_dt_data">Remarks</p>
+                    </div>
+                    <!-- 
+                <div class="p-l-r-15" fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%">
+                    <mat-form-field appearance="outline" class="widthfull">
+                        <mat-label>Remarks</mat-label>
+                        <textarea matInput></textarea>
+                      </mat-form-field>
+
+                </div> -->
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100"
+            fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="widget-front">
+
+                <table mat-table [dataSource]="dataSource" class="widthfull_99 m-10">
+
+                    <!-- description Column -->
+                    <ng-container matColumnDef="billCode">
+                        <th mat-header-cell *matHeaderCellDef>Bill Code </th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
+                                <input matInput value="{{element.billCode}}">
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+
+                    <!-- description Column -->
+                    <ng-container matColumnDef="description">
+                        <th mat-header-cell *matHeaderCellDef>Description </th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-form-field appearance="outline" class="table_input widthfull">
+                                <input matInput value="{{element.description}}">
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+
+                    <!-- Mode Column -->
+                    <ng-container matColumnDef="GLAccNo">
+                        <th mat-header-cell *matHeaderCellDef> GL Acc No</th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-form-field appearance="outline" class="table_input">
+                                <input matInput value="{{element.GLAccNo}}">
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+
+                    <!-- Mode Column -->
+                    <ng-container matColumnDef="amount">
+                        <th mat-header-cell *matHeaderCellDef>Amount</th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-form-field appearance="outline" class="table_input">
+                                <input matInput value="{{element.amount}}">
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+            </div>
+        </div>
+
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100"
+            fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="widget-front">
+                <div class="card-companyinfo widthfull">
+                    <div class="title divider-header">
+                        <span>Payment Details</span>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="compny_content" fxLayout="row" fxLayoutAlign="start center">
+
+
+                        <mat-table matSort [dataSource]="dataSource1" class="widthfull wt_hover">
+
+                            <ng-container matColumnDef="batchCode">
+                                <mat-header-cell *matHeaderCellDef>Batch Code
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let i" data-label="batchCode">
+                                    
+                                        {{i.batchCode}}
+                                    
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="paymentDate">
+                                <mat-header-cell *matHeaderCellDef>Payment Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let i" data-label="paymentDate">
+                                        {{i.paymentDate}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="paidAmount">
+                                <mat-header-cell *matHeaderCellDef>Paid Amount
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let i" data-label="paidAmount">
+                                        {{i.paidAmount}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="paymentMode">
+                                <mat-header-cell *matHeaderCellDef>Payment Mode
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let i" data-label="paymentMode">
+                                        {{i.paymentMode}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="chequeNoAuthCode">
+                                <mat-header-cell *matHeaderCellDef>Cheque No/Auth Code
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let i" data-label="chequeNoAuthCode">
+                                        {{i.chequeNoAuthCode}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="displayedColumns1"></mat-header-row>
+                            <mat-row *matRowDef="let i; columns: displayedColumns1">
+                            </mat-row>
+                        </mat-table>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div fxFlex="100%" fxLayout="row wrap" class="p-l-r-15 mt-20 mb-20">
+            <div fxFlex="100%" fxLayoutAlign="center center" fxFlex.xs="100%" fxFlex.sm="100%">
+                <div fxLayout="row">
+                    <button mat-raised-button type="button" color="warn" class="Back-btn">
+                        <mat-icon>close </mat-icon> Close
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

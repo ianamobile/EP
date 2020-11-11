@@ -1,0 +1,160 @@
+<div id="secondary-user-details">
+    <mat-card class="ns app-notes">Note: Deleted users shaded in RED</mat-card>
+    <div fxLayout="row wrap">
+
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%"
+            [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" style="padding: 24px 24px 0px 24px;">
+
+            <div class="widget-back1">
+                <div fxLayout="row">
+                    <mat-chip-list>
+                        <mat-chip class="cursorPointer search_label">
+                            <span class="search_name"> Company:</span>
+                            <span class="search_value"> APL Limited</span>
+                            <!-- <mat-icon matChipRemove>cancel</mat-icon> -->
+                        </mat-chip>
+
+                        <mat-chip class="cursorPointer search_label">
+                            <span class="search_name">SCAC Code:</span>
+                            <span class="search_value"> APLU</span>
+                            <!-- <mat-icon matChipRemove>cancel</mat-icon> -->
+                        </mat-chip>
+
+                        <mat-chip class="cursorPointer search_label">
+                            <span class="search_name">User Name:</span>
+                            <span class="search_value"> test</span>
+                            <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                    </mat-chip-list>
+
+                </div>
+            </div>
+        </div>
+
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout.xs="column" fxLayout="row"
+            class="p-lr-24 m-tb-10">
+            <h1 fxFlex="25%" class="main_title">Secondary User Details</h1>
+
+            <div fxFlex="75%" fxLayoutAlign="end center">
+                <div>
+                    <button type="submit" mat-raised-button color="accent" (click)="openAddMCDialog()">
+                        <mat-icon class="fwb">add</mat-icon> Add User
+                    </button>
+                </div>
+                <div>
+                    <button  mat-icon-button aria-label="more" (click)="openSearchModel()" class=" search-btn-icon-font m-l-15">
+                        <mat-icon class="fwb">search</mat-icon>
+                        Search User
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100"
+            fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="widget-front">
+
+                <mat-table matSort [dataSource]="dataSource" class="table-responsive m-10">
+
+                    <ng-container matColumnDef="Action">
+                        <mat-header-cell *matHeaderCellDef class="txt_center">Action</mat-header-cell>
+                        <mat-cell *matCellDef="let element;let i = index;" data-label="Delete" class="txt_center">
+                            <div class="MB-cell-width">
+                                <!-- Buttons Column -->
+                                <div fxFlex="row" fxLayoutAlign="start center">
+                                    <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                        (click)="$event.stopPropagation();">
+                                        <mat-icon class="secondary-text vacenter fts-24">more_vert</mat-icon>
+                                    </button>
+
+                                    <mat-menu #moreMenu="matMenu">
+                                        <button mat-menu-item aria-label="edit" (click)="openAddMCDialog()">
+                                            <mat-icon>edit</mat-icon>
+                                            <span>Edit</span>
+                                        </button>
+                                        <button mat-menu-item aria-label="remove" (click)="deleteUserModel()">
+                                            <mat-icon>delete</mat-icon>
+                                            <span>Delete</span>
+                                        </button>
+                                    </mat-menu>
+                                </div>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="userName">
+                        <mat-header-cell *matHeaderCellDef>User Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element;let i = index;" data-label="User Name*">
+                            <div class="MB-cell-width">
+                                {{element.userName}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="password">
+                        <mat-header-cell *matHeaderCellDef>Password
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element;let i = index;" data-label="Password*">
+                            <div class="MB-cell-width">
+                                {{element.password}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="email">
+                        <mat-header-cell *matHeaderCellDef>Email
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element;let i = index;" data-label="Email">
+                            <div class="MB-cell-width">
+                                {{element.email}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="download">
+                        <mat-header-cell *matHeaderCellDef>Download Reports
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element;let i = index;" data-label="Download Reports">
+                            <div class="MB-cell-width">
+                                {{element.download}}
+                               
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="attr1">
+                        <mat-header-cell *matHeaderCellDef>IDD Read Only Access
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element;let i = index;" data-label="IDD Read Only Access">
+                            <div class="MB-cell-width">
+                                {{element.attr1}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="attr2">
+                        <mat-header-cell *matHeaderCellDef>UIIA Read Only Access
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element;let i = index;" data-label="UIIA Read Only Access">
+                            <div class="MB-cell-width">
+                                {{element.attr2}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                  
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let i; columns: displayedColumns;let index = index;" class="delete_row"
+                        [ngClass]="{'delete_row': i.attr2 == 'NO'}" >
+                    </mat-row>
+                </mat-table>
+
+            </div>
+            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                <mat-paginator #paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
+            </div>
+        </div>
+       
+
+    </div>
+</div>

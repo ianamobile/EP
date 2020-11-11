@@ -1,0 +1,91 @@
+<div class="dialog-content-wrapper search-dialog">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Add User</span>
+            <button tabindex="-1" mat-icon-button (click)="close()"  aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+
+    <div mat-dialog-content style="padding: 24px 12px !important;">
+        <form name="searchForm"  novalidate>
+            <div flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+              
+                <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field appearance="outline" class="widthfull" fxFlex>
+                        <mat-label>User Name</mat-label>
+                        <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                        <input  autocomplete="off" name="UserName" required matInput>
+                    </mat-form-field>
+                </div>
+
+
+                <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Password</mat-label>
+                        <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                        <input  type="password" autocomplete="off" name="Password" required matInput>
+                    </mat-form-field>
+                </div>
+
+                <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Email</mat-label>
+                        <mat-icon matSuffix class="secondary-text">email</mat-icon>
+                        <input  autocomplete="off" name="Email" matInput>
+                    </mat-form-field>
+                </div>
+
+                <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Download Reports</mat-label>
+                        <mat-select name="Download">
+                            <mat-option value="N">No</mat-option>
+                            <mat-option value="Y">Yes</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>IDD Read Only Access</mat-label>
+                        <mat-select name="IDD">
+                            <mat-option value="N">No</mat-option>
+                            <mat-option value="Y">Yes</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>UIIA Read Only Access</mat-label>
+                        <mat-select name="UIIA">
+                            <mat-option value="N">No</mat-option>
+                            <mat-option value="Y">Yes</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+              
+                
+
+
+
+
+
+            </div>
+        </form>
+
+    </div>
+    <mat-divider>
+    </mat-divider>
+    <div mat-dialog-actions class="m-0" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-raised-button color="accent"  class="dialog-footer-btn" aria-label="Search">
+            <mat-icon>save</mat-icon> Save
+        </button>
+        <button mat-raised-button color="primary" class="dialog-footer-btn" aria-label="RESET">
+            <mat-icon >refresh</mat-icon> Reset
+        </button>
+    </div>
+</div>

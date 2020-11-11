@@ -37,19 +37,19 @@ const routes = [
     component: UiDemoComponent
    },
    {
-    path: "billingUserLogin",
+    path: APP_URI.BILLING_USER_LOGIN,
     component: BillingUserLoginComponent
    },
    {
-    path: "secondaryUserLogin",
+    path: APP_URI.SECONDARY_USER_LOGIN,
     component: SecondaryUserLoginComponent
    },
    {
-    path: "secondaryUserForgotPassword",
+    path: APP_URI.SECONDARY_USER_FORGOT_PASSWORD,
     component: SecondaryUserForgotPasswordComponent
    },
    {
-    path: "billingUserForgotPassword",
+    path: APP_URI.BILLING_USER_FORGOT_PASSWORD,
     component: BillingUserForgotPasswordComponent
    }
 
