@@ -65,6 +65,8 @@ public class GlobalVariables {
 	public static final String HEADER_ACCEPT = "accept";
 
 	public static final String DEFAULT_TEN = "10";
+	public static final String DEFAULT_ONE = "1";
+	public static final String DEFAULT_ZERO = "0";
 	
 	public static final String INACTIVE_INIT = "Inactive";
 	public static final String ACTIVE_INIT = "Active";

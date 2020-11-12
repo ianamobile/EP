@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iana.api.domain.AccountMaster;
 import com.iana.api.domain.EPAcctInfo;
 import com.iana.api.domain.EPAddendumDetForm;
+import com.iana.api.domain.EPTerminalFeed;
 import com.iana.api.domain.JoinRecord;
+import com.iana.api.domain.MCCancel;
 import com.iana.api.domain.Pagination;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SearchResult;
@@ -59,6 +61,8 @@ public class EPRest extends CommonUtils {
 	public static final String URI_EP_TEMPLATES = "epTemplates";
 	public static final String URI_MANAGE_ACCOUNT_INFO = "loadEPSelfReg";
 	public static final String URI_CURRENT_ADDENDUM_DETAILS = "loadAddendumDetails";
+	public static final String URI_MC_DELETED_LIST = "searchMcDeleted";
+	public static final String URI_TERMINAL_FEED_LOCATION = "terminalFeedLocation";
 
 	@Autowired
 	private EPService epService;
@@ -291,7 +295,7 @@ public class EPRest extends CommonUtils {
 	}
 
 	@GetMapping(path = URI_CURRENT_ADDENDUM_DETAILS + URI_SETUP, produces = { MediaType.APPLICATION_JSON_VALUE })
-	@ApiOperation(value = "SETUP MANAGE ACCOUNT INFORMATION IN " + CLASS_NAME, response = SetupManageAccountInfo.class)
+	@ApiOperation(value = "SETUP CURRENT ADDENDUM DETAILS IN " + CLASS_NAME, response = SetupManageAccountInfo.class)
 	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
 			@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
 			@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class) })
@@ -309,7 +313,7 @@ public class EPRest extends CommonUtils {
 	}
 
 	@GetMapping(path = URI_CURRENT_ADDENDUM_DETAILS, produces = { MediaType.APPLICATION_JSON_VALUE })
-	@ApiOperation(value = "SETUP MANAGE ACCOUNT INFORMATION IN " + CLASS_NAME, response = EPAddendumDetForm.class)
+	@ApiOperation(value = "GET CURRENT ADDENDUM DETAILS IN " + CLASS_NAME, response = EPAddendumDetForm.class)
 	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
 			@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
 			@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class) })
@@ -320,6 +324,50 @@ public class EPRest extends CommonUtils {
 
 			EPAddendumDetForm epAddendumDetForm = epService.getCurrentAddendumDetails(securityObject);
 			return new ResponseEntity<EPAddendumDetForm>(epAddendumDetForm, HttpStatus.OK);
+
+		} catch (Exception e) {
+			return sendServerError(e, GlobalVariables.FAIL);
+		}
+
+	}
+
+	@GetMapping(path = URI_MC_DELETED_LIST, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "SEARCH DELETED MC LIST IN " + CLASS_NAME, response = MCCancel.class)
+	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
+			@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
+			@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class) })
+	public ResponseEntity<?> searchMCListDeleted(
+			@RequestParam(value = "cancRefStartDate", defaultValue = "") String cancRefStartDate,
+			@RequestParam(value = "cancRefEndDate", defaultValue = "") String cancRefEndDate,
+			@RequestParam(value = "pageIndex", defaultValue = GlobalVariables.DEFAULT_ZERO) int pageIndex,
+			@RequestParam(value = "pageSize", defaultValue = GlobalVariables.DEFAULT_TEN) int pageSize,
+			HttpServletRequest request) {
+
+		try {
+
+			List<MCCancel> mcDeletedList = epService.getDeletedMC(cancRefStartDate, cancRefEndDate, pageIndex,
+					pageSize);
+			return new ResponseEntity<List<MCCancel>>(mcDeletedList, HttpStatus.OK);
+
+		} catch (Exception e) {
+			return sendServerError(e, GlobalVariables.FAIL);
+		}
+
+	}
+
+	@GetMapping(path = URI_TERMINAL_FEED_LOCATION, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "GET TERMINAL FEED LOCATION " + CLASS_NAME, response = MCCancel.class)
+	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
+			@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
+			@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class) })
+	public ResponseEntity<?> getTerminalFeedLocations(HttpServletRequest request) {
+
+		try {
+			SecurityObject securityObject = (SecurityObject) request.getAttribute(GlobalVariables.SECURITY_OBJECT);
+
+			List<EPTerminalFeed> epTerminalFeedList = epService
+					.getTerminalFeedLocations(securityObject.getAccountNumber());
+			return new ResponseEntity<List<EPTerminalFeed>>(epTerminalFeedList, HttpStatus.OK);
 
 		} catch (Exception e) {
 			return sendServerError(e, GlobalVariables.FAIL);

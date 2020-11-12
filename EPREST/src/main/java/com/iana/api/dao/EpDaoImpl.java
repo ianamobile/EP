@@ -1,5 +1,6 @@
 package com.iana.api.dao;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,7 +26,9 @@ import com.iana.api.domain.AddressDet;
 import com.iana.api.domain.ContactDet;
 import com.iana.api.domain.EPAcctInfo;
 import com.iana.api.domain.EPJoinDet;
+import com.iana.api.domain.EPTerminalFeed;
 import com.iana.api.domain.JoinRecord;
+import com.iana.api.domain.MCCancel;
 import com.iana.api.domain.MCDataJsonDTO;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SecurityObject;
@@ -341,7 +344,7 @@ public class EpDaoImpl extends GenericDAO implements EpDao {
 		return acctInfo;
 
 	}
-	
+
 	public AddressDet getAddress(String acctNo, String addressType) throws Exception {
 		StringBuffer sbQry = new StringBuffer("SELECT addr_id,addr_street1,addr_street2,");
 		sbQry.append(
@@ -698,6 +701,108 @@ public class EpDaoImpl extends GenericDAO implements EpDao {
 		return saveOrUpdate((enableTransMgmt ? lUIIADataSource : this.uiiaDataSource), updateqry.toString(),
 				params.toArray(), enableTransMgmt);
 
+	}
+
+	@Override
+	public List<MCCancel> getDeletedMC(String cancRefStartDate, String cancRefEndDate, int pageIndex, int pageSize,
+			String flag) throws Exception {
+		log.info("EpDaoImpl :: Entering method getDeletedMC()");
+		List<MCCancel> mcList = new ArrayList<>();
+		StringBuffer sbMCDeleted = new StringBuffer();
+
+		sbMCDeleted.append("SELECT company_name,account_no,scac_code,cancelled_dt,deleted_date,");
+		sbMCDeleted.append(
+				" REPLACE(REPLACE(REPLACE(CONCAT(uiia_status,' (',uiia_status_cd,')'),',MCHASEXPGL',''),',MCHASEXPAL',''),',C7_GL','') AS uiia_status");
+		sbMCDeleted.append(" FROM account_info WHERE mem_type= 'MC'");
+		sbMCDeleted.append(" AND uiia_status = 'DELETED' AND (DATE(deleted_date) between ? AND ? ) ");
+		sbMCDeleted.append(" ORDER BY company_name,deleted_date ");
+		if (!flag.equalsIgnoreCase("report"))
+			sbMCDeleted.append(" LIMIT ?,?");
+
+		if (cancRefStartDate.equalsIgnoreCase(GlobalVariables.EMPTY)) {
+			cancRefStartDate = "01/01/1999";
+		}
+		if (cancRefEndDate.equalsIgnoreCase(GlobalVariables.EMPTY)) {
+			cancRefEndDate = "01/01/2999";
+		}
+
+		Date cancStDt = DateTimeFormater.stringToSqlDate(cancRefStartDate,DateTimeFormater.FORMAT4);
+		Date cancEndDt = DateTimeFormater.stringToSqlDate(cancRefEndDate,DateTimeFormater.FORMAT4);
+		List<Object> params = new ArrayList<>();
+		params.add(cancStDt);
+		params.add(cancEndDt);
+		if (!flag.equalsIgnoreCase("report")) {
+			params.add((pageIndex * pageSize));
+			params.add(pageSize);
+		}
+		return getSpringJdbcTemplate(this.uiiaDataSource).query(sbMCDeleted.toString(),
+				new ResultSetExtractor<List<MCCancel>>() {
+
+					@Override
+					public List<MCCancel> extractData(ResultSet rs) throws SQLException, DataAccessException {
+
+						while (rs.next()) {
+
+							MCCancel mcCancel = new MCCancel();
+							if (rs.getString("company_name") != null) {
+								mcCancel.setCompName(rs.getString("company_name"));
+							}
+							if (rs.getString("account_no") != null) {
+								mcCancel.setAcctNo(rs.getString("account_no"));
+							}
+							if (rs.getString("scac_code") != null) {
+								mcCancel.setScac(rs.getString("scac_code"));
+							}
+							if (rs.getString("deleted_date") != null) {
+								mcCancel.setCancDt(Utility.formatSqlDate(rs.getDate("deleted_date"), Utility.FORMAT4));
+							}
+							if (rs.getString("cancelled_dt") != null) {
+								mcCancel.setAcctLstUpdt(
+										Utility.formatSqlDate(rs.getDate("cancelled_dt"), Utility.FORMAT4));
+							}
+							if (rs.getString("uiia_status") != null) {
+								mcCancel.setStatusCd(rs.getString("uiia_status"));
+							}
+							mcList.add(mcCancel);
+						}
+
+						return mcList;
+					}
+				}, params.toArray());
+
+	}
+
+	@Override
+	public List<EPTerminalFeed> getTerminalFeedLocations(String accountNumber) throws Exception {
+		log.info("EpDaoImpl :: Entering method getTerminalFeedLocations()");
+
+		List<EPTerminalFeed> terminalFeedList;
+		StringBuffer searchFeedQry = null;
+
+		searchFeedQry = new StringBuffer(" SELECT t.company_name FROM acct_trmnl_feed_mpg a ");
+		searchFeedQry.append(" JOIN terminal_details_new t ON (t.terminal_id=a.terminal_id) ");
+		searchFeedQry.append(
+				" WHERE a.acct_no = ? and (t.active='Y' OR t.webquery='Y') and terminal_code NOT IN ('MARTEST1','MARTEST2','TCSTEST','TESTTFS','TOMTEST') ORDER BY company_name");
+		terminalFeedList = new ArrayList<EPTerminalFeed>();
+
+		return getSpringJdbcTemplate(this.uiiaDataSource).query(searchFeedQry.toString(),
+				new ResultSetExtractor<List<EPTerminalFeed>>() {
+
+					@Override
+					public List<EPTerminalFeed> extractData(ResultSet rs) throws SQLException, DataAccessException {
+
+						while (rs.next()) {
+
+							EPTerminalFeed epTerminalFeed = new EPTerminalFeed();
+							if (rs.getString("company_name") != null && rs.getString("company_name") != "") {
+								epTerminalFeed.setTerminalFeedName(rs.getString("company_name"));
+							}
+							terminalFeedList.add(epTerminalFeed);
+						}
+
+						return terminalFeedList;
+					}
+				}, accountNumber);
 	}
 
 }

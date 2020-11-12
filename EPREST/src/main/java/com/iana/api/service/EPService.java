@@ -7,7 +7,9 @@ import com.iana.api.domain.EPAcctInfo;
 import com.iana.api.domain.EPAddendum;
 import com.iana.api.domain.EPAddendumDetForm;
 import com.iana.api.domain.EPTemplate;
+import com.iana.api.domain.EPTerminalFeed;
 import com.iana.api.domain.JoinRecord;
+import com.iana.api.domain.MCCancel;
 import com.iana.api.domain.Pagination;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SecurityObject;
@@ -49,5 +51,9 @@ public interface EPService {
 	EPAddendumDetForm getCurrentAddendumDetails(SecurityObject securityObject) throws Exception;
 	
 	EPAddendum getTemplateDetails(EPTemplate epTemplate, String uvalidFlg) throws Exception;
+
+	List<MCCancel> getDeletedMC(String cancRefStartDate, String cancRefEndDate, int pageIndex, int pageSize) throws Exception;
+
+	List<EPTerminalFeed> getTerminalFeedLocations(String accountNumber) throws Exception;
 
 }

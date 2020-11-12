@@ -9,7 +9,9 @@ import com.iana.api.domain.AccountMaster;
 import com.iana.api.domain.AddressDet;
 import com.iana.api.domain.ContactDet;
 import com.iana.api.domain.EPAcctInfo;
+import com.iana.api.domain.EPTerminalFeed;
 import com.iana.api.domain.JoinRecord;
+import com.iana.api.domain.MCCancel;
 import com.iana.api.domain.MCDataJsonDTO;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SecurityObject;
@@ -49,4 +51,8 @@ public interface EpDao {
 	int insertContact(DataSource lUIIADataSource, ContactDet contact, String accountNumber, SecurityObject securityObject, boolean enableTransMgmt) throws Exception;
 
 	int updateRegDetailsEP(DataSource lUIIADataSource, EPAcctInfo epAcctInfo, SecurityObject securityObject, boolean enableTransMgmt) throws Exception;
+	
+	List<MCCancel> getDeletedMC(String cancRefStartDate, String cancRefEndDate, int pageIndex, int pageSize, String flag) throws Exception;
+
+	List<EPTerminalFeed> getTerminalFeedLocations(String accountNumber) throws Exception;
 }

@@ -30,8 +30,10 @@ import com.iana.api.domain.EPAddendum;
 import com.iana.api.domain.EPAddendumDetForm;
 import com.iana.api.domain.EPInsNeeds;
 import com.iana.api.domain.EPTemplate;
+import com.iana.api.domain.EPTerminalFeed;
 import com.iana.api.domain.JoinRecord;
 import com.iana.api.domain.LabelValueForm;
+import com.iana.api.domain.MCCancel;
 import com.iana.api.domain.MCDataJsonDTO;
 import com.iana.api.domain.MultipleLimit;
 import com.iana.api.domain.Pagination;
@@ -976,6 +978,18 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 		epAddendumDetForm.setMultiLimits(addendumBean.getMultiLimits());
 		epAddendumDetForm.setAddReq(addendumBean.getAddReq());
 
+	}
+
+	@Override
+	public List<MCCancel> getDeletedMC(String cancRefStartDate, String cancRefEndDate, int pageIndex, int pageSize)
+			throws Exception {
+		return epDao.getDeletedMC(cancRefStartDate, cancRefEndDate, pageIndex, pageSize, "");
+	}
+	
+	@Override
+	public List<EPTerminalFeed> getTerminalFeedLocations(String accountNumber)
+			throws Exception {
+		return epDao.getTerminalFeedLocations(accountNumber);
 	}
 
 }
