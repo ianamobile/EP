@@ -58,4 +58,7 @@ public interface EPService {
 
 	List<EPTemplate> searchEPTemplate(String searchTmplt, int pageIndex, String accountNumber) throws Exception;
 
+	EPAddendumDetForm getEPTemplateDetails(SecurityObject securityObject, String templateId, String dbStatus,
+			String effDate) throws Exception;
+
 }

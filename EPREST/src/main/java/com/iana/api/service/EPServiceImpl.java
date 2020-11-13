@@ -813,13 +813,15 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 
 	@Override
 	public EPAddendumDetForm getCurrentAddendumDetails(SecurityObject securityObject) throws Exception {
-
-		List<EPInsNeeds> resultList = null;
-		List<MultipleLimit> multiLimList = null;
-		List<AdditionalReq> addReqList = null;
-
-		log.debug("Getting addendumBean for current addendum from sessionfacade method getActiveTemplate(uBean) :");
 		EPAddendum epAddendum = getActiveTemplate(securityObject.getAccountNumber(), "");
+		generateEPAddendumDetForm(epAddendum);
+		return epAddendumDetForm;
+	}
+
+	private void generateEPAddendumDetForm(EPAddendum epAddendum) {
+		List<EPInsNeeds> resultList;
+		List<MultipleLimit> multiLimList;
+		List<AdditionalReq> addReqList;
 		List<EPInsNeeds> needsList = epAddendum.getEpNeeds();
 
 		EPInsNeeds addAuto = new EPInsNeeds();
@@ -916,13 +918,7 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 		}
 		log.debug("Setting additionalReqList in addendumBean :");
 		epAddendum.setAddReq(addReqList);
-		// request.setAttribute("addendumBean", epAddendum);//Not required for view only
-		// data
 		populateFormBean(epAddendum);
-//		request.setAttribute("copyTmplt", "true");//Not required for view only data
-		log.info(
-				"Action: Exiting method load(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)  of SaveAddendumDetAction class");
-		return epAddendumDetForm;
 	}
 
 	public EPAddendum getActiveTemplate(String epAcctNo, String uvalidFlg) throws Exception {
@@ -998,6 +994,23 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 		epTemplate.setPageNumber(pageIndex);
 		epTemplate.setLimit(GlobalVariables.LIMIT);
 		return epDao.getTemplateList(epTemplate, accountNumber);
+	}
+
+	@Override
+	public EPAddendumDetForm getEPTemplateDetails(SecurityObject securityObject, String templateId, String dbStatus,
+			String effDate) throws Exception {
+
+		EPTemplate epTemplate = new EPTemplate();
+		epTemplate.setTemplateID(Integer.parseInt(templateId));
+		epTemplate.setDbTemplateStatus(dbStatus);
+		epTemplate.setEffDate(effDate);
+
+		EPAddendum epAddendum = getTemplateDetails(epTemplate, "");
+		generateEPAddendumDetForm(epAddendum);
+		if (!dbStatus.equals(GlobalVariables.PENDINGTEMPLATES)) {
+			epAddendumDetForm.setCopyTmplt("true");
+		}
+		return epAddendumDetForm;
 	}
 
 }

@@ -60,6 +60,7 @@ public class EPRest extends CommonUtils {
 
 	public static final String URI_SETUP = "/setup";
 	public static final String URI_EP_TEMPLATES = "epTemplates";
+	public static final String URI_EP_TEMPLATES_DETAILS = "epTemplatesDetails";
 	public static final String URI_MANAGE_ACCOUNT_INFO = "loadEPSelfReg";
 	public static final String URI_CURRENT_ADDENDUM_DETAILS = "loadAddendumDetails";
 	public static final String URI_MC_DELETED_LIST = "searchMcDeleted";
@@ -375,20 +376,45 @@ public class EPRest extends CommonUtils {
 		}
 
 	}
-	
+
 	@GetMapping(path = URI_EP_TEMPLATES, produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "GET EP TEMPLATE IN " + CLASS_NAME, response = EPTemplate.class)
 	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
 			@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
 			@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class) })
-	public ResponseEntity<?> searchEPTemplate(@RequestParam(value = "searchTmplt", defaultValue = "") String searchTmplt,
-			@RequestParam(value = "pageIndex", defaultValue = GlobalVariables.DEFAULT_ZERO) int pageIndex, HttpServletRequest request) {
+	public ResponseEntity<?> searchEPTemplate(
+			@RequestParam(value = "searchTmplt", defaultValue = "") String searchTmplt,
+			@RequestParam(value = "pageIndex", defaultValue = GlobalVariables.DEFAULT_ZERO) int pageIndex,
+			HttpServletRequest request) {
 
 		try {
 			SecurityObject securityObject = (SecurityObject) request.getAttribute(GlobalVariables.SECURITY_OBJECT);
 
-			List<EPTemplate> epTemplateList = epService.searchEPTemplate(searchTmplt, pageIndex, securityObject.getAccountNumber());
+			List<EPTemplate> epTemplateList = epService.searchEPTemplate(searchTmplt, pageIndex,
+					securityObject.getAccountNumber());
 			return new ResponseEntity<List<EPTemplate>>(epTemplateList, HttpStatus.OK);
+
+		} catch (Exception e) {
+			return sendServerError(e, GlobalVariables.FAIL);
+		}
+
+	}
+
+	@GetMapping(path = URI_EP_TEMPLATES_DETAILS, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "GET EP TEMPLATE DETAILS IN " + CLASS_NAME, response = EPAddendumDetForm.class)
+	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
+			@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
+			@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class) })
+	public ResponseEntity<?> getEPTemplateDetails(
+			@RequestParam(value = "templateId", defaultValue = "") String templateId,
+			@RequestParam(value = "dbStatus", defaultValue = "") String dbStatus,
+			@RequestParam(value = "effDate", defaultValue = "") String effDate, HttpServletRequest request) {
+
+		try {
+			SecurityObject securityObject = (SecurityObject) request.getAttribute(GlobalVariables.SECURITY_OBJECT);
+
+			EPAddendumDetForm epAddendumDetForm = epService.getEPTemplateDetails(securityObject, templateId, dbStatus, effDate);
+			return new ResponseEntity<EPAddendumDetForm>(epAddendumDetForm, HttpStatus.OK);
 
 		} catch (Exception e) {
 			return sendServerError(e, GlobalVariables.FAIL);

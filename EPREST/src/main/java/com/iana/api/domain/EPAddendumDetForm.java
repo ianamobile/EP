@@ -22,6 +22,7 @@ public class EPAddendumDetForm {
 	private String addendumEffDate = "";
 	private String templateId = "";
 	private String addendumId = "";
+	private String copyTmplt = "";
 
 	public String getAddendumId() {
 		return addendumId;
@@ -197,11 +198,12 @@ public class EPAddendumDetForm {
 		this.addReq = addReq;
 	}
 
-	/*
-	 * private void populateOptionsYesNo() { this.optionsYesNo = new
-	 * ArrayList<HtmlComponentVO>(); this.optionsYesNo.add(new
-	 * HtmlComponentVO(UiiaConstants.YES, "Yes")); this.optionsYesNo.add(new
-	 * HtmlComponentVO(UiiaConstants.NO, "No")); }
-	 */
+	public String getCopyTmplt() {
+		return copyTmplt;
+	}
+
+	public void setCopyTmplt(String copyTmplt) {
+		this.copyTmplt = copyTmplt;
+	}
 
 }

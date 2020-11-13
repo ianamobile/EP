@@ -78,29 +78,11 @@ public class EPAddendum {
 		this.templateID = templateID;
 	}
 
+	@Override
 	public String toString() {
-		StringBuffer sbTemp = new StringBuffer();
-
-		sbTemp.append(this.getClass().getName());
-		sbTemp.append(" epSwitches[");
-		sbTemp.append(this.epSwitches);
-		sbTemp.append("] epNeeds[");
-		sbTemp.append(this.epNeeds);
-		sbTemp.append("] mutliLimits[");
-		sbTemp.append(this.multiLimits);
-		sbTemp.append("] addReq[");
-		sbTemp.append(this.addReq);
-		sbTemp.append("] effDate[");
-		sbTemp.append(this.effDate);
-		sbTemp.append("]");
-		sbTemp.append(" templateID[");
-		sbTemp.append(this.templateID);
-		sbTemp.append("]");
-		sbTemp.append(" templateStatus[");
-		sbTemp.append(this.templateStatus);
-		sbTemp.append("]");
-
-		return sbTemp.toString();
+		return "EPAddendum [accountNo=" + accountNo + ", epSwitches=" + epSwitches + ", epNeeds=" + epNeeds
+				+ ", multiLimits=" + multiLimits + ", addReq=" + addReq + ", effDate=" + effDate + ", templateStatus="
+				+ templateStatus + ", templateID=" + templateID + "]";
 	}
 
 }
