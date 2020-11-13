@@ -985,11 +985,19 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 			throws Exception {
 		return epDao.getDeletedMC(cancRefStartDate, cancRefEndDate, pageIndex, pageSize, "");
 	}
-	
+
 	@Override
-	public List<EPTerminalFeed> getTerminalFeedLocations(String accountNumber)
-			throws Exception {
+	public List<EPTerminalFeed> getTerminalFeedLocations(String accountNumber) throws Exception {
 		return epDao.getTerminalFeedLocations(accountNumber);
+	}
+
+	@Override
+	public List<EPTemplate> searchEPTemplate(String searchTmplt, int pageIndex, String accountNumber) throws Exception {
+		EPTemplate epTemplate = new EPTemplate();
+		epTemplate.setTempStatus(searchTmplt);
+		epTemplate.setPageNumber(pageIndex);
+		epTemplate.setLimit(GlobalVariables.LIMIT);
+		return epDao.getTemplateList(epTemplate, accountNumber);
 	}
 
 }

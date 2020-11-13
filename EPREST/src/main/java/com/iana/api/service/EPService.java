@@ -56,4 +56,6 @@ public interface EPService {
 
 	List<EPTerminalFeed> getTerminalFeedLocations(String accountNumber) throws Exception;
 
+	List<EPTemplate> searchEPTemplate(String searchTmplt, int pageIndex, String accountNumber) throws Exception;
+
 }

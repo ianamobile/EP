@@ -9,6 +9,7 @@ import com.iana.api.domain.AccountMaster;
 import com.iana.api.domain.AddressDet;
 import com.iana.api.domain.ContactDet;
 import com.iana.api.domain.EPAcctInfo;
+import com.iana.api.domain.EPTemplate;
 import com.iana.api.domain.EPTerminalFeed;
 import com.iana.api.domain.JoinRecord;
 import com.iana.api.domain.MCCancel;
@@ -55,4 +56,6 @@ public interface EpDao {
 	List<MCCancel> getDeletedMC(String cancRefStartDate, String cancRefEndDate, int pageIndex, int pageSize, String flag) throws Exception;
 
 	List<EPTerminalFeed> getTerminalFeedLocations(String accountNumber) throws Exception;
+
+	List<EPTemplate> getTemplateList(EPTemplate epTemplate, String accountNo) throws Exception;
 }

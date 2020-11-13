@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iana.api.domain.AccountMaster;
 import com.iana.api.domain.EPAcctInfo;
 import com.iana.api.domain.EPAddendumDetForm;
+import com.iana.api.domain.EPTemplate;
 import com.iana.api.domain.EPTerminalFeed;
 import com.iana.api.domain.JoinRecord;
 import com.iana.api.domain.MCCancel;
@@ -368,6 +369,26 @@ public class EPRest extends CommonUtils {
 			List<EPTerminalFeed> epTerminalFeedList = epService
 					.getTerminalFeedLocations(securityObject.getAccountNumber());
 			return new ResponseEntity<List<EPTerminalFeed>>(epTerminalFeedList, HttpStatus.OK);
+
+		} catch (Exception e) {
+			return sendServerError(e, GlobalVariables.FAIL);
+		}
+
+	}
+	
+	@GetMapping(path = URI_EP_TEMPLATES, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "GET EP TEMPLATE IN " + CLASS_NAME, response = EPTemplate.class)
+	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
+			@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
+			@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class) })
+	public ResponseEntity<?> searchEPTemplate(@RequestParam(value = "searchTmplt", defaultValue = "") String searchTmplt,
+			@RequestParam(value = "pageIndex", defaultValue = GlobalVariables.DEFAULT_ZERO) int pageIndex, HttpServletRequest request) {
+
+		try {
+			SecurityObject securityObject = (SecurityObject) request.getAttribute(GlobalVariables.SECURITY_OBJECT);
+
+			List<EPTemplate> epTemplateList = epService.searchEPTemplate(searchTmplt, pageIndex, securityObject.getAccountNumber());
+			return new ResponseEntity<List<EPTemplate>>(epTemplateList, HttpStatus.OK);
 
 		} catch (Exception e) {
 			return sendServerError(e, GlobalVariables.FAIL);

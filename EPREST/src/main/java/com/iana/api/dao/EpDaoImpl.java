@@ -26,6 +26,7 @@ import com.iana.api.domain.AddressDet;
 import com.iana.api.domain.ContactDet;
 import com.iana.api.domain.EPAcctInfo;
 import com.iana.api.domain.EPJoinDet;
+import com.iana.api.domain.EPTemplate;
 import com.iana.api.domain.EPTerminalFeed;
 import com.iana.api.domain.JoinRecord;
 import com.iana.api.domain.MCCancel;
@@ -726,8 +727,8 @@ public class EpDaoImpl extends GenericDAO implements EpDao {
 			cancRefEndDate = "01/01/2999";
 		}
 
-		Date cancStDt = DateTimeFormater.stringToSqlDate(cancRefStartDate,DateTimeFormater.FORMAT4);
-		Date cancEndDt = DateTimeFormater.stringToSqlDate(cancRefEndDate,DateTimeFormater.FORMAT4);
+		Date cancStDt = DateTimeFormater.stringToSqlDate(cancRefStartDate, DateTimeFormater.FORMAT4);
+		Date cancEndDt = DateTimeFormater.stringToSqlDate(cancRefEndDate, DateTimeFormater.FORMAT4);
 		List<Object> params = new ArrayList<>();
 		params.add(cancStDt);
 		params.add(cancEndDt);
@@ -803,6 +804,69 @@ public class EpDaoImpl extends GenericDAO implements EpDao {
 						return terminalFeedList;
 					}
 				}, accountNumber);
+	}
+
+	/*
+	 * this method gets all the EP template list based on the status
+	 * (past,present,future)
+	 * 
+	 * @param Connection conn
+	 * 
+	 * @param EPTemplateBean epTemplate
+	 * 
+	 * @param String accountNo
+	 * 
+	 * @return ArrayList
+	 * 
+	 * @throws UiiaException
+	 */
+	@Override
+	public List<EPTemplate> getTemplateList(EPTemplate epTemplate, String accountNo) throws Exception {
+		List<EPTemplate> templateLst = new ArrayList<EPTemplate>();
+		StringBuffer sbQry = new StringBuffer();
+
+		if (GlobalVariables.PASTTEMPLATE.equalsIgnoreCase(epTemplate.getTempStatus())) {
+			sbQry.append("SELECT EP_TEMPLATE_ID,EFF_DATE,ACTIVE,CREATED_DATE FROM ep_template WHERE ");
+			sbQry.append("EP_ACCT_NO = '" + accountNo + "' AND EFF_DATE <= '" + Utility.getSqlSysdate());
+			sbQry.append("' AND ACTIVE = 'N' LIMIT ?,?");
+		} else if (GlobalVariables.PRESENTTEMPLATE.equalsIgnoreCase(epTemplate.getTempStatus())) {
+			sbQry.append("SELECT EP_TEMPLATE_ID,EFF_DATE,ACTIVE,CREATED_DATE FROM ep_template WHERE ");
+			sbQry.append("EP_ACCT_NO = '" + accountNo + "'");
+			sbQry.append(" AND ACTIVE = 'Y' LIMIT ?,?");
+		} else if (GlobalVariables.WHATIFTEMPLATE.equalsIgnoreCase(epTemplate.getTempStatus())) {
+			sbQry.append("SELECT EP_TEMPLATE_ID,EFF_DATE,ACTIVE,CREATED_DATE FROM ep_template WHERE ");
+			sbQry.append("EP_ACCT_NO = '" + accountNo + "' AND EFF_DATE > '" + Utility.getSqlSysdate()
+					+ "' AND ACTIVE = 'W' LIMIT ?,?");
+		}
+
+		List<Object> params = new ArrayList<>();
+		params.add((epTemplate.getPageNumber() * epTemplate.getLimit()));
+		params.add(epTemplate.getLimit());
+
+		return getSpringJdbcTemplate(this.uiiaDataSource).query(sbQry.toString(),
+				new ResultSetExtractor<List<EPTemplate>>() {
+
+					@Override
+					public List<EPTemplate> extractData(ResultSet rs) throws SQLException, DataAccessException {
+
+						while (rs.next()) {
+							EPTemplate epTemp = new EPTemplate();
+							epTemp.setTemplateID(rs.getInt("EP_TEMPLATE_ID"));
+							if (rs.getDate("EFF_DATE") != null) {
+								epTemp.setEffDate(Utility.formatSqlDate(rs.getDate("EFF_DATE"), Utility.FORMAT4));
+							}
+							if (rs.getString("ACTIVE") != null) {
+								epTemp.setDbTemplateStatus(rs.getString("ACTIVE"));
+							}
+
+							epTemp.setCreatedDate(Utility.formatSqlDate(rs.getDate("CREATED_DATE"), Utility.FORMAT4));
+							epTemp.setTempStatus(epTemplate.getTempStatus());
+							templateLst.add(epTemp);
+						}
+
+						return templateLst;
+					}
+				}, params.toArray());
 	}
 
 }
