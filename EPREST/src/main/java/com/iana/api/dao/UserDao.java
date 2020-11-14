@@ -49,4 +49,7 @@ public interface UserDao {
 	int insertUserForCreateBillingUser(DataSource lUIIADataSource, SecurityObject securityObject,
 			BillingUser billingUser, long roleId) throws Exception;
 
+	void insertPassword(DataSource lUIIADataSource, SecurityObject securityObject, AccountInfo acctInfo, Role role,
+			boolean enableTransMgmt) throws Exception;
+
 }

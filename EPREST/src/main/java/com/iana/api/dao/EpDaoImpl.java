@@ -32,6 +32,7 @@ import com.iana.api.domain.JoinRecord;
 import com.iana.api.domain.MCCancel;
 import com.iana.api.domain.MCDataJsonDTO;
 import com.iana.api.domain.SearchAccount;
+import com.iana.api.domain.SecUserDetails;
 import com.iana.api.domain.SecurityObject;
 import com.iana.api.utils.CommonUtils;
 import com.iana.api.utils.DateTimeFormater;
@@ -867,6 +868,172 @@ public class EpDaoImpl extends GenericDAO implements EpDao {
 						return templateLst;
 					}
 				}, params.toArray());
+	}
+
+	@Override
+	public Long countSecondaryUsers(SecurityObject securityObject, SecUserDetails secUserDetails) throws Exception {
+		List<Object> params = new ArrayList<>();
+		StringBuilder sbQuery = new StringBuilder();
+
+		sbQuery.append(" SELECT COUNT(*) ");
+		sbQuery.append(" FROM idd_secondary_users ");
+		sbQuery.append(" WHERE account_no = ? ");
+
+		params.add(CommonUtils.validateObject(securityObject.getAccountNumber()));
+
+		filterSecondaryUsers(secUserDetails, params, sbQuery);
+
+		return findTotalRecordCount(this.uiiaDataSource, params.toArray(), sbQuery.toString());
+	}
+
+	private void filterSecondaryUsers(SecUserDetails secUserList, List<Object> params, StringBuilder sbQuery) {
+
+		sbQuery.append(" AND user_name LIKE ? ");
+		params.add(CommonUtils.validateObject(
+				secUserList.getUserName().replaceAll(GlobalVariables.SINGLE_QUOTE, GlobalVariables.APOSTROPHE))
+				+ GlobalVariables.PERCENTAGE);
+
+	}
+
+	@Override
+	public List<SecUserDetails> getSecondaryUsers(SecurityObject securityObject, SecUserDetails secUserList)
+			throws Exception {
+		List<Object> params = new ArrayList<>();
+		StringBuilder sbQuery = new StringBuilder();
+		sbQuery.append(
+				" SELECT idd_sec_users_id AS secUserId, IFNULL(user_name, '') AS userName, IFNULL(user_name, '') AS oldUserName, account_no, idd_fst_nm, idd_lst_nm, ");
+		sbQuery.append(
+				" IFNULL(password, '') AS password, IFNULL(idd_email, '') AS email, IFNULL(status, '') AS status, idd_rprt_frmt, IFNULL(idd_dload_alwd, '') AS download, IFNULL(attr1, '') AS attr1,  ");
+		sbQuery.append(" IFNULL(attr2, '') AS attr2, audit_trail_extra, created_by, created_date, ");
+		sbQuery.append(" modified_by, modified_date ");
+		sbQuery.append(" FROM idd_secondary_users ");
+		sbQuery.append(" WHERE account_no = ? ");
+
+		params.add(CommonUtils.validateObject(securityObject.getAccountNumber()));
+
+		filterSecondaryUsers(secUserList, params, sbQuery);
+
+		return findAll(this.uiiaDataSource, sbQuery.toString(), params.toArray(), SecUserDetails.class);
+	}
+
+	@Override
+	public SecUserDetails ifExistsSecondaryUserName(String accountNumber, String userName) throws Exception {
+		StringBuilder sbQuery = new StringBuilder();
+
+		sbQuery.append(" SELECT idd_sec_users_id AS secUserId, password ");
+		sbQuery.append(" FROM idd_secondary_users ");
+		sbQuery.append(" WHERE account_no = ? AND user_name = ? AND status = ? ");
+
+		return findBean(this.uiiaDataSource, sbQuery.toString(), SecUserDetails.class, accountNumber, userName,
+				GlobalVariables.Y);
+
+	}
+
+	@Override
+	public void addSecondaryUser(DataSource lUIIADataSource, SecurityObject securityObject, SecUserDetails secUserList,
+			boolean enableTransMgmt) throws Exception {
+		secUserList.setStatus(GlobalVariables.Y);
+
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("USER_NAME", secUserList.getUserName());
+		paramMap.put("ACCOUNT_NO", securityObject.getAccountNumber());
+		paramMap.put("PASSWORD", secUserList.getPassword());
+		paramMap.put("IDD_EMAIL", secUserList.getEmail());
+		paramMap.put("IDD_DLOAD_ALWD", CommonUtils.validateObject(secUserList.getDownload()).toUpperCase());
+		paramMap.put("ATTR1", CommonUtils.validateObject(secUserList.getAttr1()).toUpperCase());
+		paramMap.put("ATTR2", CommonUtils.validateObject(secUserList.getAttr2()).toUpperCase());
+		paramMap.put("STATUS", secUserList.getStatus());
+		paramMap.put("AUDIT_TRAIL_EXTRA", securityObject.getIpAddress());
+		paramMap.put("CREATED_BY", securityObject.getUsername());
+		paramMap.put("CREATED_DATE", DateTimeFormater.getSqlSysTimestamp());
+
+		int secUserId = insertAndReturnGeneratedKey(enableTransMgmt ? lUIIADataSource : uiiaDataSource,
+				"idd_secondary_users", paramMap, "IDD_SEC_USERS_ID").intValue();
+
+		secUserList.setSecUserId(secUserId);
+
+	}
+
+	@Override
+	public void updateSecondaryUser(DataSource lUIIADataSource, SecurityObject securityObject,
+			SecUserDetails secUserList, boolean enableTransMgmt) throws Exception {
+		List<Object> params = new ArrayList<>();
+
+		StringBuilder sbQuery = new StringBuilder();
+
+		sbQuery.append(" UPDATE idd_secondary_users ");
+		sbQuery.append(" SET user_name = ?, idd_email = ?, idd_dload_alwd = ?, password = ?, attr1 = ?, attr2 = ?, ");
+		sbQuery.append(" modified_by = ?, modified_date = ?, audit_trail_extra = ? ");
+		sbQuery.append(" WHERE idd_sec_users_id = ? ");
+
+		params.add(secUserList.getUserName());
+		params.add(secUserList.getEmail());
+		params.add(secUserList.getDownload());
+		params.add(secUserList.getPassword());
+		params.add(secUserList.getAttr1());
+		params.add(secUserList.getAttr2());
+		params.add(securityObject.getUsername());
+		params.add(DateTimeFormater.getSqlSysTimestamp());
+		params.add(securityObject.getIpAddress());
+		params.add(secUserList.getSecUserId());
+
+		int updatedCnt = saveOrUpdate(enableTransMgmt ? lUIIADataSource : uiiaDataSource, sbQuery.toString(),
+				params.toArray(), enableTransMgmt);
+		log.info("su_secondary_user: updatedCnt:" + updatedCnt);
+
+	}
+
+	@Override
+	public int countSecondaryUsersId(SecurityObject securityObject, int selectedId) throws Exception {
+		List<Object> params = new ArrayList<>();
+		StringBuilder sbQuery = new StringBuilder();
+
+		sbQuery.append(" SELECT COUNT(*) ");
+		sbQuery.append(" FROM idd_secondary_users ");
+		sbQuery.append(" WHERE ACCOUNT_NO = ? AND IDD_SEC_USERS_ID = ? ");
+
+		params.add(securityObject.getAccountNumber());
+		params.add(selectedId);
+
+		return findTotalRecordCount(this.uiiaDataSource, params.toArray(), sbQuery.toString()).intValue();
+	}
+
+	@Override
+	public SecUserDetails getSecondaryUserDetails(int secUserId) throws Exception {
+		StringBuilder sbQuery = new StringBuilder();
+
+		sbQuery.append(
+				" SELECT idd_sec_users_id AS secUserId, IFNULL(user_name, '') AS userName, IFNULL(user_name, '') AS oldUserName, account_no, idd_fst_nm, idd_lst_nm, ");
+		sbQuery.append(
+				" IFNULL(password, '') AS password, IFNULL(idd_email, '') AS email, IFNULL(status, '') AS status, idd_rprt_frmt, IFNULL(idd_dload_alwd, '') AS download, IFNULL(attr1, '') AS attr1,  ");
+		sbQuery.append(" IFNULL(attr2, '') AS attr2, audit_trail_extra, created_by, created_date, ");
+		sbQuery.append(" modified_by, modified_date ");
+		sbQuery.append(" FROM idd_secondary_users ");
+		sbQuery.append(" WHERE idd_sec_users_id = ? ");
+
+		return findBean(this.uiiaDataSource, sbQuery.toString(), SecUserDetails.class, secUserId);
+
+	}
+
+	@Override
+	public void deleteSecondaryUser(DataSource lUIIADataSource, SecUserDetails secUserList, boolean enableTransMgmt)
+			throws Exception {
+		List<Object> params = new ArrayList<>();
+		StringBuilder sbQuery = new StringBuilder();
+
+		sbQuery.append(" UPDATE idd_secondary_users ");
+		sbQuery.append(" SET status = ?, audit_trail_extra = ?, modified_by = ?, modified_date = ? ");
+		sbQuery.append(" WHERE idd_sec_users_id = ? ");
+
+		params.add(GlobalVariables.N);
+		params.add(secUserList.getAuditTrailExtra());
+		params.add(secUserList.getUserName());
+		params.add(DateTimeFormater.getSqlSysTimestamp());
+		params.add(secUserList.getSecUserId());
+
+		saveOrUpdate(enableTransMgmt ? lUIIADataSource : uiiaDataSource, sbQuery.toString(), params.toArray(),
+				enableTransMgmt);
+
 	}
 
 }

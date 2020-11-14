@@ -68,8 +68,8 @@ public class CommonUtils extends ValidationUtils {
 				HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 
-	protected List<Errors> setBusinessError(List<String> errorList) {
 		List<Errors> errors = getListInstance();
+		protected List<Errors> setBusinessError(List<String> errorList) {
 		errors.add(
 				new Errors(1, env.getProperty("business_error"), StringUtils.join(errorList, GlobalVariables.COMMA)));
 		return errors;

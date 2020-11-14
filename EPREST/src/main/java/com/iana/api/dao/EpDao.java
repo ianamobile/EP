@@ -15,6 +15,7 @@ import com.iana.api.domain.JoinRecord;
 import com.iana.api.domain.MCCancel;
 import com.iana.api.domain.MCDataJsonDTO;
 import com.iana.api.domain.SearchAccount;
+import com.iana.api.domain.SecUserDetails;
 import com.iana.api.domain.SecurityObject;
 
 public interface EpDao {
@@ -58,4 +59,23 @@ public interface EpDao {
 	List<EPTerminalFeed> getTerminalFeedLocations(String accountNumber) throws Exception;
 
 	List<EPTemplate> getTemplateList(EPTemplate epTemplate, String accountNo) throws Exception;
+
+	Long countSecondaryUsers(SecurityObject securityObject, SecUserDetails secUserDetails) throws Exception;
+
+	List<SecUserDetails> getSecondaryUsers(SecurityObject securityObject, SecUserDetails secUserList) throws Exception;
+
+	SecUserDetails ifExistsSecondaryUserName(String accountNumber, String userName) throws Exception;
+
+	void addSecondaryUser(DataSource lUIIADataSource, SecurityObject securityObject, SecUserDetails secUserList,
+			boolean enableTransMgmt) throws Exception;
+
+	void updateSecondaryUser(DataSource lUIIADataSource, SecurityObject securityObject, SecUserDetails secUserList,
+			boolean enableTransMgmt) throws Exception;
+
+	int countSecondaryUsersId(SecurityObject securityObject, int selectedId) throws Exception;
+
+	SecUserDetails getSecondaryUserDetails(int secUserId) throws Exception;
+
+	void deleteSecondaryUser(DataSource lUIIADataSource, SecUserDetails secUserList, boolean enableTransMgmt)
+			throws Exception;
 }

@@ -437,4 +437,45 @@ public class UserDaoImpl extends GenericDAO implements UserDao {
 
 	}
 
+	@Override
+	public void insertPassword(DataSource lUIIADataSource, SecurityObject securityObject, AccountInfo acctInfo,
+			Role role, boolean enableTransMgmt) throws Exception {
+
+		// USER_NAME,SCAC_CODE,PASSWORD,ACCOUNT_NUMBER,
+		// ROLE_ID,STATUS,AUDIT_TRAIL_EXTRA,CREATED_BY,CREATED_DATE
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+
+		if (acctInfo.getMemType().equals(GlobalVariables.ROLE_IDD_SEC)
+				|| acctInfo.getMemType().equals(GlobalVariables.ROLE_SUB_SEC)) {
+			paramMap.put("USER_NAME", acctInfo.getSecUserName());
+		} else {
+			paramMap.put("USER_NAME", securityObject.getAccountNumber());
+		}
+
+		paramMap.put("SCAC_CODE", securityObject.getScac());
+		paramMap.put("PASSWORD",
+				StringUtils.isNotBlank(acctInfo.getPassword())
+						? EncryptionUtils.encrypt(acctInfo.getPassword().toUpperCase())
+						: acctInfo.getPassword());
+		paramMap.put("ACCOUNT_NUMBER", securityObject.getAccountNumber());
+		paramMap.put("ROLE_ID", role.getRoleId());
+
+		// For Set Status
+		if (!GlobalVariables.DELETEDMEMBER.equalsIgnoreCase(securityObject.getStatus())) {
+			paramMap.put("STATUS", GlobalVariables.Y);
+		} else {
+			paramMap.put("STATUS", GlobalVariables.N);
+		}
+
+		// Close For Set Status
+
+		paramMap.put("AUDIT_TRAIL_EXTRA", securityObject.getIpAddress());
+		paramMap.put("CREATED_BY", CommonUtils.validateObject(securityObject.getUsername()));
+		paramMap.put("CREATED_DATE", DateTimeFormater.getSqlSysTimestamp());
+
+		Long userLoginId = insertAndReturnGeneratedKey(enableTransMgmt ? lUIIADataSource : uiiaDataSource, "user_login",
+				paramMap, "LOGIN_ID").longValue();
+		log.info("insertPassword: userLoginId:" + userLoginId);
+	}
+
 }
