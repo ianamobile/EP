@@ -264,51 +264,6 @@
 			"response": []
 		},
 		{
-			"name": "Manage Billing Users - list",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/billingUsers",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "9099",
-					"path": [
-						"EPREST",
-						"rest",
-						"v1",
-						"UIIA",
-						"billingUsers"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "UIIA Invoices - list",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -508,6 +463,275 @@
 			"response": []
 		},
 		{
+			"name": "Search EP Template",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "searchTmplt",
+							"value": "PREVIOUS",
+							"type": "text"
+						},
+						{
+							"key": "pageIndex",
+							"value": "0",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/epTemplates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"epTemplates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get EP Template Details",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "templateId",
+							"value": "861",
+							"type": "text"
+						},
+						{
+							"key": "dbStatus",
+							"value": "Y",
+							"type": "text"
+						},
+						{
+							"key": "effDate",
+							"value": "10/25/2016",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/epTemplatesDetails",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"epTemplatesDetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Monthly Book & Weekly Supplement",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "pageIndex",
+							"value": "0",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/monthlyWeeklyReports",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"monthlyWeeklyReports"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EP Template Setup",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "searchTmplt",
+							"value": "present",
+							"type": "text"
+						},
+						{
+							"key": "pageIndex",
+							"value": "0",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/epTemplates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"epTemplates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manage Billing Users - list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/billingUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"billingUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Manage Billing Users - Add",
 			"request": {
 				"method": "POST",
@@ -629,6 +853,178 @@
 						"UIIA",
 						"billingUsers",
 						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manage Secondary Users - list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/secondaryUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"secondaryUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manage Secondary Users - Add",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"userName\": \"vrajesh\",\r\n            \"oldUserName\": \"temp\",\r\n            \"secUserId\": 4820,\r\n            \"status\": \"Y\",\r\n            \"password\": \"temp\",\r\n            \"email\": \"intermodal.mc@gmail.com\",\r\n            \"download\": \"Y\",\r\n            \"attr1\": \"\",\r\n            \"attr2\": \"N\",\r\n            \"auditTrailExtra\": \"192.168.100.123|0\"\r\n        }",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/secondaryUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"secondaryUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manage Secondary Users - Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"userName\": \"vrajesh jayswal\",\r\n            \"oldUserName\": \"temp\",\r\n            \"secUserId\": 7023,\r\n            \"status\": \"Y\",\r\n            \"password\": \"temp\",\r\n            \"email\": \"intermodal.mc@gmail.com\",\r\n            \"download\": \"Y\",\r\n            \"attr1\": \"\",\r\n            \"attr2\": \"N\",\r\n            \"auditTrailExtra\": \"192.168.100.123|0\"\r\n        }",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/secondaryUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"secondaryUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manage Secondary Users - Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/secondaryUsers/7023",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"secondaryUsers",
+						"7023"
 					]
 				}
 			},
