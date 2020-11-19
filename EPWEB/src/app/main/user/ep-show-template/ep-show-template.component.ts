@@ -1,4 +1,3 @@
-import { AfterViewInit } from '@angular/core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
@@ -9,19 +8,25 @@ import { IanaConfig } from '@app-models/iana-config';
 import { MessageService } from '@app-services/message.service';
 
 @Component({
-  selector: 'app-addendum-details',
-  templateUrl: './addendum-details.component.html',
-  styleUrls: ['./addendum-details.component.scss'],
+  selector: 'app-ep-show-template',
+  templateUrl: './ep-show-template.component.html',
+  styleUrls: ['./ep-show-template.component.scss'],
   animations: ianaAnimations
 })
-export class AddendumDetailsComponent implements OnInit, AfterViewInit {
+export class EpShowTemplateComponent implements OnInit {
 
   ianaConfig: IanaConfig = new IanaConfig();
-
-  MemberSpecific = "Yes";
-  KnownAs = "Yes";
-  RampDetails = "No";
-  BlanketAdditional = "Yes";
+  
+    MemberSpecific = "Yes";
+    KnownAs = "Yes";
+    RampDetails = "No";
+    BlanketAdditional = "Yes";
+    Required = "Yes";
+    AdditionalInsuredRequired = "Yes";
+    EPAllowsSelfInsurance  = "Yes";
+    RiskRetentionInsuranceAllowed  = "Yes";
+    EPSpecificInsurancePolicyAllowed  = "Yes";
+    Policy = "AL";
 
     constructor(
         private _msgService: MessageService<IanaConfig>,
@@ -82,6 +87,7 @@ export interface MultipleLimits {
   Policy: string;
   MinimumLimit	: string;
   MaximumDeductibleAllowed	: string;
+ 
 }
 
 const ELEMENT_DATA1: MultipleLimits[] = [
@@ -103,5 +109,5 @@ export interface AdditionalRequirements {
 }
 
 const ELEMENT_DATA2: AdditionalRequirements[] = [
-  {Description: 'Addendum', Code: 'ADDM',Required:'No', OriginalRequiredinDays: '0',FilePath	: 'YES',Download	: 'YES'},
+  {Description: 'Addendum', Code: 'ADDM',Required:'No', OriginalRequiredinDays: '0',FilePath	: 'YES',Download	: 'aplu20161124.pdf'},
 ];

@@ -37,10 +37,31 @@
   <mat-icon >view_list</mat-icon> Manage Secondary User
 </button>
 
-<!-- ------------------------ Terminal Feed Locations  ------------------ -->
-<button mat-button [routerLink]="['/EPWEB/user/terminalFeedLocations']">
-  <mat-icon >view_list</mat-icon> Terminal Feed Locations
+
+
+<!-- ------------------------ Manage Payment Method  ------------------ -->
+<button mat-button [routerLink]="['/EPWEB/user/managePaymentMethod']">
+  <mat-icon >view_list</mat-icon> Manage Payment Method
 </button>
+
+<!-- ------------------------ MC Lookup  ------------------ -->
+<button mat-button [routerLink]="['/EPWEB/user/mcLookup']">
+  <mat-icon >view_list</mat-icon> MC Lookup
+</button>
+
+ <!-- ------------------------ All Other Menu ------------------ -->
+ <button mat-button [matMenuTriggerFor]="allOther"><mat-icon class="menu_icon">search</mat-icon> All Other Menu </button>
+
+ <mat-menu #allOther="matMenu">
+  <!-- ------------------------ Terminal Feed Locations  ------------------ -->
+  <button mat-menu-item [routerLink]="['/EPWEB/user/terminalFeedLocations']">Terminal Feed Locations</button>
+
+  <button mat-menu-item [routerLink]="['/EPWEB/user/monthlyBookWeeklySupplement']">Monthly Book & Weekly Supplement</button>
+  <button mat-menu-item [routerLink]="['/EPWEB/user/epTemplate']">EP Template</button>
+
+  
+
+</mat-menu>
 
 
     <!-- ------------------------ Test Menu ------------------ -->

@@ -13,6 +13,12 @@ import { InvoiceDetailsComponent } from './invoice-details/invoice-details.compo
 import { SecondaryUserDetailsComponent } from './secondary-user-details/secondary-user-details.component';
 import { TerminalFeedLocationsComponent } from './terminal-feed-locations/terminal-feed-locations.component';
 import { BillingPaymentComponent } from './billing-payment/billing-payment.component';
+import { ManagePaymentMethodComponent } from './manage-payment-method/manage-payment-method.component';
+import { BillingResultComponent } from './billing-result/billing-result.component';
+import { MonthlyBookWeeklySupplementComponent } from './monthly-book-weekly-supplement/monthly-book-weekly-supplement.component';
+import { EpTemplateComponent } from './ep-template/ep-template.component';
+import { EpShowTemplateComponent } from './ep-show-template/ep-show-template.component';
+import { MCLookupComponent } from './mclookup/mclookup.component';
 
 const routes = [
     {
@@ -54,8 +60,31 @@ const routes = [
     {
         path: APP_URI.BILLING_PAYMENT,
         component: BillingPaymentComponent
+    },
+    {
+        path: APP_URI.BILLING_RESULT,
+        component: BillingResultComponent
+    },
+    {
+        path: APP_URI.MANAGE_PAYMENT_METHOD,
+        component: ManagePaymentMethodComponent
+    },
+    {
+        path: APP_URI.MONTHLY_BOOK_WEEKLY_SUPPLEMENT,
+        component: MonthlyBookWeeklySupplementComponent
+    },
+    {
+        path: APP_URI.EP_TEMPLATE,
+        component: EpTemplateComponent
+    },
+    {
+        path: APP_URI.EP_SHOW_TEMPLATE,
+        component: EpShowTemplateComponent
+    },
+    {
+        path: APP_URI.MC_LOOKUP,
+        component: MCLookupComponent
     }
-
     
     
 

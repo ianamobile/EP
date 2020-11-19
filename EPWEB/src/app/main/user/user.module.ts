@@ -16,6 +16,15 @@ import { SecondaryUserFormDialogComponent } from './secondary-user-form-dialog/s
 import { TerminalFeedLocationsComponent } from './terminal-feed-locations/terminal-feed-locations.component';
 import { PaymentFailureAttemptsDialogComponent } from './payment-failure-attempts-dialog/payment-failure-attempts-dialog.component';
 import { BillingPaymentComponent } from './billing-payment/billing-payment.component';
+import { ManagePaymentMethodComponent } from './manage-payment-method/manage-payment-method.component';
+import { BillingResultComponent } from './billing-result/billing-result.component';
+import { MonthlyBookWeeklySupplementComponent } from './monthly-book-weekly-supplement/monthly-book-weekly-supplement.component';
+import { EpTemplateComponent } from './ep-template/ep-template.component';
+import { EpSearchTemplateDialogComponent } from './ep-search-template-dialog/ep-search-template-dialog.component';
+import { EpShowTemplateComponent } from './ep-show-template/ep-show-template.component';
+import { MCLookupComponent } from './mclookup/mclookup.component';
+import { McSpecificSearchDialogComponent } from './mc-specific-search-dialog/mc-specific-search-dialog.component';
+import { EpRequirementsDialogComponent } from './ep-requirements-dialog/ep-requirements-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +43,16 @@ import { BillingPaymentComponent } from './billing-payment/billing-payment.compo
     SecondaryUserFormDialogComponent,
     TerminalFeedLocationsComponent,
     PaymentFailureAttemptsDialogComponent,
-    BillingPaymentComponent, 
+    BillingPaymentComponent,
+    ManagePaymentMethodComponent,
+    BillingResultComponent,
+    MonthlyBookWeeklySupplementComponent,
+    EpTemplateComponent,
+    EpSearchTemplateDialogComponent,
+    EpShowTemplateComponent,
+    MCLookupComponent,
+    McSpecificSearchDialogComponent,
+    EpRequirementsDialogComponent, 
   ],
   imports: [
     

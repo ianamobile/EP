@@ -1,0 +1,285 @@
+<div class="dialog-content-wrapper search-dialog" id="epRequ">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Equipment Provider Requirements</span>
+            <button tabindex="-1" mat-icon-button (click)="close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+    <mat-card class="ns app-notes">Note: Items needed are shaded in "red".</mat-card>
+    <div mat-dialog-content style="padding: 24px 12px !important;">
+
+
+        <div flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+
+            <div fxLayout="column" fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-md="100">
+
+                <div fxFlex="100%" fxLayout="row wrap" fxLayoutAlign="start">
+                    <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Company Name</p>
+                        <p class="view_dt_data">APL Limited</p>
+                    </div>
+
+                    <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Main UIIA Contact</p>
+                        <p class="view_dt_data">John Mckenzie <br>
+                            5701 Lake Wright Drive
+                            Norfolk VA 23502 US</p>
+                    </div>
+
+                    <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Tel.</p>
+                        <p class="view_dt_data">(757)961-2516</p>
+                    </div>
+
+                    <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Email</p>
+                        <p class="view_dt_data">intermodal.ep@gmail.com</p>
+                    </div>
+
+                    <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">MC Name</p>
+                        <p class="view_dt_data">0769449 BC Ltd </p>
+                    </div>
+
+                    <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">MC SCAC Code</p>
+                        <p class="view_dt_data">ZSSN</p>
+                    </div>
+
+                    <div class="p-l-r-15" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <p class="view_dt_label">Status</p>
+                        <p class="view_dt_data NOT_APPROVED">Selected Pending</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="widget" fxLayout="column" fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-md="100">
+                <mat-table matSort [dataSource]="dataSource">
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="">
+                            <div class="MB-cell-width">
+                                {{i.name}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="youNeed">
+                        <mat-header-cell *matHeaderCellDef  class="txt_center">You Need </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="You Need"  class="txt_center">
+                            <div class="MB-cell-width">
+                                {{i.youNeed}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="youHave" >
+                        <mat-header-cell *matHeaderCellDef class="txt_center">You Have</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="You Have"  class="txt_center">
+                            <div class="MB-cell-width">
+                                {{i.youHave}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let i; columns: displayedColumns">
+                    </mat-row>
+                </mat-table>
+            </div>
+            <!-- Auto Liability -->
+            <div class="widget" fxLayout="column" fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-md="100">
+                <mat-table matSort [dataSource]="dataSource1" class="wt_hover">
+                    <ng-container matColumnDef="name" >
+                        <mat-header-cell *matHeaderCellDef>Auto Liability</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Auto Liability" class="req_color">
+                            <div class="MB-cell-width req_color">
+                                {{i.name}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="youNeed">
+                        <mat-header-cell *matHeaderCellDef class="txt_center">You Need </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="You Need"  class="txt_center req_color">
+                            <div class="MB-cell-width">
+                                {{i.youNeed}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="youHave">
+                        <mat-header-cell *matHeaderCellDef  class="txt_center">You Have</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="You Have"  class="txt_center req_color">
+                            <div class="MB-cell-width">
+                                {{i.youHave}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns1"></mat-header-row>
+                    <mat-row *matRowDef="let i; columns: displayedColumns1">
+                    </mat-row>
+                </mat-table>
+            </div>
+            <!-- General Liability -->
+            <div class="widget" fxLayout="column" fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-md="100">
+                <mat-table matSort [dataSource]="dataSource2" class="wt_hover">
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef>General Liabilityy</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="General Liability" class="req_color">
+                            <div class="MB-cell-width">
+                                {{i.name}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="youNeed">
+                        <mat-header-cell *matHeaderCellDef class="txt_center">You Need </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="You Need"  class="txt_center req_color">
+                            <div class="MB-cell-width">
+                                {{i.youNeed}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="youHave">
+                        <mat-header-cell *matHeaderCellDef  class="txt_center">You Have</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="You Have"  class="txt_center req_color">
+                            <div class="MB-cell-width">
+                                {{i.youHave}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row>
+                    <mat-row *matRowDef="let i; columns: displayedColumns2">
+                    </mat-row>
+                </mat-table>
+            </div>
+
+             <!--Cargo -->
+             <div class="widget" fxLayout="column" fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-md="100">
+                <mat-table matSort [dataSource]="dataSource3" class="wt_hover">
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef>Cargo</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Cargo" class="req_color">
+                            <div class="MB-cell-width">
+                                {{i.name}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="youNeed">
+                        <mat-header-cell *matHeaderCellDef class="txt_center">You Need </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="You Need"  class="txt_center req_color">
+                            <div class="MB-cell-width">
+                                {{i.youNeed}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="youHave">
+                        <mat-header-cell *matHeaderCellDef  class="txt_center">You Have</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="You Have"  class="txt_center req_color">
+                            <div class="MB-cell-width">
+                                {{i.youHave}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns3"></mat-header-row>
+                    <mat-row *matRowDef="let i; columns: displayedColumns3">
+                    </mat-row>
+                </mat-table>
+            </div>
+
+             <!--Trailer Insurance -->
+             <div class="widget" fxLayout="column" fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-md="100">
+                <mat-table matSort [dataSource]="dataSource4" class="wt_hover">
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef>Trailer Insurance</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Trailer Insurance" class="req_color">
+                            <div class="MB-cell-width">
+                                {{i.name}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="youNeed">
+                        <mat-header-cell *matHeaderCellDef class="txt_center">You Need </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="You Need"  class="txt_center req_color">
+                            <div class="MB-cell-width">
+                                {{i.youNeed}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="youHave">
+                        <mat-header-cell *matHeaderCellDef  class="txt_center">You Have</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="You Have"  class="txt_center req_color">
+                            <div class="MB-cell-width">
+                                {{i.youHave}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns4"></mat-header-row>
+                    <mat-row *matRowDef="let i; columns: displayedColumns4">
+                    </mat-row>
+                </mat-table>
+            </div>
+
+            <!--Additional Required -->
+            <div class="widget" fxLayout="column" fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-md="100">
+                <mat-table matSort [dataSource]="dataSource5" class="wt_hover">
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef>Additional Required</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Additional Required" >
+                            <div class="MB-cell-width">
+                                {{i.name}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="youNeed">
+                        <mat-header-cell *matHeaderCellDef class="txt_center">You Need </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="You Need"  class="txt_center ">
+                            <div class="MB-cell-width">
+                                {{i.youNeed}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="youHave">
+                        <mat-header-cell *matHeaderCellDef  class="txt_center">You Have</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="You Have"  class="txt_center ">
+                            <div class="MB-cell-width">
+                                {{i.youHave}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns5"></mat-header-row>
+                    <mat-row *matRowDef="let i; columns: displayedColumns5">
+                    </mat-row>
+                </mat-table>
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+    <mat-divider>
+    </mat-divider>
+    <div mat-dialog-actions class="m-0" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-raised-button color="accent" class="dialog-footer-btn" aria-label="Search">
+            <mat-icon>download</mat-icon> Generate Pdf
+        </button>
+        <button mat-raised-button color="warn" class="dialog-footer-btn" aria-label="Close" (click)="close()">
+            <mat-icon class="fwb">close</mat-icon> Close
+        </button>
+    </div>
+</div>

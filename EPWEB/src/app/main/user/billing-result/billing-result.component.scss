@@ -1,0 +1,43 @@
+#billingResult{
+
+    .checkout-panel {margin:0 auto;display: flex;flex-direction: column;width: 80%;height:auto;background-color: transparent;
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0);margin-top: 20px;margin-bottom: 30px; max-width:940px;border-radius: 8px; }
+        
+        .checkout-body {padding:0px 0px 0px 0px;}
+
+.success_msg_box{margin: 25px auto 25px auto; padding: 0px;background-color: #daf0fd;border:1px solid #7bc5ce;border-radius: 8px;
+	-webkit-box-shadow: 0px 0px 29px -11px rgba(199,199,199,1);     -moz-box-shadow: 0px 0px 29px -11px rgba(199,199,199,1);        box-shadow: 0px 0px 29px -11px rgba(199,199,199,1);
+	 width: 90%;
+	}
+	.tran_succ_msg{background: #ffffff;height: 90px;text-align: center;border-radius: 10px 10px 0px 0px;-moz-border-radius: 10px 10px 0px 0px;-webkit-border-radius: 10px 10px 0px 0px;border: 0px solid #000000;}
+	.tran_succ_msg > h1 {margin: 0; color: #317a2b;line-height: 70px;font-size: 24px;}
+	.trans_detail{margin: 0;padding: 0;position: relative;}
+	.trans_img{width: 48%;display: inline-block;padding:100px 10px 25px 10px;text-align: center;vertical-align: top;}
+	.trams_text{width: 47%;display: inline-block;padding: 0 10px;}
+	.thanks_msg{text-align: right;font-size: 13px;color: #728593;}
+	
+	.ribbon{  position: absolute;}
+	/* ribbon-s */
+	.ribbon-s{width: 50%;height: 50px;background: #1b8f12;top: 45px;right: -10px;}
+	.ribbon-s:before{content: "";position: absolute;top: -10px;right: 0;border-left: 5px solid #104c06;border-right: 5px solid transparent;border-top: 5px solid transparent;border-bottom: 5px solid #104c06;}
+	.ribbon-s:after{content: "";position: absolute;top: 0px;left: 0px;border-left: 25px solid #daf0fd;border-right: 25px solid transparent;border-top: 25px solid transparent;border-bottom: 25px solid transparent;}
+	.ribbon > p {text-align: center; font-size: 17px; text-transform: uppercase; color: #fff; line-height: 49px; margin: 0;}
+	
+	.div_clear{width: 100%;margin-top: 80px;}
+	.tr_delt{font-size: 13px;line-height: 26px;margin: 0 !important;    padding: 0 0 0 15px;}
+	.tr_delt > span {width: 48%;display: inline-block;    vertical-align: top;}
+	.tr_delt > strong {color: #2e3f49; display: inline-block; width: 50%; vertical-align: top; word-wrap: break-word;}
+	.hr{height: 1px;border: none;border-bottom: 1px solid #c3d9e6;margin: 15px 0 15px 0;}
+	.gier_cname{margin: 0;padding: 0;font-size: 13px;line-height: 18px; color: #1e313f;text-align: center;font-weight: 600;}
+	.gier_cont{margin: 0;padding: 0;font-size: 12px;line-height: 18px;color: #6b818e;text-align: center;font-weight: 600;}
+	.dow_print{text-align: right;}
+	.dow_print > a{text-transform: uppercase;text-decoration: none;color: #1e313f;margin: 3px 10px;font-weight: 600;}
+	.dow_print > a > img {margin-right: 3px;vertical-align: baseline;}
+	.dow_print .mat-icon{vertical-align: bottom;}
+	.tarn_footer{padding:2px 20px 30px 20px;text-align: center;}
+	.btn_invoce{font-size: 14px;height: 36px;cursor: pointer;transition: all .2s ease-in-out;letter-spacing: 1px;border: none;border-radius: 20px;text-decoration: none;color: #fff;background: #677b86;padding: 8px 20px;}
+	
+	.fail_bg{background: #d92121 !important;}
+    .fail_color{color: #d92121 !important;}
+    
+}

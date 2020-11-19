@@ -60,6 +60,12 @@ export const APP_URI = {
     SECONDARYUSERDETAILS :"secondaryuserdetails",
     TERMINALFEEDLOCATIONS :"terminalFeedLocations",
     BILLING_PAYMENT:"billingPayment",
+    MANAGE_PAYMENT_METHOD :"managePaymentMethod",
+    BILLING_RESULT:"billingResult",
+    MONTHLY_BOOK_WEEKLY_SUPPLEMENT:"monthlyBookWeeklySupplement",
+    EP_TEMPLATE:"epTemplate",
+    EP_SHOW_TEMPLATE:"epShowTemplate",
+    MC_LOOKUP:"mcLookup",
 
     BILLING_USER_LOGIN : "billingUserLogin",
     SECONDARY_USER_LOGIN : "secondaryUserLogin",

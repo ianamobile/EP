@@ -1,0 +1,83 @@
+<div id="notifications">
+ 
+    <div fxLayout="row wrap">
+
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout.xs="column" fxLayout="row" class="p-lr-24 m-t-10">
+            <h1 fxFlex="25%" class="main_title">Monthly Book & Weekly Supplement</h1>
+
+            <div fxFlex="75%" fxLayoutAlign="end center">
+                <div>
+                    <button type="submit" mat-raised-button color="accent" class="download_btn m-r-10">
+                        <mat-icon class="cursorPointer m-r-5">get_app</mat-icon> Generate Book
+                    </button>
+                </div>
+                <div>
+                    <button type="submit" mat-raised-button color="accent" class="download_btn">
+                        <mat-icon class="cursorPointer m-r-5">get_app</mat-icon> Generate Supplement
+                    </button>
+                </div>
+              
+            </div>
+        </div>
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100"
+            fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="widget-front">
+                <mat-table matSort [dataSource]="dataSource" class="m-10">
+                
+                     <ng-container matColumnDef="typeOfReport">
+                        <mat-header-cell *matHeaderCellDef>Type Of Report
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Type Of Report">
+                            <div class="MB-cell-width">
+                                {{i.typeOfReport}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="createdDate">
+                        <mat-header-cell *matHeaderCellDef>Created date
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Created date">
+                            <div class="MB-cell-width">
+                                {{i.createdDate}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="fileNames">
+                        <mat-header-cell *matHeaderCellDef>File Names
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="File Names">
+                            <div class="MB-cell-width">
+                                <a href="#" class="link_c">{{i.fileNames}}</a>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let i; columns: displayedColumns">
+                    </mat-row>
+                </mat-table>
+            </div>
+            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                <mat-paginator #paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
+            </div>
+            
+        </div>
+
+        <div fxFlex="100%" fxLayout="row wrap" class="p-l-r-15 mt-10 mb-20">
+            <div fxFlex="100%" fxLayoutAlign="center center" fxFlex.xs="100%" fxFlex.sm="100%">
+                <div fxLayout="row">
+                    <button mat-raised-button type="button" color="warn" class="Back-btn">
+                        <mat-icon class="fwb">close </mat-icon> Close
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

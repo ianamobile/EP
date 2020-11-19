@@ -21,51 +21,51 @@
 
 
         <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100"
-        fxFlex.gt-xs="100" fxFlex.gt-md="100">
-        <div class="widget-front">
+            fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="widget-front">
 
-            <div fxFlex="100%" fxLayout="row wrap" fxLayoutAlign="start center" class="mt-20">
-                <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
-                   
-                    <mat-form-field class="widthfull" appearance="outline" fxFlex>
-                        <mat-label>Member Specific Carrier</mat-label>
-                        <mat-select  [(value)]="MemberSpecific">
-                          <mat-option value="Yes">Yes</mat-option>
-                          <mat-option value="No">No</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-               </div>
-                <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
-                    <mat-form-field class="widthfull" appearance="outline" fxFlex>
-                        <mat-label>Known As</mat-label>
-                        <mat-select placeholder="Known As" [(value)]="KnownAs">
-                            <mat-option value="Yes">Yes</mat-option>
-                          <mat-option value="No">No</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
-                    <mat-form-field class="widthfull" appearance="outline" fxFlex>
-                        <mat-label>Ramp Details Required</mat-label>
-                        <mat-select placeholder="Ramp Details Required"  [(value)]="RampDetails">
-                            <mat-option value="Yes">Yes</mat-option>
-                            <mat-option value="No">No</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
-                    <mat-form-field class="widthfull" appearance="outline" fxFlex>
-                        <mat-label>Blanket Additional Insured Allowed</mat-label>
-                        <mat-select  placeholder="Blanket Additional Insured Allowed"  [(value)]="BlanketAdditional">
-                            <mat-option value="Yes">Yes</mat-option>
-                            <mat-option value="No">No</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
+                <div fxFlex="100%" fxLayout="row wrap" fxLayoutAlign="start center" class="mt-20">
+                    <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                       
+                        <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                            <mat-label>Member Specific Carrier</mat-label>
+                            <mat-select  [(value)]="MemberSpecific">
+                              <mat-option value="Yes">Yes</mat-option>
+                              <mat-option value="No">No</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                   </div>
+                    <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                            <mat-label>Known As</mat-label>
+                            <mat-select placeholder="Known As" [(value)]="KnownAs">
+                                <mat-option value="Yes">Yes</mat-option>
+                              <mat-option value="No">No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                            <mat-label>Ramp Details Required</mat-label>
+                            <mat-select placeholder="Ramp Details Required"  [(value)]="RampDetails">
+                                <mat-option value="Yes">Yes</mat-option>
+                                <mat-option value="No">No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                            <mat-label>Blanket Additional Insured Allowed</mat-label>
+                            <mat-select  placeholder="Blanket Additional Insured Allowed"  [(value)]="BlanketAdditional">
+                                <mat-option value="Yes">Yes</mat-option>
+                                <mat-option value="No">No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
 
+                </div>
             </div>
         </div>
-    </div>
 
 
         <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100"
@@ -95,8 +95,8 @@
                                 <th mat-header-cell *matHeaderCellDef> Required </th>
                                 <td mat-cell *matCellDef="let element">
                                     <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
-                                        <mat-select>
-                                            <mat-option value="option">{{element.Required}}</mat-option>
+                                        <mat-select [(value)]="Required">
+                                            <mat-option value="Yes">{{element.Required}}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </td>
@@ -131,8 +131,8 @@
                                 <td mat-cell *matCellDef="let element">
 
                                     <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
-                                        <mat-select>
-                                            <mat-option value="{{element.AdditionalInsuredRequired}} " selected>
+                                        <mat-select  [(value)]="AdditionalInsuredRequired">
+                                            <mat-option value="Yes">
                                                 {{element.AdditionalInsuredRequired}} </mat-option>
                                         </mat-select>
                                     </mat-form-field>
@@ -144,8 +144,8 @@
                                 <th mat-header-cell *matHeaderCellDef> EPAllows Self Insurance </th>
                                 <td mat-cell *matCellDef="let element">
                                     <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
-                                        <mat-select>
-                                            <mat-option value="YES" selected> {{element.EPAllowsSelfInsurance}}
+                                        <mat-select  [(value)]="EPAllowsSelfInsurance">
+                                            <mat-option value="Yes"> {{element.EPAllowsSelfInsurance}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
@@ -169,8 +169,8 @@
                                 <th mat-header-cell *matHeaderCellDef>Risk Retention Insurance (RRG) Allowed </th>
                                 <td mat-cell *matCellDef="let element">
                                     <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
-                                        <mat-select>
-                                            <mat-option value="YES" selected> {{element.RiskRetentionInsuranceAllowed}}
+                                        <mat-select  [(value)]="RiskRetentionInsuranceAllowed">
+                                            <mat-option value="Yes"> {{element.RiskRetentionInsuranceAllowed}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
@@ -182,8 +182,8 @@
                                 <th mat-header-cell *matHeaderCellDef>EP Specific Insurance Policy Allowed</th>
                                 <td mat-cell *matCellDef="let element">
                                     <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
-                                        <mat-select>
-                                            <mat-option value="YES" selected>
+                                        <mat-select  [(value)]="EPSpecificInsurancePolicyAllowed">
+                                            <mat-option value="Yes" >
                                                 {{element.EPSpecificInsurancePolicyAllowed}}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
@@ -213,13 +213,20 @@
 
                         <table mat-table [dataSource]="dataSource1" class="widthfull m-10">
 
+                            <!-- <ng-container matColumnDef="Delete">
+                                <mat-header-cell *matHeaderCellDef class="txt_center">Delete</mat-header-cell>
+                                <mat-cell *matCellDef="let element" data-label="Delete" class="txt_center">
+                                    <mat-checkbox></mat-checkbox>
+                                </mat-cell>
+                            </ng-container> -->
+
                             <!-- Policy Column -->
                             <ng-container matColumnDef="Policy">
                                 <th mat-header-cell *matHeaderCellDef> Policy. </th>
                                 <td mat-cell *matCellDef="let element">
                                     <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
-                                        <mat-select>
-                                            <mat-option value="option">{{element.Policy}}</mat-option>
+                                        <mat-select  [(value)]="Policy">
+                                            <mat-option value="AL">{{element.Policy}}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </td>
@@ -245,6 +252,7 @@
                                 </td>
                             </ng-container>
 
+                            
 
                             <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
@@ -269,6 +277,8 @@
 
 
                         <table mat-table [dataSource]="dataSource2" class="widthfull m-10">
+
+                            
 
                             <!-- Policy Column -->
                             <ng-container matColumnDef="Description">
@@ -295,8 +305,8 @@
                                 <th mat-header-cell *matHeaderCellDef> Required </th>
                                 <td mat-cell *matCellDef="let element">
                                     <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
-                                        <mat-select>
-                                            <mat-option value="option">{{element.Required}}</mat-option>
+                                        <mat-select  [(value)]="Required">
+                                            <mat-option value="Yes">{{element.Required}}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </td>
@@ -328,7 +338,7 @@
                             <ng-container matColumnDef="Download">
                                 <th mat-header-cell *matHeaderCellDef>Download</th>
                                 <td mat-cell *matCellDef="let element">
-                                    {{element.Download}} </td>
+                                    <a href="#" class="link_c">{{element.Download}}</a> </td>
                             </ng-container>
 
                             <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
