@@ -61,4 +61,6 @@ public interface EPService {
 	EPAddendumDetForm getEPTemplateDetails(SecurityObject securityObject, String templateId, String dbStatus,
 			String effDate) throws Exception;
 
+	EPAddendum getActiveTemplate(String epAcctNo, String uvalidFlg) throws Exception;
+
 }

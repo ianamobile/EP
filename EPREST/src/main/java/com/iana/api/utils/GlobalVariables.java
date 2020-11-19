@@ -340,6 +340,13 @@ public class GlobalVariables {
 	public static final String CATEGORY_UIIA_INVOICES 			= "UIIA Invoices";
 	public static final String TEMP="TEMP";
 	public static final String ROLE_MC= "MC";
+	public static final String MC_CHANGE="MCCHNG";
+	public static final String EP_CHANGE="EPCHNG";
+	public static final String MC_EP_CHANGE="MCEPCHNG";
+	public static final String UVLD_POLICY_EXPIRED = "POLICYEXPIRED";
+	public static final String UVLD_CARGO_HAULSOWN = "HAULSOWN";
+	public static final String WCUNEEDUHAVE ="WCUNEEDUHAVE";
+	public static final String ADDL_REQ_LOC="LOC";
 	
 	   
 }
