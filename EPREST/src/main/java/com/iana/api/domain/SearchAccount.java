@@ -18,5 +18,6 @@ public class SearchAccount extends CommonFieldsSearch {
 	private String epName;
 	private String epScac;
 	private String date;
+	private String skipPagination;
 	
 }

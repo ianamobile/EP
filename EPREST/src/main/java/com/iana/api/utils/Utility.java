@@ -690,5 +690,15 @@ public class Utility {
 
 		return "0";
 	}
+	
+	public static String convertString(String str) 
+	 {
+		 int isApostrophe = str.indexOf("'");
+		 if (isApostrophe != -1)
+		 {
+			 str = str.replaceAll("'", "\\\\'");
+		 }
+	     return str;
+	  }
 
 }

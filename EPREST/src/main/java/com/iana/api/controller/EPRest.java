@@ -1,5 +1,6 @@
 package com.iana.api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.iana.api.domain.AccountInfo;
 import com.iana.api.domain.AccountMaster;
 import com.iana.api.domain.EPAcctInfo;
 import com.iana.api.domain.EPAddendumDetForm;
@@ -65,6 +67,8 @@ public class EPRest extends CommonUtils {
 	public static final String URI_CURRENT_ADDENDUM_DETAILS = "loadAddendumDetails";
 	public static final String URI_MC_DELETED_LIST = "searchMcDeleted";
 	public static final String URI_TERMINAL_FEED_LOCATION = "terminalFeedLocation";
+	public static final String URI_ARCH_HISTORY_LOOKUP = "archHisLookUp";
+	public static final String URI_MC_DETAILS = "mcDetails";
 
 	@Autowired
 	private EPService epService;
@@ -421,5 +425,123 @@ public class EPRest extends CommonUtils {
 		}
 
 	}
+	
+	@GetMapping(path = URI_ARCH_HISTORY_LOOKUP, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "GET LIST OF ARCHIVAL AND HISTORY "
+			+ CLASS_NAME, responseContainer = "List", response = JoinRecord.class, tags = {
+					GlobalVariables.CATEGORY_MC_LOOKUP })
+	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
+			@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
+			@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class) })
+	public ResponseEntity<?> lookupArchivalAndHistory(
+			@RequestParam(value = "acctNo", defaultValue = "") String acctNo,
+			@RequestParam(value = "mcScac", defaultValue = "") String mcScac,
+			@RequestParam(value = "mcName", defaultValue = "") String mcName,
+			@RequestParam(value = "epSCACCode", defaultValue = "") String epSCACCode,
+			@RequestParam(value = "epName", defaultValue = "") String epName,
+			@RequestParam(value = "lookupDate", defaultValue = "") String lookupDate,
+			@RequestParam(value = "pageIndex", defaultValue = GlobalVariables.DEFAULT_ZERO) int pageIndex,
+			@RequestParam(value = "pageSize", defaultValue = GlobalVariables.DEFAULT_TEN) int pageSize,
+			HttpServletRequest request) {
+
+		List<Errors> errors = null;
+		
+		List<String> errorList = getListInstance();
+		Pagination pagination = new Pagination();
+
+		try {
+			List<AccountInfo> memberList = new ArrayList<>();
+			SecurityObject securityObject = (SecurityObject) request.getAttribute(GlobalVariables.SECURITY_OBJECT);
+			SearchAccount searchAccount = new SearchAccount();
+			searchAccount.setCompanyName(mcName);
+			searchAccount.setAccountNumber(acctNo);
+			searchAccount.setScac(mcScac);
+			searchAccount.setEpName(epName);
+			searchAccount.setEpScac(epSCACCode);
+			searchAccount.setDate(lookupDate);
+			searchAccount.setUserType(GlobalVariables.MOTORCARRIER); // No need to change as in query set MC OR NON_UIIA_MC as mem_type - Saumil on 07/19/2019
+			
+			epService.validateArchHisLookUp(securityObject, searchAccount, errorList);
+			if (isNotNullOrEmpty(errorList)) {
+				errors = setValidationErrors(errorList);
+
+			} else {
+				memberList = epService.getArchivalHistoryLookUp(searchAccount, pageIndex, pageSize);
+			}
+			if (isNotNullOrEmpty(errors)) {
+				return sendUnprocessableEntity(errors);
+			} else {
+				return new ResponseEntity<SearchResult<AccountInfo>>(new SearchResult<>(memberList, pagination),
+						HttpStatus.OK);
+			}
+
+		} catch (ApiException e) {
+			return sendValidationError(e);
+
+		} catch (Exception e) {
+			return sendServerError(e, GlobalVariables.FAIL);
+		}
+
+	}
+	
+	@GetMapping(path = URI_ARCH_HISTORY_LOOKUP + URI_MC_DETAILS, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "GET MC DETAILS FROM ARCHIVAL AND HISTORY "
+			+ CLASS_NAME, responseContainer = "List", response = JoinRecord.class, tags = {
+					GlobalVariables.CATEGORY_MC_LOOKUP })
+	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
+			@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
+			@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class) })
+	public ResponseEntity<?> getMCDetailsForArchivalAndHistory(
+			@RequestParam(value = "acctNo", defaultValue = "") String acctNo,
+			@RequestParam(value = "mcScac", defaultValue = "") String mcScac,
+			@RequestParam(value = "mcName", defaultValue = "") String mcName,
+			@RequestParam(value = "epSCACCode", defaultValue = "") String epSCACCode,
+			@RequestParam(value = "epName", defaultValue = "") String epName,
+			@RequestParam(value = "lookupDate", defaultValue = "") String lookupDate,
+			@RequestParam(value = "pageIndex", defaultValue = GlobalVariables.DEFAULT_ZERO) int pageIndex,
+			@RequestParam(value = "pageSize", defaultValue = GlobalVariables.DEFAULT_TEN) int pageSize,
+			HttpServletRequest request) {
+
+		List<Errors> errors = null;
+		
+		List<String> errorList = getListInstance();
+		Pagination pagination = new Pagination();
+
+		try {
+			List<AccountInfo> memberList = new ArrayList<>();
+			SecurityObject securityObject = (SecurityObject) request.getAttribute(GlobalVariables.SECURITY_OBJECT);
+			SearchAccount searchAccount = new SearchAccount();
+			searchAccount.setCompanyName(mcName);
+			searchAccount.setAccountNumber(acctNo);
+			searchAccount.setScac(mcScac);
+			searchAccount.setEpName(epName);
+			searchAccount.setEpScac(epSCACCode);
+			searchAccount.setDate(lookupDate);
+			
+			
+			epService.validateMCDetailsForArchHisLookUp(securityObject, searchAccount, errorList);
+			if (isNotNullOrEmpty(errorList)) {
+				errors = setValidationErrors(errorList);
+
+			} else {
+				epService.getMCDetailsForArchivalHistoryLookUp(searchAccount, pageIndex, pageSize);
+			}
+			if (isNotNullOrEmpty(errors)) {
+				return sendUnprocessableEntity(errors);
+			} else {
+				return new ResponseEntity<SearchResult<AccountInfo>>(new SearchResult<>(memberList, pagination),
+						HttpStatus.OK);
+			}
+
+		} catch (ApiException e) {
+			return sendValidationError(e);
+
+		} catch (Exception e) {
+			return sendServerError(e, GlobalVariables.FAIL);
+		}
+
+	}
+	
+	
 
 }

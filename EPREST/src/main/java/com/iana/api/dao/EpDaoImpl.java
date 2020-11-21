@@ -29,15 +29,28 @@ import com.iana.api.domain.EPJoinDet;
 import com.iana.api.domain.EPTemplate;
 import com.iana.api.domain.EPTerminalFeed;
 import com.iana.api.domain.JoinRecord;
+import com.iana.api.domain.MCAcctInfo;
 import com.iana.api.domain.MCCancel;
 import com.iana.api.domain.MCDataJsonDTO;
+import com.iana.api.domain.ScannedDoc;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SecUserDetails;
 import com.iana.api.domain.SecurityObject;
+import com.iana.api.domain.acord.AutoBean;
+import com.iana.api.domain.acord.CargoBean;
+import com.iana.api.domain.acord.ContCargoBean;
+import com.iana.api.domain.acord.ELBean;
+import com.iana.api.domain.acord.EmpDishBean;
+import com.iana.api.domain.acord.GenBean;
+import com.iana.api.domain.acord.RefTrailerBean;
+import com.iana.api.domain.acord.TrailerBean;
+import com.iana.api.domain.acord.UmbBean;
+import com.iana.api.domain.acord.WCBean;
 import com.iana.api.utils.CommonUtils;
 import com.iana.api.utils.DateTimeFormater;
 import com.iana.api.utils.GlobalVariables;
 import com.iana.api.utils.Utility;
+
 
 @Repository
 public class EpDaoImpl extends GenericDAO implements EpDao {
@@ -1035,5 +1048,2019 @@ public class EpDaoImpl extends GenericDAO implements EpDao {
 				enableTransMgmt);
 
 	}
+
+	@Override
+	public List<AccountInfo> searchMemberArch(SearchAccount searchAccount, int pageIndex, int pageSize)
+			throws Exception {
+		List<AccountInfo> arlMemberList = new ArrayList<>();
+		StringBuffer tempCompName = new StringBuffer(searchAccount.getCompanyName());
+		tempCompName.append("%");
+		StringBuffer tempSCAC = new StringBuffer(searchAccount.getEpScac());
+		tempSCAC.append("%");
+		StringBuffer tempAccNo = new StringBuffer(searchAccount.getAccountNumber());
+		tempAccNo.append("%");
+		StringBuffer tempMemType = new StringBuffer(searchAccount.getUserType());
+		tempMemType.append("%");
+
+		StringBuffer sbGetQuery = null;
+		StringBuffer sbGetQuery1 = null;
+		if (StringUtils.isNotBlank(searchAccount.getKnownAs())) {
+			// we have known as code as search criteria
+			sbGetQuery = new StringBuffer("SELECT account_no,company_name,scac_code,uiia_status,mem_type");
+			sbGetQuery.append(" FROM account_info a WHERE ");
+			sbGetQuery.append(
+					" (company_name LIKE  ? AND IF(scac_code IS NOT NULL,scac_code,'%') LIKE ? AND account_no like ? ) ");
+
+			if (tempMemType.toString().equalsIgnoreCase("IDD%")) {
+				sbGetQuery.append(" AND (mem_type like ? || ");
+				sbGetQuery.append(" account_no in (SELECT DISTINCT mc_acct_no FROM driver_details )) ");
+			} else {
+				if (GlobalVariables.ROLE_MC.equalsIgnoreCase(searchAccount.getUserType())) {
+					sbGetQuery.append(" AND (mem_type LIKE ? OR mem_type LIKE ?) ");
+				} else {
+					sbGetQuery.append(" AND mem_type like ? ");
+				}
+			}
+			sbGetQuery.append(" AND EXISTS (SELECT 1 FROM ep_mc_join_details e WHERE a.account_no = e.mc_acct_no ");
+			sbGetQuery.append(" AND IF(e.ep_known_as is not null, e.ep_known_as,'%') LIKE ?)");
+			sbGetQuery.append(" ORDER BY company_name");
+		} else {
+			sbGetQuery = new StringBuffer("SELECT account_no,company_name,scac_code,uiia_status,mem_type");
+			sbGetQuery.append(" FROM account_info WHERE ");
+			sbGetQuery.append(
+					" (company_name LIKE  ? AND IF(scac_code IS NOT NULL,scac_code,'%') LIKE ? AND account_no like ? ) ");
+			if (tempMemType.toString().equalsIgnoreCase("IDD%")) {
+				sbGetQuery.append(" AND (mem_type like ? || ");
+				sbGetQuery.append(" account_no in (SELECT DISTINCT mc_acct_no FROM driver_details )) ");
+			} else {
+				if (GlobalVariables.ROLE_MC.equalsIgnoreCase(searchAccount.getUserType())) {
+					sbGetQuery.append(" AND (mem_type LIKE ? OR mem_type LIKE ? ) ");
+
+				} else {
+					sbGetQuery.append(" AND mem_type like ? ");
+				}
+			}
+			sbGetQuery.append(" ORDER BY company_name");
+		}
+		if (!GlobalVariables.YES.equals(searchAccount.getSkipPagination())) {
+			log.debug("Pagination added in Query");
+			sbGetQuery.append(" LIMIT ?,?");
+		}
+
+		List<Object> params = new ArrayList<>();
+		params.add(tempCompName.toString());
+		params.add(tempSCAC.toString());
+		params.add(tempAccNo.toString());
+
+		if (GlobalVariables.ROLE_MC.equalsIgnoreCase(searchAccount.getUserType())) {
+			params.add(GlobalVariables.ROLE_MC + GlobalVariables.PERCENTAGE);
+			params.add(GlobalVariables.ROLE_NON_UIIA_MC + GlobalVariables.PERCENTAGE);
+
+		} else {
+			params.add(tempMemType);
+		}
+
+		if (StringUtils.isNotBlank(searchAccount.getKnownAs())) {
+			StringBuffer tmpKnwAs = new StringBuffer(searchAccount.getKnownAs());
+			tmpKnwAs.append("%");
+			params.add(tmpKnwAs.toString());
+		}
+
+		if (!GlobalVariables.YES.equals(searchAccount.getSkipPagination())) {
+			log.debug("Pagination parameters added");
+			params.add((pageIndex * pageSize));
+			params.add(pageSize);
+		}
+		if (searchAccount != null) {
+
+			getSpringJdbcTemplate(this.uiiaDataSource).query(sbGetQuery.toString(),
+					new ResultSetExtractor<List<AccountInfo>>() {
+
+						@Override
+						public List<AccountInfo> extractData(ResultSet rsMemList)
+								throws SQLException, DataAccessException {
+
+							while (rsMemList.next()) {
+								AccountInfo acctDetails = new AccountInfo();
+								acctDetails.setAccountNo(rsMemList.getString("account_no"));
+								acctDetails.setCompanyName(rsMemList.getString("company_name"));
+								acctDetails.setScacCode(rsMemList.getString("scac_code"));
+								acctDetails.setUiiaStatus(rsMemList.getString("uiia_status"));
+								acctDetails.setMemType(rsMemList.getString("mem_type"));
+								arlMemberList.add(acctDetails);
+							}
+
+							return arlMemberList;
+						}
+					}, params.toArray());
+
+			if (arlMemberList == null || arlMemberList.isEmpty()) {
+				if (StringUtils.isNotBlank(searchAccount.getKnownAs())) {
+					// we have known as code as search criteria
+					sbGetQuery1 = new StringBuffer(
+							"SELECT distinct account_no,company_name,scac_code,uiia_status,mem_type");
+					sbGetQuery1.append(" FROM arch_account_info a WHERE ");
+					sbGetQuery1.append(
+							" (company_name LIKE  ? AND IF(scac_code IS NOT NULL,scac_code,'%') LIKE ? AND account_no like ? ) ");
+
+					if (tempMemType.toString().equalsIgnoreCase("IDD%")) {
+						sbGetQuery1.append(" AND (mem_type like ? || ");
+						sbGetQuery1.append(" account_no in (SELECT DISTINCT mc_acct_no FROM driver_details)) ");
+					} else {
+						sbGetQuery1.append(" AND mem_type like ? ");
+					}
+					sbGetQuery1.append(
+							" AND EXISTS (SELECT 1 FROM ep_mc_join_details e WHERE a.account_no = e.mc_acct_no ");
+					sbGetQuery1.append(" AND IF(e.ep_known_as is not null, e.ep_known_as,'%') LIKE ?)");
+					sbGetQuery1.append(" ORDER BY company_name");
+				} else {
+					sbGetQuery1 = new StringBuffer(
+							"SELECT distinct account_no,company_name,scac_code,uiia_status,mem_type");
+					sbGetQuery1.append(" FROM arch_account_info WHERE ");
+					sbGetQuery1.append(
+							" (company_name LIKE  ? AND IF(scac_code IS NOT NULL,scac_code,'%') LIKE ? AND account_no like ? ) ");
+					if (tempMemType.toString().equalsIgnoreCase("IDD%")) {
+						sbGetQuery1.append(" AND (mem_type like ? || ");
+						sbGetQuery1.append(" account_no in (SELECT DISTINCT mc_acct_no FROM driver_details )) ");
+					} else {
+						sbGetQuery1.append(" AND mem_type like ? ");
+					}
+					sbGetQuery1.append(" ORDER BY company_name");
+				}
+				if (!GlobalVariables.YES.equals(searchAccount.getSkipPagination())) {
+					log.debug("Pagination added in Query");
+					sbGetQuery1.append(" LIMIT ?,?");
+				}
+				params = new ArrayList<>();
+				params.add(tempCompName.toString());
+				params.add(tempSCAC.toString());
+				params.add(tempAccNo.toString());
+				params.add(tempMemType.toString());
+
+				// use this variable for adjusting count for limit parameters
+				// in case known as code is present.
+				int j = 5;
+
+				if (StringUtils.isNotBlank(searchAccount.getKnownAs())) {
+					StringBuffer tmpKnwAs = new StringBuffer(searchAccount.getKnownAs());
+					tmpKnwAs.append("%");
+					params.add(tmpKnwAs.toString());
+					j++;// i is now 6
+				}
+
+				if (!GlobalVariables.YES.equals(searchAccount.getSkipPagination())) {
+					log.debug("Pagination parameters added");
+					params.add((pageIndex * pageSize));
+					params.add(pageSize);
+				}
+				getSpringJdbcTemplate(this.uiiaDataSource).query(sbGetQuery1.toString(),
+						new ResultSetExtractor<List<AccountInfo>>() {
+
+							@Override
+							public List<AccountInfo> extractData(ResultSet rsMemList)
+									throws SQLException, DataAccessException {
+
+								while (rsMemList.next()) {
+									AccountInfo acctDetails = new AccountInfo();
+									acctDetails.setAccountNo(rsMemList.getString("account_no"));
+									acctDetails.setCompanyName(rsMemList.getString("company_name"));
+									acctDetails.setScacCode(rsMemList.getString("scac_code"));
+									acctDetails.setUiiaStatus(rsMemList.getString("uiia_status"));
+									acctDetails.setMemType(rsMemList.getString("mem_type"));
+									arlMemberList.add(acctDetails);
+								}
+
+								return arlMemberList;
+							}
+						}, params.toArray());
+			}
+
+		}
+		return arlMemberList;
+	}
+
+	@Override
+	public String getEPAccountNumber(String epName, String epSCAC) throws Exception {
+		String epAccNo = "";
+		String epnmQuery = "SELECT account_no from account_info where company_name ='" + epName + "' and mem_type ='"
+				+ GlobalVariables.ROLE_EP + "'";
+		String epscacQuery = "SELECT account_no from account_info where scac_code ='" + epSCAC + "' and mem_type ='"
+				+ GlobalVariables.ROLE_EP + "'";
+		String queryForExecution = "";
+		if (!epName.equals("")) {
+			queryForExecution = epnmQuery;
+		} else if (!epSCAC.equals("")) {
+			queryForExecution = epscacQuery;
+		}
+		epAccNo = findObject(this.uiiaDataSource, queryForExecution.toString(), String.class);
+
+		return epAccNo;
+	}
+
+	@Override
+	public MCAcctInfo getMCBasicInfo(SearchAccount searchparams) throws Exception {
+		
+		String sMCAcctNo = "";
+		String sMCName = "%";
+		String sMCScac = "%";
+		
+		if (!searchparams.getAccountNumber().equals("")) {
+			sMCAcctNo = searchparams.getAccountNumber();
+		} else {
+			sMCAcctNo = "%";
+		}
+		/*
+		 * if(searchparams.getCompanyName()!= "") { sMCName =
+		 * searchparams.getCompanyName(); } else { sMCName = "%"; }
+		 * if(!searchparams.getSCAC().equals("")) { sMCScac = searchparams.getSCAC(); }
+		 * else { sMCScac = "%"; }
+		 */
+
+		StringBuffer sbQry = new StringBuffer(
+				"SELECT a.account_no,a.company_name,a.scac_code,a.iana_mem,a.uiia_status,a.mem_type, ");
+		sbQry.append("ad.addr_street1,ad.addr_street2,ad.addr_city,ad.addr_zip,ad.addr_state,ad.addr_country,");
+		sbQry.append(
+				"c.contct_fname,c.contct_lname,c.contct_mname,c.contct_prm_phone,c.contct_prm_fax,c.contct_prm_email,date_format(a.deleted_date,'%m/%d/%Y') as deleted_date ");
+		sbQry.append("FROM account_info a ");
+		sbQry.append("LEFT OUTER JOIN address_master ad ON (ad.addr_type = ? AND ad.account_no = a.account_no ) ");
+		sbQry.append("LEFT OUTER JOIN contacts_master c ON (c.contct_type = ? AND c.account_no = a.account_no ) ");
+		sbQry.append("WHERE a.account_no LIKE ? AND ");
+		sbQry.append("a.company_name LIKE ? AND a.scac_code LIKE ? ");
+		sbQry.append("AND (a.mem_eff_dt IS NULL OR date_format(a.mem_eff_dt,'%Y-%m-%d') <= ?) ");
+		sbQry.append(" UNION SELECT a.account_no,a.company_name,a.scac_code,");
+		sbQry.append(
+				"a.iana_mem,a.uiia_status,a.mem_type,ad.addr_street1,ad.addr_street2,ad.addr_city,ad.addr_zip,ad.addr_state,ad.addr_country,");
+		sbQry.append(
+				"c.contct_fname,c.contct_lname,c.contct_mname,c.contct_prm_phone,c.contct_prm_fax,c.contct_prm_email,date_format(a.deleted_date,'%m/%d/%Y') as deleted_date ");
+		sbQry.append("FROM arch_account_info a ");
+		sbQry.append(
+				"LEFT OUTER JOIN arch_address_master ad ON (ad.addr_type = ? AND ad.account_no = a.account_no AND (date_format(ad.eff_start_dt,'%Y-%m-%d') <= ? OR date_format(ad.eff_end_dt,'%Y-%m-%d') > ?)) ");
+		sbQry.append(
+				"LEFT OUTER JOIN arch_contacts_master c ON (c.contct_type = ? AND c.account_no = a.account_no AND (date_format(c.eff_start_dt,'%Y-%m-%d') <= ? OR date_format(c.eff_end_dt,'%Y-%m-%d') > ?)) ");
+		sbQry.append("WHERE a.account_no LIKE ?  ");
+		sbQry.append("AND a.company_name LIKE ? AND a.scac_code LIKE ? ");
+		sbQry.append("AND (date_format(a.eff_start_dt,'%Y-%m-%d') <=? AND date_format(a.eff_end_dt,'%Y-%m-%d') > ?) ");
+
+		log.debug("sMCAcctNo:::" + sMCAcctNo);
+		log.debug("sMCName:::" + sMCName);
+		log.debug("sMCScac:::" + sMCScac);
+		log.debug("searchparams.getDate():::" + searchparams.getDate());
+
+		List<Object> params = new ArrayList<>();
+		params.add(GlobalVariables.CONTACTADDTYPE);
+		params.add(GlobalVariables.CONTACTADDTYPE);
+		params.add(sMCAcctNo);
+		params.add(sMCName);
+		params.add(sMCScac);
+		params.add(Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4));
+		params.add(GlobalVariables.CONTACTADDTYPE);
+		params.add(Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4));
+		params.add(Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4));
+		params.add(GlobalVariables.CONTACTADDTYPE);
+		params.add(Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4));
+		params.add(Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4));
+		params.add(sMCAcctNo);
+		params.add(sMCName);
+		params.add(sMCScac);
+		params.add(Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4));
+		params.add(Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4));
+
+		log.info("Query fired is " + sbQry.toString());
+
+		MCAcctInfo mcAcctInfo = getSpringJdbcTemplate(this.uiiaDataSource).query(sbQry.toString(),
+				new ResultSetExtractor<MCAcctInfo>() {
+
+					@Override
+					public MCAcctInfo extractData(ResultSet rs) throws SQLException, DataAccessException {
+						MCAcctInfo mcBean = new MCAcctInfo();
+						while (rs.next()) {
+							log.debug("Inside Record Set");
+							if (rs.getString("account_no") != null) {
+								mcBean.getAcctInfo().setAccountNo(rs.getString("account_no"));
+							}
+							if (rs.getString("company_name") != null) {
+								mcBean.getAcctInfo().setCompanyName(rs.getString("company_name"));
+							}
+							if (rs.getString("scac_code") != null) {
+								mcBean.getAcctInfo().setScacCode(rs.getString("scac_code"));
+							}
+							if (rs.getString("iana_mem") != null) {
+								mcBean.getAcctInfo().setIanaMem(rs.getString("iana_mem"));
+							}
+							if (rs.getString("uiia_status") != null) {
+								mcBean.getAcctInfo().setUiiaStatus(rs.getString("uiia_status"));
+							}
+							if (rs.getString("addr_street1") != null) {
+								mcBean.getCntctAdd().setAddrStreet1(rs.getString("addr_street1"));
+							}
+							if (rs.getString("addr_street1") != null) {
+								mcBean.getCntctAdd().setAddrStreet1(rs.getString("addr_street1"));
+							}
+							if (rs.getString("addr_street2") != null) {
+								mcBean.getCntctAdd().setAddrStreet2(rs.getString("addr_street2"));
+							}
+							if (rs.getString("addr_city") != null) {
+								mcBean.getCntctAdd().setAddrCity(rs.getString("addr_city"));
+							}
+							if (rs.getString("addr_zip") != null) {
+								mcBean.getCntctAdd().setAddrZip(rs.getString("addr_zip"));
+							}
+							if (rs.getString("addr_state") != null) {
+								mcBean.getCntctAdd().setAddrState(rs.getString("addr_state"));
+							}
+							if (rs.getString("addr_country") != null) {
+								mcBean.getCntctAdd().setAddrCountry(rs.getString("addr_country"));
+							}
+							if (rs.getString("contct_fname") != null) {
+								mcBean.getCntctInfo().setContctFname(rs.getString("contct_fname"));
+							}
+							if (rs.getString("contct_mname") != null) {
+								mcBean.getCntctInfo().setContctMname(rs.getString("contct_mname"));
+							}
+							if (rs.getString("contct_lname") != null) {
+								mcBean.getCntctInfo().setContctLname(rs.getString("contct_lname"));
+							}
+							if (rs.getString("contct_prm_phone") != null) {
+								mcBean.getCntctInfo().setContctPrmPhone(rs.getString("contct_prm_phone"));
+							}
+							if (rs.getString("contct_prm_fax") != null) {
+								mcBean.getCntctInfo().setContctPrmFax(rs.getString("contct_prm_fax"));
+							}
+							if (rs.getString("contct_prm_email") != null) {
+								mcBean.getCntctInfo().setContctPrmEmail(rs.getString("contct_prm_email"));
+							}
+							if (rs.getString("deleted_date") != null) {
+								mcBean.getAcctInfo().setDeletedDate(rs.getString("deleted_date"));
+							}
+							if (rs.getString("mem_type") != null) {
+								mcBean.getAcctInfo().setMemType(rs.getString("mem_type"));
+							}
+						}
+						return mcBean;
+
+					}
+				}, params.toArray());
+
+		log.info("Exiting method getMCBasicInfo of class ArchivedData with return value " + mcAcctInfo);
+		return mcAcctInfo;
+	}
+
+	/*
+	 * checks if there are any active policies for a given MC
+	 * 
+	 * @param Connection conn
+	 * 
+	 * @param SearchAccountBean searchparams
+	 * 
+	 * @return HashMap
+	 * 
+	 * @throws UiiaException
+	 */
+	@Override
+	public Map<String, Object> getInPlacePolicyForMC(SearchAccount searchparams) throws Exception {
+		Map<String, Object> activePolicies = new HashMap<>();
+		
+		// StringBuffer sbQry = new StringBuffer("SELECT
+		// m.certi_id,m.policy_mst_id,m.policy_no,m.mc_acct_no,m.policy_code,");
+		StringBuffer sbQry = new StringBuffer(
+				"SELECT m.certi_id,m.policy_mst_id,m.policy_no,m.mc_acct_no,m.policy_code,m.mem_chk_flg,m.ti_endorsement_ll,");
+		sbQry.append(
+				"m.policy_type,m.policy_eff_dt,m.policy_exp_dt,m.policy_ovrwrtn_dt,m.policy_trmintn_entr_dt,m.policy_trmintn_eff_dt,m.policy_trmintn_rsn,m.policy_reinstd_entr_dt,");
+		sbQry.append(
+				"m.policy_reinstd_eff_dt,m.policy_reinstd_rsn,m.policy_deductible,IF(p.acv='Y','ACV',m.policy_limit) as policy_limit,m.self_insured,m.currency,m.insurer_name,m.naic_no,m.rrg_flag,m.addnl_insrd_flag,");
+		sbQry.append(
+				"m.policy_status,m.blnkt_reqd,m.blnkt_wording,m.policy_inplace,m.attr1,m.attr2,m.attr3,m.mc_name,m.mc_scac,p.policy_dtl_id,p.no_of_claims,p.no_of_occur,p.dmg_to_rntd_premises,");
+		sbQry.append(
+				"p.medi_expense,p.prsnl_adv_inj,p.gen_agg,p.products,p.bdly_inj_perprsn,p.bdly_inj_peraccdnt,p.prop_dmg_peraccdnt,p.stnd_endo,");
+		sbQry.append(
+				"p.form_ncs_90,p.hauls_own_only,p.acv,p.wc_statuatory_lmts,p.el_each_occur,p.el_disease_ea_emp,p.el_disease_policy_lmt,");
+		sbQry.append(
+				"p.ulmtd_el_lmts,p.exempt,p.any,p.scheduled,p.hired,p.all_owned,p.non_owned,p.attr1 AS dattr1,p.attr2 AS dattr2,p.attr3 AS dattr3,a.company_name,if(ins.best_rtg is null,'SELF INSURED',ins.best_rtg) AS best_rating,c.certi_eff_date as certidate,c.certi_no,c.ia_acct_no,m.tmp_term_date,m.tmp_reins_date ");
+		sbQry.append(
+				"FROM policy_master m LEFT OUTER JOIN policy_details p ON(p.policy_mst_id = m.policy_mst_id),acord_certificates c,account_info a");
+		sbQry.append(
+				",policy_master m1 LEFT OUTER JOIN insurance_company_details ins on(m1.insurer_name = ins.co_name) ");
+		sbQry.append(
+				"WHERE m.mc_acct_no = ? AND m.policy_inplace = ? AND (date_format(m.modified_date,'%Y-%m-%d') <= ? OR m.modified_date IS NULL)  ");
+		sbQry.append(
+				"AND c.certi_id = m.certi_id AND c.certi_eff_date <= ? AND a.account_no = c.ia_acct_no AND m.policy_mst_id=m1.policy_mst_id AND m.mc_name = '"
+						+ Utility.convertString(searchparams.getCompanyName()) + "' ");
+
+		// sbQry.append("UNION SELECT
+		// m.certi_id,m.policy_mst_id,m.policy_no,m.mc_acct_no,m.policy_code,");
+		sbQry.append(
+				"UNION SELECT m.certi_id,m.policy_mst_id,m.policy_no,m.mc_acct_no,m.policy_code,m.mem_chk_flg,m.ti_endorsement_ll,");
+		sbQry.append(
+				"m.policy_type,m.policy_eff_dt,m.policy_exp_dt,m.policy_ovrwrtn_dt,m.policy_trmintn_entr_dt,m.policy_trmintn_eff_dt,m.policy_trmintn_rsn,");
+		sbQry.append(
+				"m.policy_reinstd_entr_dt,m.policy_reinstd_eff_dt,m.policy_reinstd_rsn,m.policy_deductible,IF(p.acv='Y','ACV',m.policy_limit) as policy_limit,m.self_insured,m.currency,m.insurer_name,m.naic_no,");
+		sbQry.append(
+				"m.rrg_flag,m.addnl_insrd_flag,m.policy_status,m.blnkt_reqd,m.blnkt_wording,m.policy_inplace,m.attr1,m.attr2,m.attr3,m.mc_name,m.mc_scac,p.policy_dtl_id,p.no_of_claims,p.no_of_occur,");
+		sbQry.append(
+				"p.dmg_to_rntd_premises,p.medi_expense,p.prsnl_adv_inj,p.gen_agg,p.products,p.bdly_inj_perprsn,p.bdly_inj_peraccdnt,p.prop_dmg_peraccdnt,p.stnd_endo,");
+		sbQry.append(
+				"p.form_ncs_90,p.hauls_own_only,p.acv,p.wc_statuatory_lmts,p.el_each_occur,p.el_disease_ea_emp,p.el_disease_policy_lmt,");
+		sbQry.append(
+				"p.ulmtd_el_lmts,p.exempt,p.any,p.scheduled,p.hired,p.all_owned,p.non_owned,p.attr1 AS dattr1,p.attr2 AS dattr2,p.attr3 AS dattr3,a.company_name,if(ins.best_rtg is null,'SELF INSURED',ins.best_rtg) AS best_rating,c.certi_eff_date as certidate,c.certi_no,c.ia_acct_no,m.tmp_term_date,m.tmp_reins_date ");
+		sbQry.append(
+				"FROM arch_policy_master m LEFT OUTER JOIN policy_details p ON(p.policy_mst_id = m.policy_mst_id),acord_certificates c,account_info a ");
+		sbQry.append(
+				",policy_master m1 LEFT OUTER JOIN insurance_company_details ins on(m1.insurer_name = ins.co_name) ");
+		sbQry.append("WHERE m.mc_acct_no = ? AND m.policy_inplace = ? "
+				+ " AND (IF(m.policy_code='AL',(SELECT MAX(eff_end_dt) FROM arch_policy_master apm,acord_certificates c where apm.mc_acct_no ='"
+				+ searchparams.getAccountNumber()
+				+ "' AND apm.policy_code='AL' AND apm.policy_type='PRIMARY' AND c.certi_id = apm.certi_id AND c.certi_eff_date <= '"
+				+ Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4) + "' )=m.eff_end_dt,'')"
+				+ " OR IF(m.policy_code='GL',(SELECT MAX(eff_end_dt) FROM arch_policy_master apm,acord_certificates c where apm.mc_acct_no ='"
+				+ searchparams.getAccountNumber()
+				+ "' AND apm.policy_code='GL' AND apm.policy_type='PRIMARY' AND c.certi_id = apm.certi_id AND c.certi_eff_date <= '"
+				+ Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4) + "' )=m.eff_end_dt,'')"
+				+ " OR IF(m.policy_code='CARGO',(SELECT MAX(eff_end_dt) FROM arch_policy_master apm,acord_certificates c where apm.mc_acct_no ='"
+				+ searchparams.getAccountNumber()
+				+ "' AND apm.policy_code='CARGO' AND apm.policy_type='PRIMARY' AND c.certi_id = apm.certi_id AND c.certi_eff_date <= '"
+				+ Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4) + "' )=m.eff_end_dt,'')"
+				+ " OR IF(m.policy_code='TI',(SELECT MAX(eff_end_dt) FROM arch_policy_master apm,acord_certificates c where apm.mc_acct_no ='"
+				+ searchparams.getAccountNumber()
+				+ "' AND apm.policy_code='TI' AND apm.policy_type='PRIMARY' AND c.certi_id = apm.certi_id AND c.certi_eff_date <= '"
+				+ Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4) + "' )=m.eff_end_dt,'')"
+				+ " OR IF(m.policy_code='WC',(SELECT MAX(eff_end_dt) FROM arch_policy_master apm,acord_certificates c where apm.mc_acct_no ='"
+				+ searchparams.getAccountNumber()
+				+ "' AND apm.policy_code='WC' AND apm.policy_type='PRIMARY' AND c.certi_id = apm.certi_id AND c.certi_eff_date <= '"
+				+ Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4) + "' )=m.eff_end_dt,'')"
+				+ " OR IF(m.policy_code='CONTCARGO',(SELECT MAX(eff_end_dt) FROM arch_policy_master apm,acord_certificates c where apm.mc_acct_no ='"
+				+ searchparams.getAccountNumber()
+				+ "' AND apm.policy_code='CONTCARGO' AND apm.policy_type='PRIMARY' AND c.certi_id = apm.certi_id AND c.certi_eff_date <= '"
+				+ Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4) + "' )=m.eff_end_dt,'')"
+				+ " OR IF(m.policy_code='REFTRAILER',(SELECT MAX(eff_end_dt) FROM arch_policy_master apm,acord_certificates c where apm.mc_acct_no ='"
+				+ searchparams.getAccountNumber()
+				+ "' AND apm.policy_code='REFTRAILER' AND apm.policy_type='PRIMARY' AND c.certi_id = apm.certi_id AND c.certi_eff_date <= '"
+				+ Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4) + "' )=m.eff_end_dt,'')"
+				+ " OR IF(m.policy_code='EMPDHBOND',(SELECT MAX(eff_end_dt) FROM arch_policy_master apm,acord_certificates c where apm.mc_acct_no ='"
+				+ searchparams.getAccountNumber()
+				+ "' AND apm.policy_code='EMPDHBOND' AND apm.policy_type='PRIMARY' AND c.certi_id = apm.certi_id AND c.certi_eff_date <= '"
+				+ Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4) + "' )=m.eff_end_dt,'')"
+				+ " OR IF(m.policy_code='EL',(SELECT MAX(eff_end_dt) FROM arch_policy_master apm,acord_certificates c where apm.mc_acct_no ='"
+				+ searchparams.getAccountNumber()
+				+ "' AND apm.policy_code='EL' AND apm.policy_type='PRIMARY' AND c.certi_id = apm.certi_id AND c.certi_eff_date <= '"
+				+ Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4) + "' )=m.eff_end_dt,'')) ");
+		sbQry.append(
+				" AND c.certi_id = m.certi_id AND c.certi_eff_date <= ? AND a.account_no = c.ia_acct_no AND m.policy_mst_id=m1.policy_mst_id AND m.mc_name='"
+						+ Utility.convertString(searchparams.getCompanyName()) + "'");
+		sbQry.append(" AND m.policy_code not in (SELECT m.policy_code FROM policy_master m");
+		sbQry.append(
+				" LEFT OUTER JOIN policy_details p ON(p.policy_mst_id = m.policy_mst_id),acord_certificates c,account_info a,policy_master m1");
+		sbQry.append(" LEFT OUTER JOIN insurance_company_details ins on(m1.insurer_name = ins.co_name)");
+		sbQry.append(" WHERE m.mc_acct_no = '" + searchparams.getAccountNumber()
+				+ "' AND m.policy_inplace = 'Y' AND (date_format(m.modified_date,'%Y-%m-%d') <= '"
+				+ Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4)
+				+ "' OR m.modified_date IS NULL) AND eff_end_dt <= '"
+				+ Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4) + "'");
+		sbQry.append(" AND c.certi_id = m.certi_id AND c.certi_eff_date <= '"
+				+ Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4) + "' AND eff_end_dt <= '"
+				+ Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4)
+				+ "' AND a.account_no = c.ia_acct_no");
+		sbQry.append(" AND m.policy_mst_id=m1.policy_mst_id AND m.mc_name = '"
+				+ Utility.convertString(searchparams.getCompanyName()) + "')");
+
+		log.info("Query fired is " + sbQry.toString());
+
+		List<Object> params = new ArrayList<>();
+		params.add(searchparams.getAccountNumber());
+		params.add(GlobalVariables.YES);
+		params.add(Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4));
+		params.add(Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4));
+		params.add(searchparams.getAccountNumber());
+		params.add(GlobalVariables.YES);
+		params.add(Utility.stringToSqlDate(searchparams.getDate(), Utility.FORMAT4));
+
+		activePolicies = getSpringJdbcTemplate(this.uiiaDataSource).query(sbQry.toString(),
+				new ResultSetExtractor<Map<String, Object>>() {
+					@Override
+					public Map<String, Object> extractData(ResultSet rs) throws SQLException, DataAccessException {
+						/*
+						 * calling the method which will retrieve value from the resultset and populate
+						 * the hash table of policybeans according to the policy code and policy type
+						 */
+						return populatePolicyBean(rs);
+					}
+				}, params.toArray());
+
+		return activePolicies;
+	}
+
+	/*
+	 * this method obtains values from the resultset and according to the policy
+	 * code creates an instance of the bean of that policy code and puts it in a
+	 * hash table
+	 * 
+	 * @param Connection conn
+	 * 
+	 * @param Resultset rs
+	 * 
+	 * @return HashMap
+	 * 
+	 * @throws UiiaException
+	 * 
+	 */
+	public Map<String, Object> populatePolicyBean(ResultSet rs) throws SQLException {
+		// log.info("Enterting method
+		// populatePolicyBean("+conn.toString()+","+rs.toString()+") of class
+		// PolicyMaster");
+		Map<String, Object> policybeans = new HashMap<>();
+
+		ArrayList arlAL = new ArrayList();
+		ArrayList arlGL = new ArrayList();
+		ArrayList arlCL = new ArrayList();
+		ArrayList arlTI = new ArrayList();
+		ArrayList arlCC = new ArrayList();
+		ArrayList arlWC = new ArrayList();
+		ArrayList arlEL = new ArrayList();
+		ArrayList arlRTI = new ArrayList();
+		ArrayList arlEDH = new ArrayList();
+		ArrayList arlUMB = new ArrayList();
+
+		while (rs.next()) {
+			// log.debug("Getting values from resultset");
+			String sbKey = "";
+
+			// log.debug("Policy code obtained from resultset is
+			// "+rs.getString("POLICY_CODE"));
+
+			if (GlobalVariables.AUTOPOLICY.equals(rs.getString("POLICY_CODE"))) {
+				// log.debug("if policy code is autopolicy");
+				AutoBean albean = new AutoBean();
+
+				albean.setCertiId(rs.getInt("certi_id"));
+				albean.setPolicyMstId(rs.getInt("POLICY_MST_ID"));
+				if (rs.getString("POLICY_NO") != null) {
+					albean.setPolicyNo(rs.getString("POLICY_NO"));
+				}
+				if (rs.getString("MC_ACCT_NO") != null) {
+					albean.setMcAcctNo(rs.getString("MC_ACCT_NO"));
+				}
+				if (rs.getString("POLICY_CODE") != null) {
+					albean.setPolicyCode(rs.getString("POLICY_CODE"));
+				}
+				if (rs.getString("POLICY_TYPE") != null) {
+					albean.setPolicyType(rs.getString("POLICY_TYPE"));
+				}
+
+				albean.setPolicyEffDate(Utility.formatSqlDate(rs.getDate("POLICY_EFF_DT"), Utility.FORMAT4));
+				albean.setPolicyExpiryDate(Utility.formatSqlDate(rs.getDate("POLICY_EXP_DT"), Utility.FORMAT4));
+				albean.setPolicyOvrWrttnDate(Utility.formatSqlDate(rs.getDate("POLICY_OVRWRTN_DT"), Utility.FORMAT4));
+				albean.setPolicyTerminatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_entr_dt"), Utility.FORMAT4));
+				albean.setPolicyTerminatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("POLICY_TRMINTN_RSN") != null) {
+					albean.setPolicyTerminationReason(rs.getString("POLICY_TRMINTN_RSN"));
+				}
+
+				albean.setPolicyReinstatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_entr_dt"), Utility.FORMAT4));
+				albean.setPolicyReinstatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("policy_reinstd_rsn") != null) {
+					albean.setPolicyReinstatedReason(rs.getString("policy_reinstd_rsn"));
+				}
+
+				albean.setDeductible(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_DEDUCTIBLE"))));
+				if ("ACV".equals(rs.getString("POLICY_LIMIT"))) {
+					albean.setLimit("ACV");
+				} else {
+					albean.setLimit(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_LIMIT"))));
+				}
+
+				if (rs.getString("SELF_INSURED") != null) {
+					albean.setSelfInsured(rs.getString("SELF_INSURED"));
+				}
+				if (rs.getString("CURRENCY") != null) {
+					albean.setCurrency(rs.getString("CURRENCY"));
+				}
+				if (rs.getString("INSURER_NAME") != null) {
+					albean.setInsurerName(rs.getString("INSURER_NAME"));
+				}
+				if (rs.getString("NAIC_NO") != null) {
+					albean.setNaicNo(rs.getString("NAIC_NO"));
+				}
+				if (rs.getString("RRG_FLAG") != null) {
+					albean.setRrgFlg(rs.getString("RRG_FLAG"));
+				}
+				if (rs.getString("ADDNL_INSRD_FLAG") != null) {
+					albean.setAddlnInsured(rs.getString("ADDNL_INSRD_FLAG"));
+				}
+				if (rs.getString("POLICY_STATUS") != null) {
+					albean.setPolicyStatus(rs.getString("POLICY_STATUS"));
+				}
+				if (rs.getString("BLNKT_REQD") != null) {
+					albean.setBlanketReqd(rs.getString("BLNKT_REQD"));
+				}
+				albean.setBlanketWordingId(rs.getInt("BLNKT_WORDING"));
+
+				if (rs.getString("policy_inplace") != null) {
+					albean.setInPlace(rs.getString("policy_inplace"));
+				}
+				if (rs.getString("ATTR1") != null) {
+					albean.setAttr1(rs.getString("ATTR1"));
+				}
+				if (rs.getString("ATTR2") != null) {
+					albean.setAttr2(rs.getString("ATTR2"));
+				}
+
+				albean.setAttr3(Utility.doubleToString(rs.getDouble("ATTR3")));
+				if (rs.getString("mc_name") != null) {
+					albean.setMcName(rs.getString("mc_name"));
+				}
+				if (rs.getString("mc_scac") != null) {
+					albean.setMcScac(rs.getString("mc_scac"));
+				}
+
+				albean.setPolicyDetId(rs.getInt("POLICY_DTL_ID"));
+				albean.setBdlyInjrdPerPerson(
+						Utility.createCommaString(Utility.intToString(rs.getInt("BDLY_INJ_PERPRSN"))));
+				albean.setBdlyInjrdPerAccdnt(
+						Utility.createCommaString(Utility.intToString(rs.getInt("BDLY_INJ_PERACCDNT"))));
+				albean.setPropDmgPerAccdnt(
+						Utility.createCommaString(Utility.intToString(rs.getInt("PROP_DMG_PERACCDNT"))));
+				if (rs.getString("STND_ENDO") != null) {
+					albean.setStdEndo(rs.getString("STND_ENDO"));
+				}
+				if (rs.getString("FORM_NCS_90") != null) {
+					albean.setFrmMCS90(rs.getString("FORM_NCS_90"));
+				}
+				if (rs.getString("ANY") != null) {
+					albean.setAny(rs.getString("ANY"));
+				}
+				if (rs.getString("SCHEDULED") != null) {
+					albean.setScheduled(rs.getString("SCHEDULED"));
+				}
+				if (rs.getString("HIRED") != null) {
+					albean.setHired(rs.getString("HIRED"));
+				}
+				if (rs.getString("ALL_OWNED") != null) {
+					albean.setAllOwned(rs.getString("ALL_OWNED"));
+				}
+				if (rs.getString("NON_OWNED") != null) {
+					albean.setNonOwned(rs.getString("NON_OWNED"));
+				}
+				if (rs.getString("dattr1") != null) {
+					albean.setPDetAttr1(rs.getString("dattr1"));
+				}
+				if (rs.getString("dattr2") != null) {
+					albean.setPDetAttr2(rs.getString("dattr2"));
+				}
+
+				albean.setPDetAttr3(Utility.doubleToString(rs.getDouble("dattr3")));
+				if (rs.getString("company_name") != null) {
+					albean.setInsuranceAgent(rs.getString("company_name"));
+				}
+				// Added by piyush to display best rating on mc specific details
+				if (rs.getString("best_rating") != null) {
+					albean.setBestRating(rs.getString("best_rating"));
+				}
+				if (rs.getString("certidate") != null) {
+					albean.setCertiDate(rs.getString("certidate"));
+				}
+				if (rs.getString("certi_no") != null) {
+					albean.setCertiNo(rs.getString("certi_no"));
+				}
+				if (rs.getString("ia_acct_no") != null) {
+					albean.setIaAcctNo(rs.getString("ia_acct_no"));
+				}
+				// =====Added by Piyush on 10Mar'09================
+				if (rs.getString("tmp_term_date") != null) {
+					albean.setTmpTermDt(Utility.formatSqlDate(rs.getDate("tmp_term_date"), Utility.FORMAT4));
+				}
+				if (rs.getString("tmp_reins_date") != null) {
+					albean.setTmpReinsDt(Utility.formatSqlDate(rs.getDate("tmp_reins_date"), Utility.FORMAT4));
+				}
+				// =====End code by Piyush=========================
+				/* the key in the hash table */
+				sbKey = rs.getString("POLICY_CODE") + rs.getString("POLICY_TYPE");
+				if ((GlobalVariables.AUTOPOLICY + GlobalVariables.EPSPECIFICPOLICY).equals(sbKey)) {
+					arlAL.add(albean);
+					policybeans.put(sbKey, arlAL);
+				} else {
+					policybeans.put(sbKey, albean);
+				}
+				// policybeans.put(sbKey,albean);
+			} else if (GlobalVariables.GENPOLICY.equals(rs.getString("POLICY_CODE"))) {
+				GenBean glbean = new GenBean();
+
+				glbean.setCertiId(rs.getInt("certi_id"));
+				glbean.setPolicyMstId(rs.getInt("POLICY_MST_ID"));
+				if (rs.getString("POLICY_NO") != null) {
+					glbean.setPolicyNo(rs.getString("POLICY_NO"));
+				}
+				if (rs.getString("MC_ACCT_NO") != null) {
+					glbean.setMcAcctNo(rs.getString("MC_ACCT_NO"));
+				}
+				if (rs.getString("POLICY_CODE") != null) {
+					glbean.setPolicyCode(rs.getString("POLICY_CODE"));
+				}
+				if (rs.getString("POLICY_TYPE") != null) {
+					glbean.setPolicyType(rs.getString("POLICY_TYPE"));
+				}
+
+				glbean.setPolicyEffDate(Utility.formatSqlDate(rs.getDate("POLICY_EFF_DT"), Utility.FORMAT4));
+				glbean.setPolicyExpiryDate(Utility.formatSqlDate(rs.getDate("POLICY_EXP_DT"), Utility.FORMAT4));
+				glbean.setPolicyOvrWrttnDate(Utility.formatSqlDate(rs.getDate("POLICY_OVRWRTN_DT"), Utility.FORMAT4));
+				glbean.setPolicyTerminatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_entr_dt"), Utility.FORMAT4));
+				glbean.setPolicyTerminatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("POLICY_TRMINTN_RSN") != null) {
+					glbean.setPolicyTerminationReason(rs.getString("POLICY_TRMINTN_RSN"));
+				}
+
+				glbean.setPolicyReinstatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_entr_dt"), Utility.FORMAT4));
+				glbean.setPolicyReinstatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("policy_reinstd_rsn") != null) {
+					glbean.setPolicyReinstatedReason(rs.getString("policy_reinstd_rsn"));
+				}
+
+				glbean.setDeductible(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_DEDUCTIBLE"))));
+				glbean.setLimit(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_LIMIT"))));
+
+				if (rs.getString("SELF_INSURED") != null) {
+					glbean.setSelfInsured(rs.getString("SELF_INSURED"));
+				}
+				if (rs.getString("CURRENCY") != null) {
+					glbean.setCurrency(rs.getString("CURRENCY"));
+				}
+				if (rs.getString("INSURER_NAME") != null) {
+					glbean.setInsurerName(rs.getString("INSURER_NAME"));
+				}
+				if (rs.getString("NAIC_NO") != null) {
+					glbean.setNaicNo(rs.getString("NAIC_NO"));
+				}
+				if (rs.getString("RRG_FLAG") != null) {
+					glbean.setRrgFlg(rs.getString("RRG_FLAG"));
+				}
+				if (rs.getString("ADDNL_INSRD_FLAG") != null) {
+					glbean.setAddlnInsured(rs.getString("ADDNL_INSRD_FLAG"));
+				}
+				if (rs.getString("POLICY_STATUS") != null) {
+					glbean.setPolicyStatus(rs.getString("POLICY_STATUS"));
+				}
+				if (rs.getString("BLNKT_REQD") != null) {
+					glbean.setBlanketReqd(rs.getString("BLNKT_REQD"));
+				}
+
+				glbean.setBlanketWordingId(rs.getInt("BLNKT_WORDING"));
+				if (rs.getString("policy_inplace") != null) {
+					glbean.setInPlace(rs.getString("policy_inplace"));
+				}
+				if (rs.getString("ATTR1") != null) {
+					glbean.setAttr1(rs.getString("ATTR1"));
+				}
+				if (rs.getString("ATTR2") != null) {
+					glbean.setAttr2(rs.getString("ATTR2"));
+				}
+
+				glbean.setAttr3(Utility.doubleToString(rs.getDouble("ATTR3")));
+				if (rs.getString("mc_name") != null) {
+					glbean.setMcName(rs.getString("mc_name"));
+				}
+				if (rs.getString("mc_scac") != null) {
+					glbean.setMcScac(rs.getString("mc_scac"));
+				}
+
+				glbean.setPolicyDetId(rs.getInt("POLICY_DTL_ID"));
+				glbean.setClaims(Utility.intToString(rs.getInt("NO_OF_CLAIMS")));
+				glbean.setOccurence(Utility.intToString(rs.getInt("NO_OF_OCCUR")));
+				glbean.setDmgRntdPremises(
+						Utility.createCommaString(Utility.intToString(rs.getInt("DMG_TO_RNTD_PREMISES"))));
+				glbean.setMedExpenses(Utility.createCommaString(Utility.intToString(rs.getInt("MEDI_EXPENSE"))));
+				glbean.setPrsnlAdvInj(Utility.createCommaString(Utility.intToString(rs.getInt("PRSNL_ADV_INJ"))));
+				glbean.setGenAgg(Utility.createCommaString(Utility.intToString(rs.getInt("GEN_AGG"))));
+				glbean.setProducts(Utility.createCommaString(Utility.intToString(rs.getInt("PRODUCTS"))));
+
+				if (rs.getString("dattr1") != null) {
+					glbean.setPDetAttr1(rs.getString("dattr1"));
+				}
+				if (rs.getString("dattr1") != null) {
+					glbean.setPDetAttr1(rs.getString("dattr1"));
+				}
+				if (rs.getString("dattr2") != null) {
+					glbean.setPDetAttr2(rs.getString("dattr2"));
+				}
+
+				glbean.setPDetAttr3(Utility.doubleToString(rs.getDouble("dattr3")));
+				if (rs.getString("company_name") != null) {
+					glbean.setInsuranceAgent(rs.getString("company_name"));
+				}
+
+				// Added by piyush to display best rating on mc specific details
+				if (rs.getString("best_rating") != null) {
+					glbean.setBestRating(rs.getString("best_rating"));
+				}
+				if (rs.getString("certidate") != null) {
+					glbean.setCertiDate(rs.getString("certidate"));
+				}
+				if (rs.getString("certi_no") != null) {
+					glbean.setCertiNo(rs.getString("certi_no"));
+				}
+				if (rs.getString("ia_acct_no") != null) {
+					glbean.setIaAcctNo(rs.getString("ia_acct_no"));
+				}
+				// =====Added by Piyush on 10Mar'09================
+				if (rs.getString("tmp_term_date") != null) {
+					glbean.setTmpTermDt(Utility.formatSqlDate(rs.getDate("tmp_term_date"), Utility.FORMAT4));
+				}
+				if (rs.getString("tmp_reins_date") != null) {
+					glbean.setTmpReinsDt(Utility.formatSqlDate(rs.getDate("tmp_reins_date"), Utility.FORMAT4));
+				}
+				// =====End code by Piyush=========================
+
+				/* the key in the hash table */
+				sbKey = rs.getString("POLICY_CODE") + rs.getString("POLICY_TYPE");
+				if ((GlobalVariables.GENPOLICY + GlobalVariables.EPSPECIFICPOLICY).equals(sbKey)) {
+					arlGL.add(glbean);
+					policybeans.put(sbKey, arlGL);
+				} else {
+					policybeans.put(sbKey, glbean);
+				}
+				// policybeans.put(sbKey,glbean);
+			} else if (GlobalVariables.CARGOPOLICY.equals(rs.getString("POLICY_CODE"))) {
+				CargoBean clbean = new CargoBean();
+
+				clbean.setCertiId(rs.getInt("certi_id"));
+				clbean.setPolicyMstId(rs.getInt("POLICY_MST_ID"));
+				if (rs.getString("POLICY_NO") != null) {
+					clbean.setPolicyNo(rs.getString("POLICY_NO"));
+				}
+				if (rs.getString("MC_ACCT_NO") != null) {
+					clbean.setMcAcctNo(rs.getString("MC_ACCT_NO"));
+				}
+				if (rs.getString("POLICY_CODE") != null) {
+					clbean.setPolicyCode(rs.getString("POLICY_CODE"));
+				}
+				if (rs.getString("POLICY_TYPE") != null) {
+					clbean.setPolicyType(rs.getString("POLICY_TYPE"));
+				}
+
+				clbean.setPolicyEffDate(Utility.formatSqlDate(rs.getDate("POLICY_EFF_DT"), Utility.FORMAT4));
+				clbean.setPolicyExpiryDate(Utility.formatSqlDate(rs.getDate("POLICY_EXP_DT"), Utility.FORMAT4));
+				clbean.setPolicyOvrWrttnDate(Utility.formatSqlDate(rs.getDate("POLICY_OVRWRTN_DT"), Utility.FORMAT4));
+				clbean.setPolicyTerminatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_entr_dt"), Utility.FORMAT4));
+				clbean.setPolicyTerminatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("POLICY_TRMINTN_RSN") != null) {
+					clbean.setPolicyTerminationReason(rs.getString("POLICY_TRMINTN_RSN"));
+				}
+
+				clbean.setPolicyReinstatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_entr_dt"), Utility.FORMAT4));
+				clbean.setPolicyReinstatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("policy_reinstd_rsn") != null) {
+					clbean.setPolicyReinstatedReason(rs.getString("policy_reinstd_rsn"));
+				}
+
+				clbean.setDeductible(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_DEDUCTIBLE"))));
+				clbean.setLimit(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_LIMIT"))));
+
+				if (rs.getString("SELF_INSURED") != null) {
+					clbean.setSelfInsured(rs.getString("SELF_INSURED"));
+				}
+				if (rs.getString("CURRENCY") != null) {
+					clbean.setCurrency(rs.getString("CURRENCY"));
+				}
+				if (rs.getString("INSURER_NAME") != null) {
+					clbean.setInsurerName(rs.getString("INSURER_NAME"));
+				}
+				if (rs.getString("NAIC_NO") != null) {
+					clbean.setNaicNo(rs.getString("NAIC_NO"));
+				}
+				if (rs.getString("RRG_FLAG") != null) {
+					clbean.setRrgFlg(rs.getString("RRG_FLAG"));
+				}
+				if (rs.getString("ADDNL_INSRD_FLAG") != null) {
+					clbean.setAddlnInsured(rs.getString("ADDNL_INSRD_FLAG"));
+				}
+				if (rs.getString("POLICY_STATUS") != null) {
+					clbean.setPolicyStatus(rs.getString("POLICY_STATUS"));
+				}
+				if (rs.getString("BLNKT_REQD") != null) {
+					clbean.setBlanketReqd(rs.getString("BLNKT_REQD"));
+				}
+
+				clbean.setBlanketWordingId(rs.getInt("BLNKT_WORDING"));
+				if (rs.getString("policy_inplace") != null) {
+					clbean.setInPlace(rs.getString("policy_inplace"));
+				}
+				if (rs.getString("ATTR1") != null) {
+					clbean.setAttr1(rs.getString("ATTR1"));
+				}
+				if (rs.getString("ATTR2") != null) {
+					clbean.setAttr2(rs.getString("ATTR2"));
+				}
+
+				clbean.setAttr3(Utility.doubleToString(rs.getDouble("ATTR3")));
+				if (rs.getString("mc_name") != null) {
+					clbean.setMcName(rs.getString("mc_name"));
+				}
+				if (rs.getString("mc_scac") != null) {
+					clbean.setMcScac(rs.getString("mc_scac"));
+				}
+
+				clbean.setPolicyDetId(rs.getInt("POLICY_DTL_ID"));
+
+				if (rs.getString("HAULS_OWN_ONLY") != null) {
+					clbean.setHaulsOwnOnly(rs.getString("HAULS_OWN_ONLY"));
+				}
+				if (rs.getString("dattr1") != null) {
+					clbean.setPDetAttr1(rs.getString("dattr1"));
+				}
+				if (rs.getString("dattr2") != null) {
+					clbean.setPDetAttr2(rs.getString("dattr2"));
+				}
+
+				clbean.setPDetAttr3(Utility.doubleToString(rs.getDouble("dattr3")));
+				if (rs.getString("company_name") != null) {
+					clbean.setInsuranceAgent(rs.getString("company_name"));
+				}
+
+//					Added by piyush to display best rating on mc specific details
+				if (rs.getString("best_rating") != null) {
+					clbean.setBestRating(rs.getString("best_rating"));
+				}
+				if (rs.getString("certidate") != null) {
+					clbean.setCertiDate(rs.getString("certidate"));
+				}
+				if (rs.getString("certi_no") != null) {
+					clbean.setCertiNo(rs.getString("certi_no"));
+				}
+				if (rs.getString("ia_acct_no") != null) {
+					clbean.setIaAcctNo(rs.getString("ia_acct_no"));
+				}
+				// =====Added by Piyush on 10Mar'09================
+				if (rs.getString("tmp_term_date") != null) {
+					clbean.setTmpTermDt(Utility.formatSqlDate(rs.getDate("tmp_term_date"), Utility.FORMAT4));
+				}
+				if (rs.getString("tmp_reins_date") != null) {
+					clbean.setTmpReinsDt(Utility.formatSqlDate(rs.getDate("tmp_reins_date"), Utility.FORMAT4));
+				}
+				// =====End code by Piyush=========================
+				/* the key in the hash table */
+				sbKey = rs.getString("POLICY_CODE") + rs.getString("POLICY_TYPE");
+				if ((GlobalVariables.CARGOPOLICY + GlobalVariables.EPSPECIFICPOLICY).equals(sbKey)) {
+					arlCL.add(clbean);
+					policybeans.put(sbKey, arlCL);
+				} else {
+					policybeans.put(sbKey, clbean);
+				}
+				// policybeans.put(sbKey,clbean);
+			} else if (GlobalVariables.TRAILERPOLICY.equals(rs.getString("POLICY_CODE"))) {
+				TrailerBean tlbean = new TrailerBean();
+
+				tlbean.setCertiId(rs.getInt("certi_id"));
+				tlbean.setPolicyMstId(rs.getInt("POLICY_MST_ID"));
+				if (rs.getString("POLICY_NO") != null) {
+					tlbean.setPolicyNo(rs.getString("POLICY_NO"));
+				}
+				if (rs.getString("MC_ACCT_NO") != null) {
+					tlbean.setMcAcctNo(rs.getString("MC_ACCT_NO"));
+				}
+				if (rs.getString("POLICY_CODE") != null) {
+					tlbean.setPolicyCode(rs.getString("POLICY_CODE"));
+				}
+				if (rs.getString("POLICY_TYPE") != null) {
+					tlbean.setPolicyType(rs.getString("POLICY_TYPE"));
+				}
+
+				tlbean.setPolicyEffDate(Utility.formatSqlDate(rs.getDate("POLICY_EFF_DT"), Utility.FORMAT4));
+				tlbean.setPolicyExpiryDate(Utility.formatSqlDate(rs.getDate("POLICY_EXP_DT"), Utility.FORMAT4));
+				tlbean.setPolicyOvrWrttnDate(Utility.formatSqlDate(rs.getDate("POLICY_OVRWRTN_DT"), Utility.FORMAT4));
+				tlbean.setPolicyTerminatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_entr_dt"), Utility.FORMAT4));
+				tlbean.setPolicyTerminatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("POLICY_TRMINTN_RSN") != null) {
+					tlbean.setPolicyTerminationReason(rs.getString("POLICY_TRMINTN_RSN"));
+				}
+
+				tlbean.setPolicyReinstatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_entr_dt"), Utility.FORMAT4));
+				tlbean.setPolicyReinstatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("policy_reinstd_rsn") != null) {
+					tlbean.setPolicyReinstatedReason(rs.getString("policy_reinstd_rsn"));
+				}
+
+				tlbean.setDeductible(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_DEDUCTIBLE"))));
+				if ("ACV".equals(rs.getString("POLICY_LIMIT"))) {
+					tlbean.setLimit("ACV");
+				} else {
+					tlbean.setLimit(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_LIMIT"))));
+				}
+				if (rs.getString("SELF_INSURED") != null) {
+					tlbean.setSelfInsured(rs.getString("SELF_INSURED"));
+				}
+				if (rs.getString("CURRENCY") != null) {
+					tlbean.setCurrency(rs.getString("CURRENCY"));
+				}
+				if (rs.getString("INSURER_NAME") != null) {
+					tlbean.setInsurerName(rs.getString("INSURER_NAME"));
+				}
+				if (rs.getString("NAIC_NO") != null) {
+					tlbean.setNaicNo(rs.getString("NAIC_NO"));
+				}
+				if (rs.getString("RRG_FLAG") != null) {
+					tlbean.setRrgFlg(rs.getString("RRG_FLAG"));
+				}
+				if (rs.getString("ADDNL_INSRD_FLAG") != null) {
+					tlbean.setAddlnInsured(rs.getString("ADDNL_INSRD_FLAG"));
+				}
+				if (rs.getString("POLICY_STATUS") != null) {
+					tlbean.setPolicyStatus(rs.getString("POLICY_STATUS"));
+				}
+				if (rs.getString("BLNKT_REQD") != null) {
+					tlbean.setBlanketReqd(rs.getString("BLNKT_REQD"));
+				}
+				if (rs.getString("policy_inplace") != null) {
+					tlbean.setInPlace(rs.getString("policy_inplace"));
+				}
+				tlbean.setBlanketWordingId(rs.getInt("BLNKT_WORDING"));
+				if (rs.getString("ATTR1") != null) {
+					tlbean.setAttr1(rs.getString("ATTR1"));
+				}
+				if (rs.getString("ATTR2") != null) {
+					tlbean.setAttr2(rs.getString("ATTR2"));
+				}
+
+				tlbean.setAttr3(Utility.doubleToString(rs.getDouble("ATTR3")));
+				if (rs.getString("mc_name") != null) {
+					tlbean.setMcName(rs.getString("mc_name"));
+				}
+				if (rs.getString("mc_scac") != null) {
+					tlbean.setMcScac(rs.getString("mc_scac"));
+				}
+
+				tlbean.setPolicyDetId(rs.getInt("POLICY_DTL_ID"));
+				if (rs.getString("ACV") != null) {
+					tlbean.setAcv(rs.getString("ACV"));
+				}
+				if (rs.getString("dattr1") != null) {
+					tlbean.setPDetAttr1(rs.getString("dattr1"));
+				}
+				if (rs.getString("dattr2") != null) {
+					tlbean.setPDetAttr2(rs.getString("dattr2"));
+				}
+				tlbean.setPDetAttr3(Utility.doubleToString(rs.getDouble("dattr3")));
+				if (rs.getString("company_name") != null) {
+					tlbean.setInsuranceAgent(rs.getString("company_name"));
+				}
+
+				// Added by piyush to display best rating on mc specific details
+				if (rs.getString("best_rating") != null) {
+					tlbean.setBestRating(rs.getString("best_rating"));
+				}
+				if (rs.getString("certidate") != null) {
+					tlbean.setCertiDate(rs.getString("certidate"));
+				}
+				if (rs.getString("certi_no") != null) {
+					tlbean.setCertiNo(rs.getString("certi_no"));
+				}
+				if (rs.getString("ia_acct_no") != null) {
+					tlbean.setIaAcctNo(rs.getString("ia_acct_no"));
+				}
+				// =====Added by Piyush on 10Mar'09================
+				if (rs.getString("tmp_term_date") != null) {
+					tlbean.setTmpTermDt(Utility.formatSqlDate(rs.getDate("tmp_term_date"), Utility.FORMAT4));
+				}
+				if (rs.getString("tmp_reins_date") != null) {
+					tlbean.setTmpReinsDt(Utility.formatSqlDate(rs.getDate("tmp_reins_date"), Utility.FORMAT4));
+				}
+				// =====End code by Piyush=========================
+				if (rs.getString("ti_endorsement_ll") != null) {
+					tlbean.setEndorsementLL(rs.getString("ti_endorsement_ll"));
+				}
+
+				/* the key in the hash table */
+				sbKey = rs.getString("POLICY_CODE") + rs.getString("POLICY_TYPE");
+
+				if ((GlobalVariables.TRAILERPOLICY + GlobalVariables.EPSPECIFICPOLICY).equals(sbKey)) {
+					arlTI.add(tlbean);
+					policybeans.put(sbKey, arlTI);
+				} else {
+					policybeans.put(sbKey, tlbean);
+				}
+
+				// policybeans.put(sbKey,tlbean);
+			} else if (GlobalVariables.EMPLIABILITY.equals(rs.getString("POLICY_CODE"))) {
+				ELBean elbean = new ELBean();
+
+				elbean.setCertiId(rs.getInt("certi_id"));
+				elbean.setPolicyMstId(rs.getInt("POLICY_MST_ID"));
+				if (rs.getString("POLICY_NO") != null) {
+					elbean.setPolicyNo(rs.getString("POLICY_NO"));
+				}
+				if (rs.getString("MC_ACCT_NO") != null) {
+					elbean.setMcAcctNo(rs.getString("MC_ACCT_NO"));
+				}
+				if (rs.getString("POLICY_CODE") != null) {
+					elbean.setPolicyCode(rs.getString("POLICY_CODE"));
+				}
+				if (rs.getString("POLICY_TYPE") != null) {
+					elbean.setPolicyType(rs.getString("POLICY_TYPE"));
+				}
+
+				elbean.setPolicyEffDate(Utility.formatSqlDate(rs.getDate("POLICY_EFF_DT"), Utility.FORMAT4));
+				elbean.setPolicyExpiryDate(Utility.formatSqlDate(rs.getDate("POLICY_EXP_DT"), Utility.FORMAT4));
+				elbean.setPolicyOvrWrttnDate(Utility.formatSqlDate(rs.getDate("POLICY_OVRWRTN_DT"), Utility.FORMAT4));
+				elbean.setPolicyTerminatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_entr_dt"), Utility.FORMAT4));
+				elbean.setPolicyTerminatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("POLICY_TRMINTN_RSN") != null) {
+					elbean.setPolicyTerminationReason(rs.getString("POLICY_TRMINTN_RSN"));
+				}
+
+				elbean.setPolicyReinstatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_entr_dt"), Utility.FORMAT4));
+				elbean.setPolicyReinstatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("policy_reinstd_rsn") != null) {
+					elbean.setPolicyReinstatedReason(rs.getString("policy_reinstd_rsn"));
+				}
+
+				elbean.setDeductible(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_DEDUCTIBLE"))));
+				elbean.setLimit(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_LIMIT"))));
+
+				if (rs.getString("SELF_INSURED") != null) {
+					elbean.setSelfInsured(rs.getString("SELF_INSURED"));
+				}
+				if (rs.getString("CURRENCY") != null) {
+					elbean.setCurrency(rs.getString("CURRENCY"));
+				}
+				if (rs.getString("INSURER_NAME") != null) {
+					elbean.setInsurerName(rs.getString("INSURER_NAME"));
+				}
+				if (rs.getString("NAIC_NO") != null) {
+					elbean.setNaicNo(rs.getString("NAIC_NO"));
+				}
+				if (rs.getString("RRG_FLAG") != null) {
+					elbean.setRrgFlg(rs.getString("RRG_FLAG"));
+				}
+				if (rs.getString("ADDNL_INSRD_FLAG") != null) {
+					elbean.setAddlnInsured(rs.getString("ADDNL_INSRD_FLAG"));
+				}
+				if (rs.getString("POLICY_STATUS") != null) {
+					elbean.setPolicyStatus(rs.getString("POLICY_STATUS"));
+				}
+				if (rs.getString("BLNKT_REQD") != null) {
+					elbean.setBlanketReqd(rs.getString("BLNKT_REQD"));
+				}
+				elbean.setBlanketWordingId(rs.getInt("BLNKT_WORDING"));
+				if (rs.getString("policy_inplace") != null) {
+					elbean.setInPlace(rs.getString("policy_inplace"));
+				}
+				if (rs.getString("ATTR1") != null) {
+					elbean.setAttr1(rs.getString("ATTR1"));
+				}
+				if (rs.getString("ATTR2") != null) {
+					elbean.setAttr2(rs.getString("ATTR2"));
+				}
+
+				elbean.setAttr3(Utility.doubleToString(rs.getDouble("ATTR3")));
+				if (rs.getString("mc_name") != null) {
+					elbean.setMcName(rs.getString("mc_name"));
+				}
+				if (rs.getString("mc_scac") != null) {
+					elbean.setMcScac(rs.getString("mc_scac"));
+				}
+
+				elbean.setPolicyDetId(rs.getInt("POLICY_DTL_ID"));
+				elbean.setElEachOccur(Utility.createCommaString(Utility.intToString(rs.getInt("EL_EACH_OCCUR"))));
+				elbean.setElDisEAEmp(Utility.createCommaString(Utility.intToString(rs.getInt("EL_DISEASE_EA_EMP"))));
+				elbean.setElDisPlcyLmt(
+						Utility.createCommaString(Utility.intToString(rs.getInt("EL_DISEASE_POLICY_LMT"))));
+				if (rs.getString("dattr1") != null) {
+					elbean.setPDetAttr1(rs.getString("dattr1"));
+				}
+				if (rs.getString("dattr2") != null) {
+					elbean.setPDetAttr2(rs.getString("dattr2"));
+				}
+				elbean.setPDetAttr3(Utility.doubleToString(rs.getDouble("dattr3")));
+				if (rs.getString("company_name") != null) {
+					elbean.setInsuranceAgent(rs.getString("company_name"));
+				}
+
+				// Added by piyush to display best rating on mc specific details
+				if (rs.getString("best_rating") != null) {
+					elbean.setBestRating(rs.getString("best_rating"));
+				}
+				if (rs.getString("certidate") != null) {
+					elbean.setCertiDate(rs.getString("certidate"));
+				}
+				if (rs.getString("certi_no") != null) {
+					elbean.setCertiNo(rs.getString("certi_no"));
+				}
+				if (rs.getString("ia_acct_no") != null) {
+					elbean.setIaAcctNo(rs.getString("ia_acct_no"));
+				}
+				// =====Added by Piyush on 10Mar'09================
+				if (rs.getString("tmp_term_date") != null) {
+					elbean.setTmpTermDt(Utility.formatSqlDate(rs.getDate("tmp_term_date"), Utility.FORMAT4));
+				}
+				if (rs.getString("tmp_reins_date") != null) {
+					elbean.setTmpReinsDt(Utility.formatSqlDate(rs.getDate("tmp_reins_date"), Utility.FORMAT4));
+				}
+				// =====End code by Piyush=========================
+
+				/* the key in the hash table */
+				sbKey = rs.getString("POLICY_CODE") + rs.getString("POLICY_TYPE");
+				if ((GlobalVariables.EMPLIABILITY + GlobalVariables.EPSPECIFICPOLICY).equals(sbKey)) {
+					arlEL.add(elbean);
+					policybeans.put(sbKey, arlEL);
+				} else {
+					policybeans.put(sbKey, elbean);
+				}
+				// policybeans.put(sbKey,elbean);
+			} else if (GlobalVariables.WORKCOMP.equals(rs.getString("POLICY_CODE"))) {
+				WCBean wcbean = new WCBean();
+
+				wcbean.setCertiId(rs.getInt("certi_id"));
+				wcbean.setPolicyMstId(rs.getInt("POLICY_MST_ID"));
+				if (rs.getString("POLICY_NO") != null) {
+					wcbean.setPolicyNo(rs.getString("POLICY_NO"));
+				}
+				if (rs.getString("MC_ACCT_NO") != null) {
+					wcbean.setMcAcctNo(rs.getString("MC_ACCT_NO"));
+				}
+				if (rs.getString("POLICY_CODE") != null) {
+					wcbean.setPolicyCode(rs.getString("POLICY_CODE"));
+				}
+				if (rs.getString("POLICY_TYPE") != null) {
+					wcbean.setPolicyType(rs.getString("POLICY_TYPE"));
+				}
+
+				wcbean.setPolicyEffDate(Utility.formatSqlDate(rs.getDate("POLICY_EFF_DT"), Utility.FORMAT4));
+				wcbean.setPolicyExpiryDate(Utility.formatSqlDate(rs.getDate("POLICY_EXP_DT"), Utility.FORMAT4));
+				wcbean.setPolicyOvrWrttnDate(Utility.formatSqlDate(rs.getDate("POLICY_OVRWRTN_DT"), Utility.FORMAT4));
+				wcbean.setPolicyTerminatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_entr_dt"), Utility.FORMAT4));
+				wcbean.setPolicyTerminatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("POLICY_TRMINTN_RSN") != null) {
+					wcbean.setPolicyTerminationReason(rs.getString("POLICY_TRMINTN_RSN"));
+				}
+
+				wcbean.setPolicyReinstatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_entr_dt"), Utility.FORMAT4));
+				wcbean.setPolicyReinstatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("policy_reinstd_rsn") != null) {
+					wcbean.setPolicyReinstatedReason(rs.getString("policy_reinstd_rsn"));
+				}
+
+				wcbean.setDeductible(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_DEDUCTIBLE"))));
+				wcbean.setLimit(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_LIMIT"))));
+				if (rs.getString("SELF_INSURED") != null) {
+					wcbean.setSelfInsured(rs.getString("SELF_INSURED"));
+				}
+				if (rs.getString("CURRENCY") != null) {
+					wcbean.setCurrency(rs.getString("CURRENCY"));
+				}
+				if (rs.getString("INSURER_NAME") != null) {
+					wcbean.setInsurerName(rs.getString("INSURER_NAME"));
+				}
+				if (rs.getString("NAIC_NO") != null) {
+					wcbean.setNaicNo(rs.getString("NAIC_NO"));
+				}
+				if (rs.getString("RRG_FLAG") != null) {
+					wcbean.setRrgFlg(rs.getString("RRG_FLAG"));
+				}
+				if (rs.getString("ADDNL_INSRD_FLAG") != null) {
+					wcbean.setAddlnInsured(rs.getString("ADDNL_INSRD_FLAG"));
+				}
+				if (rs.getString("POLICY_STATUS") != null) {
+					wcbean.setPolicyStatus(rs.getString("POLICY_STATUS"));
+				}
+				if (rs.getString("BLNKT_REQD") != null) {
+					wcbean.setBlanketReqd(rs.getString("BLNKT_REQD"));
+				}
+
+				wcbean.setBlanketWordingId(rs.getInt("BLNKT_WORDING"));
+				if (rs.getString("policy_inplace") != null) {
+					wcbean.setInPlace(rs.getString("policy_inplace"));
+				}
+				if (rs.getString("ATTR1") != null) {
+					wcbean.setAttr1(rs.getString("ATTR1"));
+				}
+				if (rs.getString("ATTR2") != null) {
+					wcbean.setAttr2(rs.getString("ATTR2"));
+				}
+
+				wcbean.setAttr3(Utility.doubleToString(rs.getDouble("ATTR3")));
+				if (rs.getString("mc_name") != null) {
+					wcbean.setMcName(rs.getString("mc_name"));
+				}
+				if (rs.getString("mc_scac") != null) {
+					wcbean.setMcScac(rs.getString("mc_scac"));
+				}
+
+				wcbean.setPolicyDetId(rs.getInt("POLICY_DTL_ID"));
+				if (rs.getString("WC_STATUATORY_LMTS") != null) {
+					wcbean.setWcStatLimits(rs.getString("WC_STATUATORY_LMTS"));
+				}
+
+				wcbean.setElEachOccur(Utility.createCommaString(Utility.intToString(rs.getInt("EL_EACH_OCCUR"))));
+				wcbean.setElDisEAEmp(Utility.createCommaString(Utility.intToString(rs.getInt("EL_DISEASE_EA_EMP"))));
+				wcbean.setElDisPlcyLmt(
+						Utility.createCommaString(Utility.intToString(rs.getInt("EL_DISEASE_POLICY_LMT"))));
+
+				if (rs.getString("ULMTD_EL_LMTS") != null) {
+					wcbean.setUnlmtdElLimits(rs.getString("ULMTD_EL_LMTS"));
+				}
+				if (rs.getString("EXEMPT") != null) {
+					wcbean.setExempt(rs.getString("EXEMPT"));
+				}
+				if (rs.getString("dattr1") != null) {
+					wcbean.setPDetAttr1(rs.getString("dattr1"));
+				}
+				if (rs.getString("dattr2") != null) {
+					wcbean.setPDetAttr2(rs.getString("dattr2"));
+				}
+
+				wcbean.setPDetAttr3(Utility.doubleToString(rs.getDouble("dattr3")));
+				if (rs.getString("company_name") != null) {
+					wcbean.setInsuranceAgent(rs.getString("company_name"));
+				}
+
+				// Added by piyush to display best rating on mc specific details
+				if (rs.getString("best_rating") != null) {
+					wcbean.setBestRating(rs.getString("best_rating"));
+				}
+				if (rs.getString("certidate") != null) {
+					wcbean.setCertiDate(rs.getString("certidate"));
+				}
+				if (rs.getString("certi_no") != null) {
+					wcbean.setCertiNo(rs.getString("certi_no"));
+				}
+				if (rs.getString("ia_acct_no") != null) {
+					wcbean.setIaAcctNo(rs.getString("ia_acct_no"));
+				}
+				// =====Added by Piyush on 10Mar'09================
+				if (rs.getString("tmp_term_date") != null) {
+					wcbean.setTmpTermDt(Utility.formatSqlDate(rs.getDate("tmp_term_date"), Utility.FORMAT4));
+				}
+				if (rs.getString("tmp_reins_date") != null) {
+					wcbean.setTmpReinsDt(Utility.formatSqlDate(rs.getDate("tmp_reins_date"), Utility.FORMAT4));
+				}
+				// =====End code by Piyush=========================
+				// Added by Ankur March 2010 for new Accord
+
+				if (rs.getString("mem_chk_flg") != null) {
+					wcbean.setMemberCheck(rs.getString("mem_chk_flg"));
+				}
+
+				// Added by Ankur March 2010
+				/* the key in the hash table */
+				sbKey = rs.getString("POLICY_CODE") + rs.getString("POLICY_TYPE");
+
+				if ((GlobalVariables.WORKCOMP + GlobalVariables.EPSPECIFICPOLICY).equals(sbKey)) {
+					arlWC.add(wcbean);
+					policybeans.put(sbKey, arlWC);
+				} else {
+					policybeans.put(sbKey, wcbean);
+				}
+				// policybeans.put(sbKey,wcbean);
+			} else if (GlobalVariables.UMBRELLA.equals(rs.getString("POLICY_CODE"))) {
+				UmbBean ubean = new UmbBean();
+				ubean = getUmbPolicyDetails(rs.getInt("POLICY_MST_ID"));
+
+				ubean.setCertiId(rs.getInt("certi_id"));
+				ubean.setPolicyMstId(rs.getInt("POLICY_MST_ID"));
+				if (rs.getString("POLICY_NO") != null) {
+					ubean.setPolicyNo(rs.getString("POLICY_NO"));
+				}
+				if (rs.getString("MC_ACCT_NO") != null) {
+					ubean.setMcAcctNo(rs.getString("MC_ACCT_NO"));
+				}
+				if (rs.getString("POLICY_CODE") != null) {
+					ubean.setPolicyCode(rs.getString("POLICY_CODE"));
+				}
+				if (rs.getString("POLICY_TYPE") != null) {
+					ubean.setPolicyType(rs.getString("POLICY_TYPE"));
+				}
+
+				ubean.setPolicyEffDate(Utility.formatSqlDate(rs.getDate("POLICY_EFF_DT"), Utility.FORMAT4));
+				ubean.setPolicyExpiryDate(Utility.formatSqlDate(rs.getDate("POLICY_EXP_DT"), Utility.FORMAT4));
+				ubean.setPolicyOvrWrttnDate(Utility.formatSqlDate(rs.getDate("POLICY_OVRWRTN_DT"), Utility.FORMAT4));
+				ubean.setPolicyTerminatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_entr_dt"), Utility.FORMAT4));
+				ubean.setPolicyTerminatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("POLICY_TRMINTN_RSN") != null) {
+					ubean.setPolicyTerminationReason(rs.getString("POLICY_TRMINTN_RSN"));
+				}
+
+				ubean.setPolicyReinstatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_entr_dt"), Utility.FORMAT4));
+				ubean.setPolicyReinstatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("policy_reinstd_rsn") != null) {
+					ubean.setPolicyReinstatedReason(rs.getString("policy_reinstd_rsn"));
+				}
+
+				ubean.setDeductible(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_DEDUCTIBLE"))));
+				ubean.setLimit(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_LIMIT"))));
+				if (rs.getString("SELF_INSURED") != null) {
+					ubean.setSelfInsured(rs.getString("SELF_INSURED"));
+				}
+				if (rs.getString("CURRENCY") != null) {
+					ubean.setCurrency(rs.getString("CURRENCY"));
+				}
+				if (rs.getString("INSURER_NAME") != null) {
+					ubean.setInsurerName(rs.getString("INSURER_NAME"));
+				}
+				if (rs.getString("NAIC_NO") != null) {
+					ubean.setNaicNo(rs.getString("NAIC_NO"));
+				}
+				if (rs.getString("RRG_FLAG") != null) {
+					ubean.setRrgFlg(rs.getString("RRG_FLAG"));
+				}
+				if (rs.getString("ADDNL_INSRD_FLAG") != null) {
+					ubean.setAddlnInsured(rs.getString("ADDNL_INSRD_FLAG"));
+				}
+				if (rs.getString("POLICY_STATUS") != null) {
+					ubean.setPolicyStatus(rs.getString("POLICY_STATUS"));
+				}
+				if (rs.getString("BLNKT_REQD") != null) {
+					ubean.setBlanketReqd(rs.getString("BLNKT_REQD"));
+				}
+
+				ubean.setBlanketWordingId(rs.getInt("BLNKT_WORDING"));
+				if (rs.getString("policy_inplace") != null) {
+					ubean.setInPlace(rs.getString("policy_inplace"));
+				}
+				if (rs.getString("ATTR1") != null) {
+					ubean.setAttr1(rs.getString("ATTR1"));
+				}
+				if (rs.getString("ATTR2") != null) {
+					ubean.setAttr2(rs.getString("ATTR2"));
+				}
+
+				ubean.setAttr3(Utility.doubleToString(rs.getDouble("ATTR3")));
+				if (rs.getString("mc_name") != null) {
+					ubean.setMcName(rs.getString("mc_name"));
+				}
+				if (rs.getString("mc_scac") != null) {
+					ubean.setMcScac(rs.getString("mc_scac"));
+				}
+
+				if (rs.getString("company_name") != null) {
+					ubean.setInsuranceAgent(rs.getString("company_name"));
+				}
+
+				// Added by piyush to display best rating on mc specific details
+				if (rs.getString("best_rating") != null) {
+					ubean.setBestRating(rs.getString("best_rating"));
+				}
+				if (rs.getString("certidate") != null) {
+					ubean.setCertiDate(rs.getString("certidate"));
+				}
+				if (rs.getString("certi_no") != null) {
+					ubean.setCertiNo(rs.getString("certi_no"));
+				}
+				if (rs.getString("ia_acct_no") != null) {
+					ubean.setIaAcctNo(rs.getString("ia_acct_no"));
+				}
+				// =====Added by Piyush on 10Mar'09================
+				if (rs.getString("tmp_term_date") != null) {
+					ubean.setTmpTermDt(Utility.formatSqlDate(rs.getDate("tmp_term_date"), Utility.FORMAT4));
+				}
+				if (rs.getString("tmp_reins_date") != null) {
+					ubean.setTmpReinsDt(Utility.formatSqlDate(rs.getDate("tmp_reins_date"), Utility.FORMAT4));
+				}
+				// =====End code by Piyush=========================
+
+				/* the key in the hash table */
+				sbKey = rs.getString("POLICY_CODE") + rs.getString("POLICY_TYPE");
+				if ((GlobalVariables.UMBRELLA + GlobalVariables.EPSPECIFICPOLICY).equals(sbKey)) {
+					arlUMB.add(ubean);
+					policybeans.put(sbKey, arlUMB);
+				} else {
+					policybeans.put(sbKey, ubean);
+				}
+				// policybeans.put(sbKey,ubean);
+
+			} else if (GlobalVariables.CONTCARGO.equals(rs.getString("POLICY_CODE"))) {
+				ContCargoBean ccBean = new ContCargoBean();
+
+				ccBean.setCertiId(rs.getInt("certi_id"));
+				ccBean.setPolicyMstId(rs.getInt("POLICY_MST_ID"));
+				if (rs.getString("POLICY_NO") != null) {
+					ccBean.setPolicyNo(rs.getString("POLICY_NO"));
+				}
+				if (rs.getString("MC_ACCT_NO") != null) {
+					ccBean.setMcAcctNo(rs.getString("MC_ACCT_NO"));
+				}
+				if (rs.getString("POLICY_CODE") != null) {
+					ccBean.setPolicyCode(rs.getString("POLICY_CODE"));
+				}
+				if (rs.getString("POLICY_TYPE") != null) {
+					ccBean.setPolicyType(rs.getString("POLICY_TYPE"));
+				}
+
+				ccBean.setPolicyEffDate(Utility.formatSqlDate(rs.getDate("POLICY_EFF_DT"), Utility.FORMAT4));
+				ccBean.setPolicyExpiryDate(Utility.formatSqlDate(rs.getDate("POLICY_EXP_DT"), Utility.FORMAT4));
+				ccBean.setPolicyOvrWrttnDate(Utility.formatSqlDate(rs.getDate("POLICY_OVRWRTN_DT"), Utility.FORMAT4));
+				ccBean.setPolicyTerminatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_entr_dt"), Utility.FORMAT4));
+				ccBean.setPolicyTerminatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("POLICY_TRMINTN_RSN") != null) {
+					ccBean.setPolicyTerminationReason(rs.getString("POLICY_TRMINTN_RSN"));
+				}
+
+				ccBean.setPolicyReinstatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_entr_dt"), Utility.FORMAT4));
+				ccBean.setPolicyReinstatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("policy_reinstd_rsn") != null) {
+					ccBean.setPolicyReinstatedReason(rs.getString("policy_reinstd_rsn"));
+				}
+
+				ccBean.setDeductible(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_DEDUCTIBLE"))));
+				ccBean.setLimit(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_LIMIT"))));
+				if (rs.getString("SELF_INSURED") != null) {
+					ccBean.setSelfInsured(rs.getString("SELF_INSURED"));
+				}
+				if (rs.getString("CURRENCY") != null) {
+					ccBean.setCurrency(rs.getString("CURRENCY"));
+				}
+				if (rs.getString("INSURER_NAME") != null) {
+					ccBean.setInsurerName(rs.getString("INSURER_NAME"));
+				}
+				if (rs.getString("NAIC_NO") != null) {
+					ccBean.setNaicNo(rs.getString("NAIC_NO"));
+				}
+				if (rs.getString("RRG_FLAG") != null) {
+					ccBean.setRrgFlg(rs.getString("RRG_FLAG"));
+				}
+				if (rs.getString("ADDNL_INSRD_FLAG") != null) {
+					ccBean.setAddlnInsured(rs.getString("ADDNL_INSRD_FLAG"));
+				}
+				if (rs.getString("POLICY_STATUS") != null) {
+					ccBean.setPolicyStatus(rs.getString("POLICY_STATUS"));
+				}
+				if (rs.getString("BLNKT_REQD") != null) {
+					ccBean.setBlanketReqd(rs.getString("BLNKT_REQD"));
+				}
+
+				ccBean.setBlanketWordingId(rs.getInt("BLNKT_WORDING"));
+				if (rs.getString("policy_inplace") != null) {
+					ccBean.setInPlace(rs.getString("policy_inplace"));
+				}
+				if (rs.getString("ATTR1") != null) {
+					ccBean.setAttr1(rs.getString("ATTR1"));
+				}
+				if (rs.getString("ATTR2") != null) {
+					ccBean.setAttr2(rs.getString("ATTR2"));
+				}
+
+				ccBean.setAttr3(Utility.doubleToString(rs.getDouble("ATTR3")));
+				if (rs.getString("mc_name") != null) {
+					ccBean.setMcName(rs.getString("mc_name"));
+				}
+				if (rs.getString("mc_scac") != null) {
+					ccBean.setMcScac(rs.getString("mc_scac"));
+				}
+				if (rs.getString("company_name") != null) {
+					ccBean.setInsuranceAgent(rs.getString("company_name"));
+				}
+
+				// Added by piyush to display best rating on mc specific details
+				if (rs.getString("best_rating") != null) {
+					ccBean.setBestRating(rs.getString("best_rating"));
+				}
+				if (rs.getString("certidate") != null) {
+					ccBean.setCertiDate(rs.getString("certidate"));
+				}
+				if (rs.getString("certi_no") != null) {
+					ccBean.setCertiNo(rs.getString("certi_no"));
+				}
+				if (rs.getString("ia_acct_no") != null) {
+					ccBean.setIaAcctNo(rs.getString("ia_acct_no"));
+				}
+				// =====Added by Piyush on 10Mar'09================
+				if (rs.getString("tmp_term_date") != null) {
+					ccBean.setTmpTermDt(Utility.formatSqlDate(rs.getDate("tmp_term_date"), Utility.FORMAT4));
+				}
+				if (rs.getString("tmp_reins_date") != null) {
+					ccBean.setTmpReinsDt(Utility.formatSqlDate(rs.getDate("tmp_reins_date"), Utility.FORMAT4));
+				}
+				// =====End code by Piyush=========================
+
+				/* the key in the hash table */
+				sbKey = rs.getString("POLICY_CODE") + rs.getString("POLICY_TYPE");
+				if ((GlobalVariables.CONTCARGO + GlobalVariables.EPSPECIFICPOLICY).equals(sbKey)) {
+					arlCC.add(ccBean);
+					policybeans.put(sbKey, arlCC);
+				} else {
+					policybeans.put(sbKey, ccBean);
+				}
+				// policybeans.put(sbKey,ccBean);
+			} else if (GlobalVariables.REFTRAILER.equals(rs.getString("POLICY_CODE"))) {
+				RefTrailerBean rtlBean = new RefTrailerBean();
+
+				rtlBean.setCertiId(rs.getInt("certi_id"));
+				rtlBean.setPolicyMstId(rs.getInt("POLICY_MST_ID"));
+				if (rs.getString("POLICY_NO") != null) {
+					rtlBean.setPolicyNo(rs.getString("POLICY_NO"));
+				}
+				if (rs.getString("MC_ACCT_NO") != null) {
+					rtlBean.setMcAcctNo(rs.getString("MC_ACCT_NO"));
+				}
+				if (rs.getString("POLICY_CODE") != null) {
+					rtlBean.setPolicyCode(rs.getString("POLICY_CODE"));
+				}
+				if (rs.getString("POLICY_TYPE") != null) {
+					rtlBean.setPolicyType(rs.getString("POLICY_TYPE"));
+				}
+
+				rtlBean.setPolicyEffDate(Utility.formatSqlDate(rs.getDate("POLICY_EFF_DT"), Utility.FORMAT4));
+				rtlBean.setPolicyExpiryDate(Utility.formatSqlDate(rs.getDate("POLICY_EXP_DT"), Utility.FORMAT4));
+				rtlBean.setPolicyOvrWrttnDate(Utility.formatSqlDate(rs.getDate("POLICY_OVRWRTN_DT"), Utility.FORMAT4));
+				rtlBean.setPolicyTerminatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_entr_dt"), Utility.FORMAT4));
+				rtlBean.setPolicyTerminatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("POLICY_TRMINTN_RSN") != null) {
+					rtlBean.setPolicyTerminationReason(rs.getString("POLICY_TRMINTN_RSN"));
+				}
+
+				rtlBean.setPolicyReinstatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_entr_dt"), Utility.FORMAT4));
+				rtlBean.setPolicyReinstatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("policy_reinstd_rsn") != null) {
+					rtlBean.setPolicyReinstatedReason(rs.getString("policy_reinstd_rsn"));
+				}
+
+				rtlBean.setDeductible(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_DEDUCTIBLE"))));
+				if ("ACV".equals(rs.getString("POLICY_LIMIT"))) {
+					rtlBean.setLimit("ACV");
+				} else {
+					rtlBean.setLimit(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_LIMIT"))));
+				}
+				if (rs.getString("SELF_INSURED") != null) {
+					rtlBean.setSelfInsured(rs.getString("SELF_INSURED"));
+				}
+				if (rs.getString("CURRENCY") != null) {
+					rtlBean.setCurrency(rs.getString("CURRENCY"));
+				}
+				if (rs.getString("INSURER_NAME") != null) {
+					rtlBean.setInsurerName(rs.getString("INSURER_NAME"));
+				}
+				if (rs.getString("NAIC_NO") != null) {
+					rtlBean.setNaicNo(rs.getString("NAIC_NO"));
+				}
+				if (rs.getString("RRG_FLAG") != null) {
+					rtlBean.setRrgFlg(rs.getString("RRG_FLAG"));
+				}
+				if (rs.getString("ADDNL_INSRD_FLAG") != null) {
+					rtlBean.setAddlnInsured(rs.getString("ADDNL_INSRD_FLAG"));
+				}
+				if (rs.getString("POLICY_STATUS") != null) {
+					rtlBean.setPolicyStatus(rs.getString("POLICY_STATUS"));
+				}
+				if (rs.getString("BLNKT_REQD") != null) {
+					rtlBean.setBlanketReqd(rs.getString("BLNKT_REQD"));
+				}
+
+				rtlBean.setBlanketWordingId(rs.getInt("BLNKT_WORDING"));
+				if (rs.getString("policy_inplace") != null) {
+					rtlBean.setInPlace(rs.getString("policy_inplace"));
+				}
+				if (rs.getString("ATTR1") != null) {
+					rtlBean.setAttr1(rs.getString("ATTR1"));
+				}
+				if (rs.getString("ATTR2") != null) {
+					rtlBean.setAttr2(rs.getString("ATTR2"));
+				}
+
+				rtlBean.setAttr3(Utility.doubleToString(rs.getDouble("ATTR3")));
+				if (rs.getString("mc_name") != null) {
+					rtlBean.setMcName(rs.getString("mc_name"));
+				}
+				if (rs.getString("mc_scac") != null) {
+					rtlBean.setMcScac(rs.getString("mc_scac"));
+				}
+				if (rs.getString("company_name") != null) {
+					rtlBean.setInsuranceAgent(rs.getString("company_name"));
+				}
+				// Added by piyush to display best rating on mc specific details
+				if (rs.getString("best_rating") != null) {
+					rtlBean.setBestRating(rs.getString("best_rating"));
+				}
+				if (rs.getString("certidate") != null) {
+					rtlBean.setCertiDate(rs.getString("certidate"));
+				}
+				if (rs.getString("certi_no") != null) {
+					rtlBean.setCertiNo(rs.getString("certi_no"));
+				}
+				if (rs.getString("ia_acct_no") != null) {
+					rtlBean.setIaAcctNo(rs.getString("ia_acct_no"));
+				}
+				// =====Added by Piyush on 10Mar'09================
+				if (rs.getString("tmp_term_date") != null) {
+					rtlBean.setTmpTermDt(Utility.formatSqlDate(rs.getDate("tmp_term_date"), Utility.FORMAT4));
+				}
+				if (rs.getString("tmp_reins_date") != null) {
+					rtlBean.setTmpReinsDt(Utility.formatSqlDate(rs.getDate("tmp_reins_date"), Utility.FORMAT4));
+				}
+				// =====End code by Piyush=========================
+
+				if (rs.getString("ACV") != null) {
+					rtlBean.setAcv(rs.getString("ACV"));
+				}
+				/* the key in the hash table */
+				sbKey = rs.getString("POLICY_CODE") + rs.getString("POLICY_TYPE");
+				if ((GlobalVariables.REFTRAILER + GlobalVariables.EPSPECIFICPOLICY).equals(sbKey)) {
+					arlRTI.add(rtlBean);
+					policybeans.put(sbKey, arlRTI);
+				} else {
+					policybeans.put(sbKey, rtlBean);
+				}
+				// policybeans.put(sbKey,rtlBean);
+			} else if (GlobalVariables.EMPDISHBOND.equals(rs.getString("POLICY_CODE"))) {
+				EmpDishBean empdBean = new EmpDishBean();
+
+				empdBean.setCertiId(rs.getInt("certi_id"));
+				empdBean.setPolicyMstId(rs.getInt("POLICY_MST_ID"));
+				if (rs.getString("POLICY_NO") != null) {
+					empdBean.setPolicyNo(rs.getString("POLICY_NO"));
+				}
+				if (rs.getString("MC_ACCT_NO") != null) {
+					empdBean.setMcAcctNo(rs.getString("MC_ACCT_NO"));
+				}
+				if (rs.getString("POLICY_CODE") != null) {
+					empdBean.setPolicyCode(rs.getString("POLICY_CODE"));
+				}
+				if (rs.getString("POLICY_TYPE") != null) {
+					empdBean.setPolicyType(rs.getString("POLICY_TYPE"));
+				}
+
+				empdBean.setPolicyEffDate(Utility.formatSqlDate(rs.getDate("POLICY_EFF_DT"), Utility.FORMAT4));
+				empdBean.setPolicyExpiryDate(Utility.formatSqlDate(rs.getDate("POLICY_EXP_DT"), Utility.FORMAT4));
+				empdBean.setPolicyOvrWrttnDate(Utility.formatSqlDate(rs.getDate("POLICY_OVRWRTN_DT"), Utility.FORMAT4));
+				empdBean.setPolicyTerminatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_entr_dt"), Utility.FORMAT4));
+				empdBean.setPolicyTerminatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_trmintn_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("POLICY_TRMINTN_RSN") != null) {
+					empdBean.setPolicyTerminationReason(rs.getString("POLICY_TRMINTN_RSN"));
+				}
+
+				empdBean.setPolicyReinstatedEnteredDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_entr_dt"), Utility.FORMAT4));
+				empdBean.setPolicyReinstatedDate(
+						Utility.formatSqlDate(rs.getDate("policy_reinstd_eff_dt"), Utility.FORMAT4));
+
+				if (rs.getString("policy_reinstd_rsn") != null) {
+					empdBean.setPolicyReinstatedReason(rs.getString("policy_reinstd_rsn"));
+				}
+
+				empdBean.setDeductible(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_DEDUCTIBLE"))));
+				empdBean.setLimit(Utility.createCommaString(Utility.intToString(rs.getInt("POLICY_LIMIT"))));
+				if (rs.getString("SELF_INSURED") != null) {
+					empdBean.setSelfInsured(rs.getString("SELF_INSURED"));
+				}
+				if (rs.getString("CURRENCY") != null) {
+					empdBean.setCurrency(rs.getString("CURRENCY"));
+				}
+				if (rs.getString("INSURER_NAME") != null) {
+					empdBean.setInsurerName(rs.getString("INSURER_NAME"));
+				}
+				if (rs.getString("NAIC_NO") != null) {
+					empdBean.setNaicNo(rs.getString("NAIC_NO"));
+				}
+				if (rs.getString("RRG_FLAG") != null) {
+					empdBean.setRrgFlg(rs.getString("RRG_FLAG"));
+				}
+				if (rs.getString("ADDNL_INSRD_FLAG") != null) {
+					empdBean.setAddlnInsured(rs.getString("ADDNL_INSRD_FLAG"));
+				}
+				if (rs.getString("POLICY_STATUS") != null) {
+					empdBean.setPolicyStatus(rs.getString("POLICY_STATUS"));
+				}
+				if (rs.getString("BLNKT_REQD") != null) {
+					empdBean.setBlanketReqd(rs.getString("BLNKT_REQD"));
+				}
+
+				empdBean.setBlanketWordingId(rs.getInt("BLNKT_WORDING"));
+				if (rs.getString("policy_inplace") != null) {
+					empdBean.setInPlace(rs.getString("policy_inplace"));
+				}
+				if (rs.getString("ATTR1") != null) {
+					empdBean.setAttr1(rs.getString("ATTR1"));
+				}
+				if (rs.getString("ATTR2") != null) {
+					empdBean.setAttr2(rs.getString("ATTR2"));
+				}
+
+				empdBean.setAttr3(Utility.doubleToString(rs.getDouble("ATTR3")));
+				if (rs.getString("mc_name") != null) {
+					empdBean.setMcName(rs.getString("mc_name"));
+				}
+				if (rs.getString("mc_scac") != null) {
+					empdBean.setMcScac(rs.getString("mc_scac"));
+				}
+				if (rs.getString("company_name") != null) {
+					empdBean.setInsuranceAgent(rs.getString("company_name"));
+				}
+				// Added by piyush to display best rating on mc specific details
+				if (rs.getString("best_rating") != null) {
+					empdBean.setBestRating(rs.getString("best_rating"));
+				}
+				if (rs.getString("certidate") != null) {
+					empdBean.setCertiDate(rs.getString("certidate"));
+				}
+				if (rs.getString("certi_no") != null) {
+					empdBean.setCertiNo(rs.getString("certi_no"));
+				}
+				if (rs.getString("ia_acct_no") != null) {
+					empdBean.setIaAcctNo(rs.getString("ia_acct_no"));
+				}
+				// =====Added by Piyush on 10Mar'09================
+				if (rs.getString("tmp_term_date") != null) {
+					empdBean.setTmpTermDt(Utility.formatSqlDate(rs.getDate("tmp_term_date"), Utility.FORMAT4));
+				}
+				if (rs.getString("tmp_reins_date") != null) {
+					empdBean.setTmpReinsDt(Utility.formatSqlDate(rs.getDate("tmp_reins_date"), Utility.FORMAT4));
+				}
+				// =====End code by Piyush=========================
+
+				/* the key in the hash table */
+				sbKey = rs.getString("POLICY_CODE") + rs.getString("POLICY_TYPE");
+				if ((GlobalVariables.EMPDISHBOND + GlobalVariables.EPSPECIFICPOLICY).equals(sbKey)) {
+					arlEDH.add(empdBean);
+					policybeans.put(sbKey, arlEDH);
+				} else {
+					policybeans.put(sbKey, empdBean);
+				}
+				// policybeans.put(sbKey,empdBean);
+			}
+
+		} // while getting from resultset
+
+		// log.info("Exiting method populatePolicyBean of class PolicyMaster with return
+		// value "+policybeans);
+		return policybeans;
+	}
+
+	/*
+	 * this method gets the specific details of Umbrella policy types in the
+	 * policy_details table
+	 * 
+	 * @param Connection conn
+	 * 
+	 * @param int polMstId
+	 * 
+	 * @return UmbBean
+	 * 
+	 * @throws UiiaException
+	 */
+	public UmbBean getUmbPolicyDetails(int polMstId) {
+		// log.info("Entering method getUmbPolicyDetails(" + conn.toString() + ","+
+		// polMstId + ") of class PolicySpecificDetails");
+		int iCounter = 0;
+
+		StringBuffer sbQry = new StringBuffer(
+				"SELECT umb_policy_mpg_id,auto_req,general_req,cargo_req,cont_cargo_req,");
+		sbQry.append("wc_req,el_req,trailer_req,ref_trailer_req,emp_disbond_req,limit_agg,occur,claims_made,");
+		sbQry.append("retention FROM umbrella_policy_mpg WHERE policy_mst_id = ?");
+
+		UmbBean umbBean = getSpringJdbcTemplate(this.uiiaDataSource).query(sbQry.toString(),
+				new ResultSetExtractor<UmbBean>() {
+
+					@Override
+					public UmbBean extractData(ResultSet rs) throws SQLException, DataAccessException {
+						UmbBean ubean = new UmbBean();
+						while (rs.next()) {
+							log.debug("Getting values from resultset , loop counter is " + iCounter);
+							
+							ubean.setUmbPolicyId(rs.getInt("UMB_POLICY_MPG_ID"));
+							if (rs.getString("AUTO_REQ") != null) {
+								ubean.setALReqd(rs.getString("AUTO_REQ"));
+							}
+							if (rs.getString("GENERAL_REQ") != null) {
+								ubean.setGLReqd(rs.getString("GENERAL_REQ"));
+							}
+							if (rs.getString("CARGO_REQ") != null) {
+								ubean.setCargoReqd(rs.getString("CARGO_REQ"));
+							}
+							if (rs.getString("CONT_CARGO_REQ") != null) {
+								ubean.setContCargoReqd(rs.getString("CONT_CARGO_REQ"));
+							}
+							if (rs.getString("WC_REQ") != null) {
+								ubean.setWCReqd(rs.getString("WC_REQ"));
+							}
+							if (rs.getString("EL_REQ") != null) {
+								ubean.setELReqd(rs.getString("EL_REQ"));
+							}
+							if (rs.getString("TRAILER_REQ") != null) {
+								ubean.setTrailerReqd(rs.getString("TRAILER_REQ"));
+							}
+							if (rs.getString("REF_TRAILER_REQ") != null) {
+								ubean.setRefTrailerReqd(rs.getString("REF_TRAILER_REQ"));
+							}
+							if (rs.getString("EMP_DISBOND_REQ") != null) {
+								ubean.setEmpDishReqd(rs.getString("EMP_DISBOND_REQ"));
+							}
+
+							ubean.setLimitAgg(Utility.createCommaString(Utility.intToString(rs.getInt("LIMIT_AGG"))));
+							ubean.setOccur(Utility.intToString(rs.getInt("OCCUR")));
+							ubean.setClaims(Utility.intToString(rs.getInt("CLAIMS_MADE")));
+							ubean.setRetention(Utility.createCommaString(Utility.intToString(rs.getInt("RETENTION"))));
+
+						}
+
+						return ubean;
+					}
+				}, polMstId);
+		return umbBean;
+	}
+	
+	@Override
+	public boolean getAreqFlag(String epAccNo) throws Exception
+	{
+		boolean flag=false;
+		
+		StringBuffer sbGetQuery = new StringBuffer("select ep_areq_req from ep_addtln_reqmnt where ep_template_id in (select ep_template_id from ep_template where ep_acct_no = ? and active='Y')");
+		sbGetQuery.append(" AND ep_areq_code in ('ADDM','LOC') AND ep_areq_req='Y' ");
+			 
+		long count = findTotalRecordCount(this.uiiaDataSource, epAccNo, sbGetQuery.toString());
+		if(count > 0) {
+			flag=true;
+		}
+		return flag;
+	}
+	
+	@Override
+	public List<ScannedDoc> getScanDoc(String mcAcctNo) throws Exception 
+	{
+		StringBuffer strSQL = new StringBuffer("SELECT scan_id,scan_date,doctype FROM scanned_docs WHERE mc_acct_no = ? AND ");
+		strSQL.append("doctype IN (?,?,?,?,?,?,?) ORDER BY scan_date DESC");
+		
+		List<Object> params = new ArrayList<>();
+		params.add(mcAcctNo);
+		params.add("Add\'l Insurance Endorsement");
+		params.add("Add\'l Insured Listing EP/Chkls");
+		params.add("Certificate of Insurance");
+		params.add("MCS-90");
+		params.add("Reinstatement Notice");
+		params.add("Termination Notice");
+		params.add("Truckers Endorsement");
+	
+		log.debug("Query fired is "+strSQL.toString());
+		
+		return getSpringJdbcTemplate(this.uiiaDataSource).query(strSQL.toString(),
+				new ResultSetExtractor<List<ScannedDoc>>() {
+
+					@Override
+					public List<ScannedDoc> extractData(ResultSet rs) throws SQLException, DataAccessException {
+						List<ScannedDoc> arr = new ArrayList<>();	
+						while(rs.next())
+						{
+							ScannedDoc scandocs = new ScannedDoc();
+							scandocs.setScanId(rs.getString("scan_id"));
+							scandocs.setScanDate(rs.getString("scan_date"));
+							scandocs.setDocType(rs.getString("doctype"));
+							arr.add(scandocs);
+						}
+
+						return arr;
+					}
+				}, params.toArray());
+	}
+
 
 }

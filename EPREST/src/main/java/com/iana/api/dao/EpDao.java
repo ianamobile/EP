@@ -1,6 +1,7 @@
 package com.iana.api.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -12,8 +13,10 @@ import com.iana.api.domain.EPAcctInfo;
 import com.iana.api.domain.EPTemplate;
 import com.iana.api.domain.EPTerminalFeed;
 import com.iana.api.domain.JoinRecord;
+import com.iana.api.domain.MCAcctInfo;
 import com.iana.api.domain.MCCancel;
 import com.iana.api.domain.MCDataJsonDTO;
+import com.iana.api.domain.ScannedDoc;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SecUserDetails;
 import com.iana.api.domain.SecurityObject;
@@ -78,4 +81,16 @@ public interface EpDao {
 
 	void deleteSecondaryUser(DataSource lUIIADataSource, SecUserDetails secUserList, boolean enableTransMgmt)
 			throws Exception;
+
+	List<AccountInfo> searchMemberArch(SearchAccount searchAccount, int pageIndex, int pageSize) throws Exception;
+
+	String getEPAccountNumber(String epName, String epSCAC) throws Exception;
+
+	MCAcctInfo getMCBasicInfo(SearchAccount searchparams) throws Exception;
+
+	Map<String, Object> getInPlacePolicyForMC(SearchAccount searchparams) throws Exception;
+
+	boolean getAreqFlag(String epAccNo) throws Exception;
+
+	List<ScannedDoc> getScanDoc(String mcAcctNo) throws Exception;
 }

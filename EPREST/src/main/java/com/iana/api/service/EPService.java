@@ -2,7 +2,9 @@ package com.iana.api.service;
 
 import java.util.List;
 
+import com.iana.api.domain.AccountInfo;
 import com.iana.api.domain.AccountMaster;
+import com.iana.api.domain.ArchHisLookUp;
 import com.iana.api.domain.EPAcctInfo;
 import com.iana.api.domain.EPAddendum;
 import com.iana.api.domain.EPAddendumDetForm;
@@ -62,5 +64,17 @@ public interface EPService {
 			String effDate) throws Exception;
 
 	EPAddendum getActiveTemplate(String epAcctNo, String uvalidFlg) throws Exception;
+
+	void validateArchHisLookUp(SecurityObject securityObject, SearchAccount searchAccount, List<String> errorList)
+			throws Exception;
+
+	List<AccountInfo> getArchivalHistoryLookUp(SearchAccount searchAccount, int pageIndex,
+			int pageSize) throws Exception;
+
+	void validateMCDetailsForArchHisLookUp(SecurityObject securityObject, SearchAccount searchAccount,
+			List<String> errorList) throws Exception;
+
+	void getMCDetailsForArchivalHistoryLookUp(SearchAccount searchAccount, int pageIndex, int pageSize)
+			throws Exception;
 
 }

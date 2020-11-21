@@ -1,8 +1,11 @@
 package com.iana.api.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -33,16 +36,19 @@ import com.iana.api.domain.EPTemplate;
 import com.iana.api.domain.EPTerminalFeed;
 import com.iana.api.domain.JoinRecord;
 import com.iana.api.domain.LabelValueForm;
+import com.iana.api.domain.MCAcctInfo;
 import com.iana.api.domain.MCCancel;
 import com.iana.api.domain.MCDataJsonDTO;
 import com.iana.api.domain.MultipleLimit;
 import com.iana.api.domain.Pagination;
+import com.iana.api.domain.ScannedDoc;
 import com.iana.api.domain.SearchAccount;
 import com.iana.api.domain.SecurityObject;
 import com.iana.api.domain.SetupAddendumDetails;
 import com.iana.api.domain.SetupEpTemplates;
 import com.iana.api.domain.SetupMCDataJsonDTO;
 import com.iana.api.domain.SetupManageAccountInfo;
+import com.iana.api.domain.acord.PolicyMasterBean;
 import com.iana.api.utils.CommonUtils;
 import com.iana.api.utils.CommonValidations;
 import com.iana.api.utils.GlobalVariables;
@@ -1006,6 +1012,175 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 			epAddendumDetForm.setCopyTmplt("true");
 		}
 		return epAddendumDetForm;
+	}
+
+	@Override
+	public void validateArchHisLookUp(SecurityObject securityObject, SearchAccount searchAccount,
+			List<String> errorList) throws Exception {
+
+		if (!GlobalVariables.ROLE_EP.equalsIgnoreCase(securityObject.getRoleName())) {
+			errorList.add(env.getProperty("msg_error_unauthorized_access"));
+			return;
+		}
+
+		if (StringUtils.isBlank(searchAccount.getEpScac())) {
+			errorList.add(env.getProperty("msg_error_empty_scac"));
+		} else if (StringUtils.isBlank(searchAccount.getEpName())) {
+			errorList.add(env.getProperty("msg_error_empty_EPName"));
+		} else if (StringUtils.isBlank(searchAccount.getDate())) {
+			errorList.add(env.getProperty("msg_error_empty_search_date"));
+		}
+
+	}
+
+	@Override
+	public void validateMCDetailsForArchHisLookUp(SecurityObject securityObject, SearchAccount searchAccount,
+			List<String> errorList) throws Exception {
+
+		if (!GlobalVariables.ROLE_EP.equalsIgnoreCase(securityObject.getRoleName())) {
+			errorList.add(env.getProperty("msg_error_unauthorized_access"));
+			return;
+		}
+
+		if (StringUtils.isBlank(searchAccount.getCompanyName())) {
+			errorList.add(env.getProperty("msg_error_empty_company_Name"));
+		} else if (StringUtils.isBlank(searchAccount.getAccountNumber())) {
+			errorList.add(env.getProperty("msg_error_empty_account_no"));
+		}
+
+	}
+
+	@Override
+	public List<AccountInfo> getArchivalHistoryLookUp(SearchAccount searchAccount, int pageIndex, int pageSize)
+			throws Exception {
+		List<AccountInfo> memberList = epDao.searchMemberArch(searchAccount, pageIndex, pageSize);
+		return memberList;
+
+	}
+
+	@Override
+	public void getMCDetailsForArchivalHistoryLookUp(SearchAccount searchAccount, int pageIndex,
+			int pageSize) throws Exception {
+		MCAcctInfo mcacctdetails = null;
+		MCAcctInfo epacctdetails = null;
+		AccountInfo acctBean = null;
+		AccountInfo epAcctBean = null;
+		AddressDet cntctAddBean = null;
+		ContactDet cntctInfoBean = null;
+		Map<String, Object> hashpol = null;
+		List<ScannedDoc> scannDocs = new ArrayList<>();
+
+		String epAccNo = epDao.getEPAccountNumber(searchAccount.getEpName(), searchAccount.getEpScac());
+
+		mcacctdetails = epDao.getMCBasicInfo(searchAccount);
+
+		acctBean = mcacctdetails.getAcctInfo();
+		searchAccount.setCompanyName(acctBean.getCompanyName());
+//		if (frm!=null && frm.equalsIgnoreCase("ep")) {
+		hashpol = getMCInsuranceDetailsEP(searchAccount, epAccNo);
+//		} else
+//			hashpol = archData.getMCInsuranceDetails(searchparams);
+
+		log.info("Method 3 Complete ");
+		if (CommonValidations.isNull(hashpol)) {
+			hashpol = new HashMap();
+		}
+		searchAccount.setAccountNumber(epAccNo);
+		boolean flag = epDao.getAreqFlag(epAccNo);
+		
+		epacctdetails = epDao.getMCBasicInfo(searchAccount);
+		scannDocs = epDao.getScanDoc(searchAccount.getAccountNumber());
+		// =====End method calls===================================
+		log.info("==End Method Calls==");
+
+		cntctInfoBean = mcacctdetails.getCntctInfo();
+		cntctAddBean = mcacctdetails.getCntctAdd();
+		epAcctBean = epacctdetails.getAcctInfo();
+		log.info("==after all contacts==");
+		//Pending start - Vrajesh
+//		request.setAttribute("hashEpMc", new UValidWrapper().getMCEPJoinStatusForArchival(acctBean.getAccountNo(),
+//				epAccNo, Utility.stringToSqlDate(this.archForm.getDate(), Utility.FORMAT4), hashpol));
+//
+//		session.setAttribute("mcacctbean", mcacctdetails);
+//		request.setAttribute("acctbean", acctBean);
+//		request.setAttribute("epacctbean", epAcctBean);
+//		request.setAttribute("cntctInfobean", cntctInfoBean);
+//		request.setAttribute("cntctAddbean", cntctAddBean);
+//		request.setAttribute("flag", "snapshot");
+//		request.setAttribute("epmcJoin", "yes");
+//		request.setAttribute("archival", "yes");
+//		log.debug("==after all requests==");
+//		if (!mc_nm.equalsIgnoreCase(acctBean.getCompanyName())) {
+//			request.setAttribute("former", "(Former)");
+//		}
+//		// Added to display on close
+//		request.setAttribute("arAccno", this.archForm.getAcctNo());
+//		request.setAttribute("arDate", this.archForm.getDate());
+//		session.setAttribute("archivalDate1", this.archForm.getDate());
+//		session.setAttribute("archivalDate", this.archForm.getDate());
+//		request.setAttribute("arName", this.archForm.getMcName());
+//		request.setAttribute("arScac", this.archForm.getMcSCACCode());
+//		// End
+//		session.setAttribute("beanTable", hashpol);
+//
+//		searchparams.setAccNo(this.archForm.getAcctNo());
+//		session.setAttribute("archBean", searchparams);
+//		session.setAttribute("addendaFlag", Boolean.toString(flag));
+//		session.setAttribute("scanDocs", scannDocs);
+//		log.debug("==after all sessions==");
+//		if (frm != null && frm.equalsIgnoreCase("ep")) {
+//			return "epArchSnapShot";
+//		} else
+//			return "mcArchSnapShot";
+		//Pending end - Vrajesh
+
+	}
+
+	/**
+	 * This method gets the inplace policies for the specified MC based on the date
+	 * specified
+	 * 
+	 * @param SearchAccountBean searchparam
+	 * @return HashMap
+	 * @throws UiiaException
+	 */
+	public Map<String, Object> getMCInsuranceDetailsEP(SearchAccount searchparam, String epAcctNo) throws Exception {
+		// log.info("Entering Method getMCInsuranceDetailsEP("+searchparam.toString()+")
+		// of UiiaStaff class");
+
+		Map<String, Object> insTbl = new HashMap<>();
+//		ArchivedData arch = new ArchivedData();
+		HashMap hMap = new HashMap();
+
+		insTbl = epDao.getInPlacePolicyForMC(searchparam);
+		
+		hMap.putAll(insTbl);
+		Set keys = insTbl.keySet();
+		String key = "";
+		Iterator iter = keys.iterator();
+		while (iter.hasNext()) {
+			key = (String) iter.next();
+			if (key.endsWith(GlobalVariables.EPSPECIFICPOLICY)) {
+				log.debug("HMap:" + key);
+				ArrayList ar = new ArrayList();
+				ArrayList ar1 = new ArrayList();
+				ar = (ArrayList) hMap.get(key);
+				log.debug("ar :" + ar);
+				for (int i = 0; i < ar.size(); i++) {
+					boolean flag = false;
+					PolicyMasterBean pMst = null;
+					pMst = (PolicyMasterBean) ar.get(i);
+//					flag = arch.chkEPSPC(epAcctNo, pMst.getPolicyMstId());
+					if (!flag) {
+						ar1.add(ar.get(i));
+					}
+				}
+				ar.removeAll(ar1);
+				if (ar.size() == 0 || ar.isEmpty())
+					hMap.remove(key);
+			}
+		}
+		return hMap;
 	}
 
 }
