@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
 
 import com.iana.api.domain.AccountInfo;
 import com.iana.api.domain.AccountMaster;
+import com.iana.api.domain.AddendaDownload;
 import com.iana.api.domain.AddressDet;
 import com.iana.api.domain.ContactDet;
 import com.iana.api.domain.EPAcctInfo;
@@ -1259,11 +1260,11 @@ public class EpDaoImpl extends GenericDAO implements EpDao {
 
 	@Override
 	public MCAcctInfo getMCBasicInfo(SearchAccount searchparams) throws Exception {
-		
+
 		String sMCAcctNo = "";
 		String sMCName = "%";
 		String sMCScac = "%";
-		
+
 		if (!searchparams.getAccountNumber().equals("")) {
 			sMCAcctNo = searchparams.getAccountNumber();
 		} else {
@@ -1419,7 +1420,7 @@ public class EpDaoImpl extends GenericDAO implements EpDao {
 	@Override
 	public Map<String, Object> getInPlacePolicyForMC(SearchAccount searchparams) throws Exception {
 		Map<String, Object> activePolicies = new HashMap<>();
-		
+
 		// StringBuffer sbQry = new StringBuffer("SELECT
 		// m.certi_id,m.policy_mst_id,m.policy_no,m.mc_acct_no,m.policy_code,");
 		StringBuffer sbQry = new StringBuffer(
@@ -2966,7 +2967,7 @@ public class EpDaoImpl extends GenericDAO implements EpDao {
 						UmbBean ubean = new UmbBean();
 						while (rs.next()) {
 							log.debug("Getting values from resultset , loop counter is " + iCounter);
-							
+
 							ubean.setUmbPolicyId(rs.getInt("UMB_POLICY_MPG_ID"));
 							if (rs.getString("AUTO_REQ") != null) {
 								ubean.setALReqd(rs.getString("AUTO_REQ"));
@@ -3008,28 +3009,28 @@ public class EpDaoImpl extends GenericDAO implements EpDao {
 				}, polMstId);
 		return umbBean;
 	}
-	
+
 	@Override
-	public boolean getAreqFlag(String epAccNo) throws Exception
-	{
-		boolean flag=false;
-		
-		StringBuffer sbGetQuery = new StringBuffer("select ep_areq_req from ep_addtln_reqmnt where ep_template_id in (select ep_template_id from ep_template where ep_acct_no = ? and active='Y')");
+	public boolean getAreqFlag(String epAccNo) throws Exception {
+		boolean flag = false;
+
+		StringBuffer sbGetQuery = new StringBuffer(
+				"select ep_areq_req from ep_addtln_reqmnt where ep_template_id in (select ep_template_id from ep_template where ep_acct_no = ? and active='Y')");
 		sbGetQuery.append(" AND ep_areq_code in ('ADDM','LOC') AND ep_areq_req='Y' ");
-			 
+
 		long count = findTotalRecordCount(this.uiiaDataSource, epAccNo, sbGetQuery.toString());
-		if(count > 0) {
-			flag=true;
+		if (count > 0) {
+			flag = true;
 		}
 		return flag;
 	}
-	
+
 	@Override
-	public List<ScannedDoc> getScanDoc(String mcAcctNo) throws Exception 
-	{
-		StringBuffer strSQL = new StringBuffer("SELECT scan_id,scan_date,doctype FROM scanned_docs WHERE mc_acct_no = ? AND ");
+	public List<ScannedDoc> getScanDoc(String mcAcctNo) throws Exception {
+		StringBuffer strSQL = new StringBuffer(
+				"SELECT scan_id,scan_date,doctype FROM scanned_docs WHERE mc_acct_no = ? AND ");
 		strSQL.append("doctype IN (?,?,?,?,?,?,?) ORDER BY scan_date DESC");
-		
+
 		List<Object> params = new ArrayList<>();
 		params.add(mcAcctNo);
 		params.add("Add\'l Insurance Endorsement");
@@ -3039,17 +3040,16 @@ public class EpDaoImpl extends GenericDAO implements EpDao {
 		params.add("Reinstatement Notice");
 		params.add("Termination Notice");
 		params.add("Truckers Endorsement");
-	
-		log.debug("Query fired is "+strSQL.toString());
-		
+
+		log.debug("Query fired is " + strSQL.toString());
+
 		return getSpringJdbcTemplate(this.uiiaDataSource).query(strSQL.toString(),
 				new ResultSetExtractor<List<ScannedDoc>>() {
 
 					@Override
 					public List<ScannedDoc> extractData(ResultSet rs) throws SQLException, DataAccessException {
-						List<ScannedDoc> arr = new ArrayList<>();	
-						while(rs.next())
-						{
+						List<ScannedDoc> arr = new ArrayList<>();
+						while (rs.next()) {
 							ScannedDoc scandocs = new ScannedDoc();
 							scandocs.setScanId(rs.getString("scan_id"));
 							scandocs.setScanDate(rs.getString("scan_date"));
@@ -3062,5 +3062,69 @@ public class EpDaoImpl extends GenericDAO implements EpDao {
 				}, params.toArray());
 	}
 
+	/*
+	 * this method gets all the EP template list based on the status
+	 * (past,present,future)
+	 * 
+	 * @param Connection conn
+	 * 
+	 * @param AddendaDownloadBean epTemplate
+	 * 
+	 * @return ArrayList
+	 * 
+	 * @throws Exception
+	 */
+	@Override
+	public List<AddendaDownload> getPreviousTemplatesList(AddendaDownload epTemplate, int pageIndex, int pageSize)
+			throws Exception {
+		List<AddendaDownload> templateLst = new ArrayList<AddendaDownload>();
+
+		StringBuffer sbQry = new StringBuffer();
+
+		sbQry.append("(SELECT DISTINCT t.ep_template_id,f.eff_date,f.addndm_date,f.file_path ");
+		sbQry.append("FROM ep_template t,ep_addtln_reqmnt r,ep_addendum_files f ");
+		sbQry.append("WHERE t.ep_acct_no LIKE ? AND t.active = 'Y'");
+		sbQry.append("AND r.ep_template_id = t.ep_template_id ");
+		sbQry.append("AND f.ep_areq_id = r.ep_areq_id ");
+		sbQry.append("AND r.ep_areq_code = 'ADDM' AND f.addndm_date IS NOT NULL)");
+		sbQry.append("UNION ");
+		sbQry.append("(SELECT DISTINCT t.ep_template_id,f.eff_date,f.addndm_date,f.file_path ");
+		sbQry.append("FROM ep_template t,arch_ep_addtln_reqmnt r,arch_ep_addendum_files f ");
+		sbQry.append("WHERE t.ep_acct_no LIKE ? ");
+		sbQry.append("AND t.active = 'N'AND r.ep_template_id = t.ep_template_id ");
+		sbQry.append("AND f.ep_areq_id = r.ep_areq_id AND r.ep_areq_code = 'ADDM' AND f.addndm_date IS NOT NULL ) ");
+		sbQry.append("ORDER BY addndm_date DESC LIMIT ?,? ");
+
+		List<Object> params = new ArrayList<>();
+		params.add(epTemplate.getEpAcctNo());
+		params.add(epTemplate.getEpAcctNo());
+		params.add((pageIndex * pageSize));
+		params.add(pageSize);
+
+		templateLst = getSpringJdbcTemplate(this.uiiaDataSource).query(sbQry.toString(),
+				new ResultSetExtractor<List<AddendaDownload>>() {
+
+					@Override
+					public List<AddendaDownload> extractData(ResultSet rs) throws SQLException, DataAccessException {
+						List<AddendaDownload> addendaDownloadList = new ArrayList<>();
+						while (rs.next()) {
+							AddendaDownload epTemp = new AddendaDownload();
+							epTemp.setAddendaId(rs.getInt("EP_TEMPLATE_ID"));
+							if (rs.getDate("addndm_date") != null) {
+								epTemp.setAddendaEffDate(
+										Utility.formatSqlDate(rs.getDate("addndm_date"), Utility.FORMAT4));
+							}
+							if (rs.getString("file_path") != null) {
+								epTemp.setAddendaPath(rs.getString("file_path"));
+							}
+
+							addendaDownloadList.add(epTemp);
+						}
+						return addendaDownloadList;
+					}
+				}, params.toArray());
+		return templateLst;
+
+	}
 
 }

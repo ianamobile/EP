@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 
 import com.iana.api.domain.AccountInfo;
 import com.iana.api.domain.AccountMaster;
+import com.iana.api.domain.AddendaDownload;
 import com.iana.api.domain.AddressDet;
 import com.iana.api.domain.ContactDet;
 import com.iana.api.domain.EPAcctInfo;
@@ -93,4 +94,6 @@ public interface EpDao {
 	boolean getAreqFlag(String epAccNo) throws Exception;
 
 	List<ScannedDoc> getScanDoc(String mcAcctNo) throws Exception;
+
+	List<AddendaDownload> getPreviousTemplatesList(AddendaDownload epTemplate, int pageIndex, int pageSize) throws Exception;
 }

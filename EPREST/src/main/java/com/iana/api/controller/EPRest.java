@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.iana.api.domain.AccountInfo;
 import com.iana.api.domain.AccountMaster;
+import com.iana.api.domain.AddendaDownload;
 import com.iana.api.domain.EPAcctInfo;
 import com.iana.api.domain.EPAddendumDetForm;
 import com.iana.api.domain.EPTemplate;
@@ -69,6 +70,7 @@ public class EPRest extends CommonUtils {
 	public static final String URI_TERMINAL_FEED_LOCATION = "terminalFeedLocation";
 	public static final String URI_ARCH_HISTORY_LOOKUP = "archHisLookUp";
 	public static final String URI_MC_DETAILS = "mcDetails";
+	public static final String URI_PREVIOUS_ADDENDA = "previousAddenda";
 
 	@Autowired
 	private EPService epService;
@@ -162,7 +164,7 @@ public class EPRest extends CommonUtils {
 			searchAccount.setAccountNumber(decode(epAccNo));
 			searchAccount.setUserType(GlobalVariables.EQUIPMENTPROVIDER);
 
-			epService.validateMCLookUpForEP(securityObject, searchAccount, errorList);
+			epService.validateRoleEP(securityObject, errorList);
 			if (isNotNullOrEmpty(errorList)) {
 				errors = setValidationErrors(errorList);
 			} else {
@@ -417,7 +419,8 @@ public class EPRest extends CommonUtils {
 		try {
 			SecurityObject securityObject = (SecurityObject) request.getAttribute(GlobalVariables.SECURITY_OBJECT);
 
-			EPAddendumDetForm epAddendumDetForm = epService.getEPTemplateDetails(securityObject, templateId, dbStatus, effDate);
+			EPAddendumDetForm epAddendumDetForm = epService.getEPTemplateDetails(securityObject, templateId, dbStatus,
+					effDate);
 			return new ResponseEntity<EPAddendumDetForm>(epAddendumDetForm, HttpStatus.OK);
 
 		} catch (Exception e) {
@@ -425,7 +428,7 @@ public class EPRest extends CommonUtils {
 		}
 
 	}
-	
+
 	@GetMapping(path = URI_ARCH_HISTORY_LOOKUP, produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "GET LIST OF ARCHIVAL AND HISTORY "
 			+ CLASS_NAME, responseContainer = "List", response = JoinRecord.class, tags = {
@@ -433,8 +436,7 @@ public class EPRest extends CommonUtils {
 	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
 			@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
 			@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class) })
-	public ResponseEntity<?> lookupArchivalAndHistory(
-			@RequestParam(value = "acctNo", defaultValue = "") String acctNo,
+	public ResponseEntity<?> lookupArchivalAndHistory(@RequestParam(value = "acctNo", defaultValue = "") String acctNo,
 			@RequestParam(value = "mcScac", defaultValue = "") String mcScac,
 			@RequestParam(value = "mcName", defaultValue = "") String mcName,
 			@RequestParam(value = "epSCACCode", defaultValue = "") String epSCACCode,
@@ -445,7 +447,7 @@ public class EPRest extends CommonUtils {
 			HttpServletRequest request) {
 
 		List<Errors> errors = null;
-		
+
 		List<String> errorList = getListInstance();
 		Pagination pagination = new Pagination();
 
@@ -459,8 +461,10 @@ public class EPRest extends CommonUtils {
 			searchAccount.setEpName(epName);
 			searchAccount.setEpScac(epSCACCode);
 			searchAccount.setDate(lookupDate);
-			searchAccount.setUserType(GlobalVariables.MOTORCARRIER); // No need to change as in query set MC OR NON_UIIA_MC as mem_type - Saumil on 07/19/2019
-			
+			searchAccount.setUserType(GlobalVariables.MOTORCARRIER); // No need to change as in query set MC OR
+																		// NON_UIIA_MC as mem_type - Saumil on
+																		// 07/19/2019
+
 			epService.validateArchHisLookUp(securityObject, searchAccount, errorList);
 			if (isNotNullOrEmpty(errorList)) {
 				errors = setValidationErrors(errorList);
@@ -483,7 +487,7 @@ public class EPRest extends CommonUtils {
 		}
 
 	}
-	
+
 	@GetMapping(path = URI_ARCH_HISTORY_LOOKUP + URI_MC_DETAILS, produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "GET MC DETAILS FROM ARCHIVAL AND HISTORY "
 			+ CLASS_NAME, responseContainer = "List", response = JoinRecord.class, tags = {
@@ -503,7 +507,7 @@ public class EPRest extends CommonUtils {
 			HttpServletRequest request) {
 
 		List<Errors> errors = null;
-		
+
 		List<String> errorList = getListInstance();
 		Pagination pagination = new Pagination();
 
@@ -517,8 +521,7 @@ public class EPRest extends CommonUtils {
 			searchAccount.setEpName(epName);
 			searchAccount.setEpScac(epSCACCode);
 			searchAccount.setDate(lookupDate);
-			
-			
+
 			epService.validateMCDetailsForArchHisLookUp(securityObject, searchAccount, errorList);
 			if (isNotNullOrEmpty(errorList)) {
 				errors = setValidationErrors(errorList);
@@ -541,7 +544,55 @@ public class EPRest extends CommonUtils {
 		}
 
 	}
-	
-	
+
+	@GetMapping(path = URI_PREVIOUS_ADDENDA, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "GET LIST OF PREVIOUS ADDENDA "
+			+ CLASS_NAME, responseContainer = "List", response = AddendaDownload.class, tags = {
+					GlobalVariables.CATEGORY_ADDENDA })
+	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
+			@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
+			@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class) })
+	public ResponseEntity<?> getPreviousAddendaList(
+			@RequestParam(value = "pageIndex", defaultValue = GlobalVariables.DEFAULT_ZERO) int pageIndex,
+			@RequestParam(value = "pageSize", defaultValue = GlobalVariables.DEFAULT_TEN) int pageSize,
+			HttpServletRequest request) {
+
+		AddendaDownload addendaDownload;
+		List<AddendaDownload> templateList = new ArrayList<>();
+		List<Errors> errors = null;
+		List<String> errorList = getListInstance();
+		Pagination pagination = new Pagination();
+
+		try {
+			SecurityObject securityObject = (SecurityObject) request.getAttribute(GlobalVariables.SECURITY_OBJECT);
+
+			addendaDownload = new AddendaDownload();
+			addendaDownload.setEpAcctNo(securityObject.getAccountNumber());
+			pagination.setCurrentPage(pageIndex);
+			pagination.setSize(pageSize);
+
+			epService.validateRoleEP(securityObject, errorList);
+			if (isNotNullOrEmpty(errorList)) {
+				errors = setValidationErrors(errorList);
+
+			} else {
+				templateList = epService.getAllTemplateList(addendaDownload, pageIndex, pageSize);
+
+			}
+			if (isNotNullOrEmpty(errors)) {
+				return sendUnprocessableEntity(errors);
+			} else {
+				return new ResponseEntity<SearchResult<AddendaDownload>>(new SearchResult<>(templateList, pagination),
+						HttpStatus.OK);
+			}
+
+		} catch (ApiException e) {
+			return sendValidationError(e);
+
+		} catch (Exception e) {
+			return sendServerError(e, GlobalVariables.FAIL);
+		}
+
+	}
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.iana.api.domain.AccountInfo;
 import com.iana.api.domain.AccountMaster;
+import com.iana.api.domain.AddendaDownload;
 import com.iana.api.domain.ArchHisLookUp;
 import com.iana.api.domain.EPAcctInfo;
 import com.iana.api.domain.EPAddendum;
@@ -30,7 +31,7 @@ public interface EPService {
 
 	List<JoinRecord> getEPMotorCarriers(SecurityObject securityObject, SearchAccount searchAccount) throws Exception;
 
-	void validateMCLookUpForEP(SecurityObject securityObject, SearchAccount searchAccount, List<String> errorList)
+	void validateRoleEP(SecurityObject securityObject, List<String> errorList)
 			throws Exception;
 
 	SetupMCDataJsonDTO getMCLookUpForEP(SecurityObject securityObject, SearchAccount searchAccount) throws Exception;
@@ -75,6 +76,9 @@ public interface EPService {
 			List<String> errorList) throws Exception;
 
 	void getMCDetailsForArchivalHistoryLookUp(SearchAccount searchAccount, int pageIndex, int pageSize)
+			throws Exception;
+
+	List<AddendaDownload> getAllTemplateList(AddendaDownload addendaDownload, int pageIndex, int pageSize)
 			throws Exception;
 
 }

@@ -25,6 +25,7 @@ import com.iana.api.dao.EpSwitchesDao;
 import com.iana.api.dao.UserDao;
 import com.iana.api.domain.AccountInfo;
 import com.iana.api.domain.AccountMaster;
+import com.iana.api.domain.AddendaDownload;
 import com.iana.api.domain.AdditionalReq;
 import com.iana.api.domain.AddressDet;
 import com.iana.api.domain.ContactDet;
@@ -121,8 +122,7 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 	}
 
 	@Override
-	public void validateMCLookUpForEP(SecurityObject securityObject, SearchAccount searchAccount,
-			List<String> errorList) throws Exception {
+	public void validateRoleEP(SecurityObject securityObject, List<String> errorList) throws Exception {
 		if (!GlobalVariables.ROLE_EP.equalsIgnoreCase(securityObject.getRoleName())) {
 			errorList.add(env.getProperty("msg_error_unauthorized_access"));
 			return;
@@ -1059,8 +1059,15 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 	}
 
 	@Override
-	public void getMCDetailsForArchivalHistoryLookUp(SearchAccount searchAccount, int pageIndex,
-			int pageSize) throws Exception {
+	public List<AddendaDownload> getAllTemplateList(AddendaDownload addendaDownload, int pageIndex, int pageSize)
+			throws Exception {
+		return epDao.getPreviousTemplatesList(addendaDownload, pageIndex, pageSize);
+
+	}
+
+	@Override
+	public void getMCDetailsForArchivalHistoryLookUp(SearchAccount searchAccount, int pageIndex, int pageSize)
+			throws Exception {
 		MCAcctInfo mcacctdetails = null;
 		MCAcctInfo epacctdetails = null;
 		AccountInfo acctBean = null;
@@ -1087,7 +1094,7 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 		}
 		searchAccount.setAccountNumber(epAccNo);
 		boolean flag = epDao.getAreqFlag(epAccNo);
-		
+
 		epacctdetails = epDao.getMCBasicInfo(searchAccount);
 		scannDocs = epDao.getScanDoc(searchAccount.getAccountNumber());
 		// =====End method calls===================================
@@ -1097,7 +1104,7 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 		cntctAddBean = mcacctdetails.getCntctAdd();
 		epAcctBean = epacctdetails.getAcctInfo();
 		log.info("==after all contacts==");
-		//Pending start - Vrajesh
+		// Pending start - Vrajesh
 //		request.setAttribute("hashEpMc", new UValidWrapper().getMCEPJoinStatusForArchival(acctBean.getAccountNo(),
 //				epAccNo, Utility.stringToSqlDate(this.archForm.getDate(), Utility.FORMAT4), hashpol));
 //
@@ -1132,7 +1139,7 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 //			return "epArchSnapShot";
 //		} else
 //			return "mcArchSnapShot";
-		//Pending end - Vrajesh
+		// Pending end - Vrajesh
 
 	}
 
@@ -1153,7 +1160,7 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 		HashMap hMap = new HashMap();
 
 		insTbl = epDao.getInPlacePolicyForMC(searchparam);
-		
+
 		hMap.putAll(insTbl);
 		Set keys = insTbl.keySet();
 		String key = "";
