@@ -52,7 +52,6 @@ import com.iana.api.utils.DateTimeFormater;
 import com.iana.api.utils.GlobalVariables;
 import com.iana.api.utils.Utility;
 
-
 @Repository
 public class EpDaoImpl extends GenericDAO implements EpDao {
 
@@ -3124,6 +3123,45 @@ public class EpDaoImpl extends GenericDAO implements EpDao {
 					}
 				}, params.toArray());
 		return templateLst;
+
+	}
+
+	/**
+	 * 
+	 * @param pageIndex
+	 * @param pageSize
+	 * @param flag
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public List<String> getEpMcUsdotStatusReportsList(int pageIndex, int pageSize, String flag) throws Exception {
+
+		StringBuilder searchQry = new StringBuilder(
+				"select DISTINCT DATE(CREATED_DATE) dt from MCSyncFMCSA_ACTION order by dt desc");
+		List<Object> params = new ArrayList<>();
+
+		if (!GlobalVariables.FLAG_REPORT.equalsIgnoreCase(flag)) {
+			searchQry.append(" LIMIT ?, ?");
+			params.add((pageIndex * pageSize));
+			params.add(pageSize);
+		}
+
+		return getSpringJdbcTemplate(this.uiiaDataSource).query(searchQry.toString(),
+				new ResultSetExtractor<List<String>>() {
+					List<String> reportList = new ArrayList<>();
+
+					@Override
+					public List<String> extractData(ResultSet rs) throws SQLException {
+						while (rs.next()) {
+							if (rs.getString("dt") != null && rs.getString("dt") != "") {
+								reportList.add(rs.getString("dt"));
+							}
+
+						}
+						return reportList;
+					}
+				}, params.toArray());
 
 	}
 

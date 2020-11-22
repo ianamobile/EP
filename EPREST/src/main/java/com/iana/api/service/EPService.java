@@ -81,4 +81,6 @@ public interface EPService {
 	List<AddendaDownload> getAllTemplateList(AddendaDownload addendaDownload, int pageIndex, int pageSize)
 			throws Exception;
 
+	List<String> getEpMcUsdotStatusReportsList(int pageIndex, int pageSize) throws Exception;
+
 }

@@ -71,6 +71,7 @@ public class EPRest extends CommonUtils {
 	public static final String URI_ARCH_HISTORY_LOOKUP = "archHisLookUp";
 	public static final String URI_MC_DETAILS = "mcDetails";
 	public static final String URI_PREVIOUS_ADDENDA = "previousAddenda";
+	public static final String URI_MC_OPERATING_STATUS_REPORT = "mcOperatingStatusReport";
 
 	@Autowired
 	private EPService epService;
@@ -568,7 +569,7 @@ public class EPRest extends CommonUtils {
 
 			addendaDownload = new AddendaDownload();
 			addendaDownload.setEpAcctNo(securityObject.getAccountNumber());
-			pagination.setCurrentPage(pageIndex);
+			pagination.setCurrentPage(pageIndex+1);
 			pagination.setSize(pageSize);
 
 			epService.validateRoleEP(securityObject, errorList);
@@ -594,5 +595,52 @@ public class EPRest extends CommonUtils {
 		}
 
 	}
+	
+	@GetMapping(path = URI_MC_OPERATING_STATUS_REPORT, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "GET LIST MC OPERATING STATUS REPORT LIST "
+			+ CLASS_NAME, responseContainer = "List", response = String.class, tags = {
+					GlobalVariables.CATEGORY_REPORT })
+	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
+			@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
+			@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class) })
+	public ResponseEntity<?> getMCOperatingStatusReportList(
+			@RequestParam(value = "pageIndex", defaultValue = GlobalVariables.DEFAULT_ZERO) int pageIndex,
+			@RequestParam(value = "pageSize", defaultValue = GlobalVariables.DEFAULT_TEN) int pageSize,
+			HttpServletRequest request) {
 
+		List<String> reportList = new ArrayList<>();
+		List<Errors> errors = null;
+		List<String> errorList = getListInstance();
+		Pagination pagination = new Pagination();
+
+		try {
+			SecurityObject securityObject = (SecurityObject) request.getAttribute(GlobalVariables.SECURITY_OBJECT);
+
+			pagination.setCurrentPage(pageIndex+1);
+			pagination.setSize(pageSize);
+
+			epService.validateRoleEP(securityObject, errorList);
+			if (isNotNullOrEmpty(errorList)) {
+				errors = setValidationErrors(errorList);
+
+			} else {
+				reportList = epService.getEpMcUsdotStatusReportsList(pageIndex, pageSize);
+	
+			}
+			if (isNotNullOrEmpty(errors)) {
+				return sendUnprocessableEntity(errors);
+			} else {
+				return new ResponseEntity<SearchResult<String>>(new SearchResult<>(reportList, pagination),
+						HttpStatus.OK);
+			}
+
+		} catch (ApiException e) {
+			return sendValidationError(e);
+
+		} catch (Exception e) {
+			return sendServerError(e, GlobalVariables.FAIL);
+		}
+
+	}
+	
 }

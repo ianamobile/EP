@@ -96,4 +96,6 @@ public interface EpDao {
 	List<ScannedDoc> getScanDoc(String mcAcctNo) throws Exception;
 
 	List<AddendaDownload> getPreviousTemplatesList(AddendaDownload epTemplate, int pageIndex, int pageSize) throws Exception;
+
+	List<String> getEpMcUsdotStatusReportsList(int pageIndex, int pageSize, String flag) throws Exception;
 }

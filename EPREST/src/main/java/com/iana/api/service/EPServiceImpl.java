@@ -1190,4 +1190,9 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 		return hMap;
 	}
 
+	@Override
+	public List<String> getEpMcUsdotStatusReportsList(int pageIndex, int pageSize) throws Exception {
+		return epDao.getEpMcUsdotStatusReportsList(pageIndex, pageSize, "");
+	}
+
 }
