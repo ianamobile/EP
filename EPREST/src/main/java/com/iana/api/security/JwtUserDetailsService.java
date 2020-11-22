@@ -54,8 +54,8 @@ public class JwtUserDetailsService extends CommonUtils {
 			} else {
 
 				AccountInfo accountInfo = accountInfoList.get(0);
-				securityObject.setAccountNumber(accountInfo.getAccountNumber());
-				securityObject.setScac(CommonUtils.validateObject(accountInfo.getScac()));
+				securityObject.setAccountNumber(accountInfo.getAccountNo());
+				securityObject.setScac(CommonUtils.validateObject(accountInfo.getScacCode()));
 				securityObject.setCompanyName(CommonUtils.validateObject(accountInfo.getCompanyName()));
 				securityObject.setStatus(CommonUtils.validateObject(accountInfo.getUiiaStatus()));
 				

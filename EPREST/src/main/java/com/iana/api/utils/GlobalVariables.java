@@ -16,6 +16,7 @@ public class GlobalVariables {
 
 	public static final String YES="Y";
 	public static final String NO="N";
+	public static final String EMPTY = "";
 	
 	public static final String HASH = "#";
 	public static final String PERCENTAGE = "%";
@@ -64,6 +65,8 @@ public class GlobalVariables {
 	public static final String HEADER_ACCEPT = "accept";
 
 	public static final String DEFAULT_TEN = "10";
+	public static final String DEFAULT_ONE = "1";
+	public static final String DEFAULT_ZERO = "0";
 	
 	public static final String INACTIVE_INIT = "Inactive";
 	public static final String ACTIVE_INIT = "Active";
@@ -79,6 +82,8 @@ public class GlobalVariables {
 	
 	public static final String CATEGORY_MC_LOOKUP = "MC LOOKUP";
 	public static final String CATEGORY_EP_TEMPLATE = "EP TEMPLATE";
+	public static final String CATEGORY_ADDENDA = "ADDENDA";
+	public static final String CATEGORY_REPORT = "REPORT";
 	
 	public static final String URI_PATH_EP_MC_USDOT_STATUS_REPORTS = "epMcUsdotStatusReports/report";
 	
@@ -318,6 +323,32 @@ public class GlobalVariables {
 	//   public static final String TRAC_ACCOUNT_NO ="EP200036";
 	   //public static final String TRAC_ACCOUNT_NO ="EP200031";
 
-	   public static final String APPRVD_STATUS="APPROVED";
-	   public static final String NOT_APPRVD_STATUS="NOT APPROVED";
+	public static final String APPRVD_STATUS="APPROVED";
+	public static final String NOT_APPRVD_STATUS="NOT APPROVED";
+	   
+	 //Equipment provider types
+	public static final String IMC="IMC";
+	public static final String LEASING_COMPANY="Leasing Company";
+	public static final String OCEAN_CARRIER="Ocean Carrier";
+	public static final String RAIL_ROAD="Railroad";
+	public static final String TERMINAL="Terminal";
+	
+	public static final String ROLE_IDD_MC= "IDD_MC";
+	public static final String ROLE_NON_UIIA_MC = "NON_UIIA_MC";
+	
+	public static final int LIMIT=10;
+	
+	public static final String CATEGORY_MANAGE_BILLING_USERS 	= "Manage Billing Users";
+	public static final String CATEGORY_UIIA_INVOICES 			= "UIIA Invoices";
+	public static final String TEMP="TEMP";
+	public static final String ROLE_MC= "MC";
+	public static final String MC_CHANGE="MCCHNG";
+	public static final String EP_CHANGE="EPCHNG";
+	public static final String MC_EP_CHANGE="MCEPCHNG";
+	public static final String UVLD_POLICY_EXPIRED = "POLICYEXPIRED";
+	public static final String UVLD_CARGO_HAULSOWN = "HAULSOWN";
+	public static final String WCUNEEDUHAVE ="WCUNEEDUHAVE";
+	public static final String ADDL_REQ_LOC="LOC";
+	
+	   
 }

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8e9a69f8-af99-45ec-b083-f12d57a76faa",
+		"_postman_id": "afe8e879-9085-c937-fcd1-77a5e19ef926",
 		"name": "EPREST - UAT",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -21,9 +21,7 @@
 					"mode": "raw",
 					"raw": "{\n\t\"username\":\"APLU\",\n\t\"password\":\"UIIA\",\n\t\"roleName\":\"EP\"\n}",
 					"options": {
-						"raw": {
-							"language": "json"
-						}
+						"raw": {}
 					}
 				},
 				"url": {
@@ -39,6 +37,994 @@
 						"v1",
 						"UIIA",
 						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EP - Account Info",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/loadEPSelfReg",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"loadEPSelfReg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EP - Account Info Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"acctInfo\": {\r\n        \"accountNo\": \"EP001012\",\r\n        \"companyName\": \"APL Limited\",\r\n        \"epEntities\": \"\",\r\n        \"scacCode\": \"APLU\",\r\n        \"oldScac\": \"APLU\",\r\n        \"ianaMem\": \"Y\",\r\n        \"nonUiiaEp\": \"N\",\r\n        \"statusWTrac\": \"N\",\r\n        \"uiiaStatus\": \"ACTIVE\",\r\n        \"uiiaStatusCd\": \"\",\r\n        \"memType\": \"EP\",\r\n        \"compUrl\": \"www.apl.com\",\r\n        \"attr1\": \"\",\r\n        \"attr2\": \"\",\r\n        \"attr3\": \"\",\r\n        \"memEffDt\": \"1998-04-01\",\r\n        \"cancelledDt\": null,\r\n        \"deletedDate\": null,\r\n        \"reInstatedDt\": null,\r\n        \"modifiedDate\": \"2020-02-10 17:03:56.0\",\r\n        \"password\": \"\",\r\n        \"oldUiiaStatus\": \"ACTIVE\",\r\n        \"secUserName\": \"\",\r\n        \"oldSecUserName\": \"\",\r\n        \"uiiaMember\": \"Y\",\r\n        \"iddMember\": \"\",\r\n        \"iddStatus\": \"\",\r\n        \"applyUiiaMem\": \"\",\r\n        \"loginAllwd\": \"\",\r\n        \"dt\": \"\",\r\n        \"iddSec\": \"N\",\r\n        \"iaFaxRcvd\": \"N\",\r\n        \"contctName\": \"\",\r\n        \"iaPassword\": \"\",\r\n        \"createdDate\": \"\",\r\n        \"status\": \"\",\r\n        \"verifiedBy\": \"\",\r\n        \"verifiedDate\": \"\",\r\n        \"newName\": null,\r\n        \"iaFax\": \"\",\r\n        \"iaEmail\": \"\",\r\n        \"iddMemberType\": \"\",\r\n        \"firstName\": \"\",\r\n        \"lastName\": \"\",\r\n        \"phone\": \"\",\r\n        \"fax\": \"\",\r\n        \"email\": \"\"\r\n    },\r\n    \"cntctInfo\": {\r\n        \"accountNo\": \"\",\r\n        \"contctFname\": \"John\",\r\n        \"contctMname\": \"\",\r\n        \"contctLname\": \"Mckenzie\",\r\n        \"contctTitle\": \"Director, Equipment\",\r\n        \"contctSalutation\": \"\",\r\n        \"contctMrMs\": \"Mr\",\r\n        \"contctSuffix\": \"\",\r\n        \"contctPrmPhone\": \"(757)961-2516\",\r\n        \"contctSecPhone\": \"\",\r\n        \"contctPrmFax\": \"(718)304-1602\",\r\n        \"contctSecFax\": \"\",\r\n        \"contctPrmEmail\": \"intermodal.ep@gmail.com\",\r\n        \"contctSecEmail\": \"\",\r\n        \"contctType\": \"\",\r\n        \"attr1\": \"\",\r\n        \"sameBillContct\": \"N\",\r\n        \"sameDisputeCntct\": \"Y\",\r\n        \"contctId\": 7\r\n    },\r\n    \"cntctAdd\": {\r\n        \"driverId\": 0,\r\n        \"accountNo\": \"\",\r\n        \"addrStreet1\": \"5701 Lake Wright Drive\",\r\n        \"addrStreet2\": \"\",\r\n        \"addrCity\": \"Norfolk\",\r\n        \"addrState\": \"VA\",\r\n        \"addrZip\": \"23502\",\r\n        \"addrCountry\": \"USA\",\r\n        \"addrType\": \"\",\r\n        \"sameBillAddr\": \"N\",\r\n        \"sameDisputeAddr\": \"Y\",\r\n        \"addrId\": 7\r\n    },\r\n    \"billInfo\": {\r\n        \"accountNo\": \"\",\r\n        \"contctFname\": \"John\",\r\n        \"contctMname\": \"\",\r\n        \"contctLname\": \"Mckenzie\",\r\n        \"contctTitle\": \"Billing\",\r\n        \"contctSalutation\": \"\",\r\n        \"contctMrMs\": \"Mr\",\r\n        \"contctSuffix\": \"\",\r\n        \"contctPrmPhone\": \"(757)961-2516\",\r\n        \"contctSecPhone\": \"\",\r\n        \"contctPrmFax\": \"(718)304-1602\",\r\n        \"contctSecFax\": \"\",\r\n        \"contctPrmEmail\": \"intermodal.ep@gmail.com\",\r\n        \"contctSecEmail\": \"\",\r\n        \"contctType\": \"\",\r\n        \"attr1\": \"\",\r\n        \"sameBillContct\": \"N\",\r\n        \"sameDisputeCntct\": \"\",\r\n        \"contctId\": 46286\r\n    },\r\n    \"billAdd\": {\r\n        \"driverId\": 0,\r\n        \"accountNo\": \"\",\r\n        \"addrStreet1\": \"5701 Lake Wright Drive\",\r\n        \"addrStreet2\": \"\",\r\n        \"addrCity\": \"Norfolk\",\r\n        \"addrState\": \"VA\",\r\n        \"addrZip\": \"23502\",\r\n        \"addrCountry\": \"USA\",\r\n        \"addrType\": \"\",\r\n        \"sameBillAddr\": \"N\",\r\n        \"sameDisputeAddr\": \"\",\r\n        \"addrId\": 38785\r\n    },\r\n    \"disputeInfo\": {\r\n        \"accountNo\": \"\",\r\n        \"contctFname\": \"Piyush\",\r\n        \"contctMname\": \"\",\r\n        \"contctLname\": \"Panchal\",\r\n        \"contctTitle\": \"\",\r\n        \"contctSalutation\": \"\",\r\n        \"contctMrMs\": \"Mr\",\r\n        \"contctSuffix\": \"\",\r\n        \"contctPrmPhone\": \"13019823400\",\r\n        \"contctSecPhone\": \"\",\r\n        \"contctPrmFax\": \"\",\r\n        \"contctSecFax\": \"\",\r\n        \"contctPrmEmail\": \"ppanchal@intermodal.org\",\r\n        \"contctSecEmail\": \"\",\r\n        \"contctType\": \"\",\r\n        \"attr1\": \"\",\r\n        \"sameBillContct\": \"\",\r\n        \"sameDisputeCntct\": \"N\",\r\n        \"contctId\": 78052\r\n    },\r\n    \"disputeAdd\": {\r\n        \"driverId\": 0,\r\n        \"accountNo\": \"\",\r\n        \"addrStreet1\": \"11785 Beltsville Drive\",\r\n        \"addrStreet2\": \"Suite 1100\",\r\n        \"addrCity\": \"Calverton\",\r\n        \"addrState\": \"MD\",\r\n        \"addrZip\": \"20705\",\r\n        \"addrCountry\": \"UNITED STATES\",\r\n        \"addrType\": \"\",\r\n        \"sameBillAddr\": \"\",\r\n        \"sameDisputeAddr\": \"N\",\r\n        \"addrId\": 70598\r\n    },\r\n    \"notes\": \"\",\r\n    \"epRmrks\": \"\",\r\n    \"prevNotes\": [\r\n        \"2020-02-10 17:03:56.651-----------------user_uiia\",\r\n        \"5/3/16 - 2015 year end volume decreased - base from $33800 to $30825\\r\\n5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2020-02-10 17:03:17.375-----------------user_uiia\",\r\n        \"5/3/16 - 2015 year end volume decreased - base from $33800 to $30825\\r\\n5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2019-12-11 14:55:18.379-----------------debbie\",\r\n        \"5/3/16 - 2015 year end volume decreased - base from $33800 to $30825\\r\\n5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2019-03-20 06:04:07.663-----------------user_uiia\",\r\n        \"5/3/16 - 2015 year end volume decreased - base from $33800 to $30825\\r\\n5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2017-07-06 11:35:44.102-----------------user_uiia\",\r\n        \"5/3/16 - 2015 year end volume decreased - base from $33800 to $30825\\r\\n5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2017-07-06 11:35:26.172-----------------user_uiia\",\r\n        \"5/3/16 - 2015 year end volume decreased - base from $33800 to $30825\\r\\n5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2017-07-06 11:35:06.434-----------------user_uiia\",\r\n        \"5/3/16 - 2015 year end volume decreased - base from $33800 to $30825\\r\\n5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2016-05-05 08:50:02.834-----------------debbie\",\r\n        \"5/3/16 - 2015 year end volume decreased - base from $33800 to $30825\\r\\n5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2016-01-27 14:04:53.305-----------------sherry\",\r\n        \"5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2016-01-27 14:03:44.527-----------------sherry\",\r\n        \"5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2015-09-03 09:41:47.764-----------------Kristian\",\r\n        \"5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2015-04-08 16:54:54.943-----------------debbie\",\r\n        \"5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2015-04-08 16:53:56.957-----------------debbie\",\r\n        \"5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2015-04-08 16:53:26.596-----------------debbie\",\r\n        \"5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2015-04-08 16:51:32.181-----------------debbie\",\r\n        \"5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2015-03-03 15:53:24.213-----------------user_uiia\",\r\n        \"5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2014-06-04 12:51:43.105-----------------debbie\",\r\n        \"5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2014-02-03 10:52:49.154-----------------debbie\",\r\n        \"5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2014-02-03 10:52:31.273-----------------debbie\",\r\n        \"5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2013-06-03 10:02:20.073-----------------debbie\",\r\n        \"5/3/13 - year 2012 volume increased - base form $31850 to $35150\\r\\n\\r\\n5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2012-05-02 15:48:11.992-----------------debbie\",\r\n        \"5/2/12 - year eand 2011 volume decreased - based from from $34100 to $30900\\r\\n\\r\\n4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2011-06-08 22:27:22.432-----------------user_uiia\",\r\n        \"4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2011-06-08 22:25:33.504-----------------user_uiia\",\r\n        \"4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2011-06-08 22:24:58.936-----------------user_uiia\",\r\n        \"4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2011-04-08 08:40:47.991-----------------debbie\",\r\n        \"4/7/11 - year end 2010 volume increased - base fee from $30300 to $33400\",\r\n        \"2009-09-23 10:33:38.241-----------------sherry\",\r\n        \"this is another test \",\r\n        \"2009-01-30 08:56:47.855-----------------sherry\",\r\n        \"this is another test \",\r\n        \"2008-10-15 14:44:38.694-----------------sherry\",\r\n        \"this is another test \",\r\n        \"2008-07-03 17:36:39.821-----------------debbie\",\r\n        \"this is another test \",\r\n        \"2008-06-26 09:36:39.245-----------------debbie\",\r\n        \"this is another test \",\r\n        \"2008-06-23 12:26:21.851-----------------debbie\",\r\n        \"this is another test \",\r\n        \"2008-06-23 12:26:07.677-----------------debbie\",\r\n        \"this is another test \",\r\n        \"2008-06-03 22:30:34.657-----------------debbie\",\r\n        \"This is a test\"\r\n    ],\r\n    \"epType\": \"Ocean Carrier\",\r\n    \"billDate\": null,\r\n    \"epIddFlg\": \"N\",\r\n    \"epRportngReq\": \"N\",\r\n    \"adminFeeFlag\": \"N\",\r\n    \"epLvlService\": \"\",\r\n    \"attr1\": \"\",\r\n    \"epEntities\": \"\",\r\n    \"attr2\": \"\",\r\n    \"attr3\": \"\",\r\n    \"epBasicInfoId\": 3,\r\n    \"epInvReqFlg\": \"Y\",\r\n    \"lstBillDt\": \"2016-12-01\",\r\n    \"reasonCancellation\": \"\",\r\n    \"insProb\": \"\",\r\n    \"canEffDate\": \"\",\r\n    \"epCnclEmail\": null\r\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/loadEPSelfReg",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"loadEPSelfReg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EP - Account Info Setup",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/loadEPSelfReg/setup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"loadEPSelfReg",
+						"setup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EP - Current Addendum Details",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/loadAddendumDetails",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"loadAddendumDetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EP - Current Addendum Details Setup",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/loadAddendumDetails/setup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"loadAddendumDetails",
+						"setup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UIIA Invoices - list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/invoices",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"invoices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UIIA Invoices - details",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/invoices/7204",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"invoices",
+						"7204"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List of Deleted MCs",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/searchMcDeleted?cancRefStartDate&cancRefEndDate&pageIndex&pageSize",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"searchMcDeleted"
+					],
+					"query": [
+						{
+							"key": "cancRefStartDate",
+							"value": null
+						},
+						{
+							"key": "cancRefEndDate",
+							"value": null
+						},
+						{
+							"key": "pageIndex",
+							"value": null
+						},
+						{
+							"key": "pageSize",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Terminal Feed Locations",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [],
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/terminalFeedLocation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"terminalFeedLocation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search EP Template",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "searchTmplt",
+							"value": "PREVIOUS",
+							"type": "text"
+						},
+						{
+							"key": "pageIndex",
+							"value": "0",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/epTemplates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"epTemplates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get EP Template Details",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "templateId",
+							"value": "861",
+							"type": "text"
+						},
+						{
+							"key": "dbStatus",
+							"value": "Y",
+							"type": "text"
+						},
+						{
+							"key": "effDate",
+							"value": "10/25/2016",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/epTemplatesDetails",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"epTemplatesDetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Monthly Book & Weekly Supplement",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "pageIndex",
+							"value": "0",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/monthlyWeeklyReports",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"monthlyWeeklyReports"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EP Template Setup",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "searchTmplt",
+							"value": "present",
+							"type": "text"
+						},
+						{
+							"key": "pageIndex",
+							"value": "0",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/epTemplates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"epTemplates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manage Billing Users - list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/billingUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"billingUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manage Billing Users - Add",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "        {\r\n            \"buId\": 0,\r\n            \"accountNumber\": \"\",\r\n            \"userName\": \"\",\r\n            \"password\": \"ACC\",\r\n            \"contactSuffix\": \"Mr.\",\r\n            \"firstName\": \"\",\r\n            \"lastName\": \"Jayswal\",\r\n            \"title\": \"Manager\",\r\n            \"phone\": \"3019823400\",\r\n            \"fax\": \"3019823400\",\r\n            \"email\": \"piyush@ianaoffshore.com\",\r\n            \"createdBy\": null,\r\n            \"createdDate\": null,\r\n            \"modifiedBy\": null,\r\n            \"modifiedDate\": null\r\n        }",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/billingUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"billingUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manage Billing Users - Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "        {\r\n            \"buId\": 5,\r\n            \"accountNumber\": \"\",\r\n            \"userName\": \"vrajesh\",\r\n            \"password\": \"1234\",\r\n            \"contactSuffix\": \"Mr.\",\r\n            \"firstName\": \"Amit\",\r\n            \"lastName\": \"Patel\",\r\n            \"title\": \"Manager\",\r\n            \"phone\": \"3019823400\",\r\n            \"fax\": \"3019823400\",\r\n            \"email\": \"piyush@ianaoffshore.com\",\r\n            \"createdBy\": null,\r\n            \"createdDate\": null,\r\n            \"modifiedBy\": null,\r\n            \"modifiedDate\": null\r\n        }",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/billingUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"billingUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manage Billing Users - Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "        {\r\n            \"buId\": 0,\r\n            \"userName\": \"Vrajesh\",\r\n            \"password\": \"\",\r\n            \"contactSuffix\": \"Mr.\",\r\n            \"firstName\": \"\",\r\n            \"lastName\": \"\",\r\n            \"title\": \"Manager\",\r\n            \"phone\": \"3019823400\",\r\n            \"fax\": \"3019823400\",\r\n            \"email\": \"piyush@ianaoffshore.com\",\r\n            \"createdBy\": null,\r\n            \"createdDate\": null,\r\n            \"modifiedBy\": null,\r\n            \"modifiedDate\": null\r\n        }",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/billingUsers/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"billingUsers",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manage Secondary Users - list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/secondaryUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"secondaryUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manage Secondary Users - Add",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"userName\": \"vrajesh\",\r\n            \"oldUserName\": \"temp\",\r\n            \"secUserId\": 4820,\r\n            \"status\": \"Y\",\r\n            \"password\": \"temp\",\r\n            \"email\": \"intermodal.mc@gmail.com\",\r\n            \"download\": \"Y\",\r\n            \"attr1\": \"\",\r\n            \"attr2\": \"N\",\r\n            \"auditTrailExtra\": \"192.168.100.123|0\"\r\n        }",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/secondaryUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"secondaryUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manage Secondary Users - Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"userName\": \"vrajesh jayswal\",\r\n            \"oldUserName\": \"temp\",\r\n            \"secUserId\": 7023,\r\n            \"status\": \"Y\",\r\n            \"password\": \"temp\",\r\n            \"email\": \"intermodal.mc@gmail.com\",\r\n            \"download\": \"Y\",\r\n            \"attr1\": \"\",\r\n            \"attr2\": \"N\",\r\n            \"auditTrailExtra\": \"192.168.100.123|0\"\r\n        }",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/secondaryUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"secondaryUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manage Secondary Users - Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/secondaryUsers/7023",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"secondaryUsers",
+						"7023"
 					]
 				}
 			},
@@ -142,16 +1128,6 @@
 		{
 			"name": "changePassword",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkdlbmUiLCJsYXN0TmFtZSI6IktlbW1lcmVyIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSJ9.N_GyOBb6qhfrEbTzlyjx0rrnYhfzaEBt8xzJkqutCXppBZORQ0e_2DiF5cLjr5UQ9LNrYd-vja_1mO9xX5MF8g",
-							"type": "string"
-						}
-					]
-				},
 				"method": "POST",
 				"header": [
 					{
@@ -163,12 +1139,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"newPassword\":\"uiia\",\n\t\"confirmPassword\":\"uiia\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"raw": "{\n\t\"newPassword\":\"uiia\",\n\t\"confirmPassword\":\"uiia\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/changePassword",
@@ -191,18 +1162,14 @@
 		{
 			"name": "MC Lookup - epMotorCarriers",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkdlbmUiLCJsYXN0TmFtZSI6IktlbW1lcmVyIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSJ9.N_GyOBb6qhfrEbTzlyjx0rrnYhfzaEBt8xzJkqutCXppBZORQ0e_2DiF5cLjr5UQ9LNrYd-vja_1mO9xX5MF8g",
-							"type": "string"
-						}
-					]
-				},
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/epMotorCarriers?mcName=2dsa&mcScac=&knownAs=&pageIndex=2&pageSize=2",
 					"protocol": "http",
@@ -246,16 +1213,6 @@
 		{
 			"name": "MC Lookup - getMCLookUpForEP",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkdlbmUiLCJsYXN0TmFtZSI6IktlbW1lcmVyIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSJ9.N_GyOBb6qhfrEbTzlyjx0rrnYhfzaEBt8xzJkqutCXppBZORQ0e_2DiF5cLjr5UQ9LNrYd-vja_1mO9xX5MF8g",
-							"type": "string"
-						}
-					]
-				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -283,7 +1240,7 @@
 						},
 						{
 							"key": "epAccNo",
-							"value": null
+							"value": ""
 						}
 					]
 				}
