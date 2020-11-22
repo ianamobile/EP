@@ -1,0 +1,39 @@
+<mat-toolbar class="hs m-p-0" fxLayout="row" fxLayoutAlign="space-between start">
+  <div class="p-t-5">
+    <div fxHide.gt-xs>
+      <!-- <button mat-icon-button (click)="drawer.toggle()" class="navbar-mob"> -->
+      <button mat-icon-button class="navbar-mob btn_menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <img src="assets/images/UIIALogo.png" height="70">
+  </div>
+
+  <div class="tp_t_l_bg">
+    APL Limited
+    <!-- {{securityObject.companyName}} -->
+  </div>
+
+  <div>
+    <!-- <span class="example-spacer"></span> -->
+    <button mat-icon-button [matMenuTriggerFor]="menu" class="profile_box nohove">
+      <img class="avatar mr-0 mr-sm-16" src="assets/images/profile.jpg">
+      <span class="username mr-12" fxHide fxShow.gt-sm>Greg Stefflre</span>
+      <mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" xPosition="before">
+      <button mat-menu-item [routerLink]="[ '/EPWEB/user/companyprofile' ]">
+        <mat-icon>account_circle</mat-icon>
+        <span>Manage Account Info</span>
+      </button>
+      <button mat-menu-item [routerLink]="[ '/EPWEB/notifications/notifications' ]">
+        <mat-icon>notifications_none</mat-icon>
+        <span>Notifications</span>
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </div>
+</mat-toolbar>

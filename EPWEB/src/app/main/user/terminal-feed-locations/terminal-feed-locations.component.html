@@ -1,0 +1,43 @@
+<div id="terminalFeed">
+    <mat-card class="ns app-notes">Note: The following is a list of the designated facilities that receive UIIA data on behalf of your company under the Terminal Feed Service. <br>
+    Update files are made available to the designated facilities every 45 minutes after the hour from 3:45 a.m. - 6:45 p.m. (Eastern Time). It is the responsibility of the Terminal to pick up and process the update files each hour.
+    </mat-card>
+
+    <div fxLayout="row wrap">
+
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout.xs="column" fxLayout="row" class="p-lr-24 m-tb-10">
+            <h1 fxFlex="35%" class="main_title">Terminal Feed Locations</h1>
+
+            <div fxFlex="65%" fxLayoutAlign="end center" >
+                <div>
+                    <button type="submit" mat-raised-button color="accent" class="download_btn">
+                        <mat-icon class="cursorPointer">get_app</mat-icon> Download Excel
+                    </button>
+                </div>
+               
+            </div>
+        </div>
+
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="compny_content" fxLayout="row wrap" fxLayoutAlign="start center">
+                <span class="fedd_name">CA United Terminals</span>
+                <span class="fedd_name">Cal Cartage - Web Only</span>
+                <span class="fedd_name">Ceres Terminals - Web Only</span>
+                <span class="fedd_name">Everport Terminals Services</span>
+                <span class="fedd_name">FLorida Intl Terminal (Formerly S. Stevendoring) Web Only</span>
+                <span class="fedd_name">Georgia Ports Authority</span>
+                <span class="fedd_name">H & M International</span>
+                <span class="fedd_name">Husky Terminals</span>
+                <span class="fedd_name">Husky Terminals - Web Only</span>
+                <span class="fedd_name">Maher Terminals</span>
+                <span class="fedd_name">Maher Terminals - Parallel Feed</span>
+                <span class="fedd_name">Montreal Gateway Terminal</span>
+                <span class="fedd_name">Packer Avenue - Web Only</span>
+                <span class="fedd_name">PNCT - Web Only</span>
+                <span class="fedd_name">Trapac</span>
+            </div>
+        </div>
+
+    </div>
+</div>

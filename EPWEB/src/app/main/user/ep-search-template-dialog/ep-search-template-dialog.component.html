@@ -1,0 +1,40 @@
+<div class="dialog-content-wrapper search-dialog">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Search Template</span>
+            <!-- <button tabindex="-1" mat-icon-button (click)="close()" aria-label="Close dialog"> -->
+            <button tabindex="-1" mat-icon-button (click)="close()"  aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content style="padding: 24px 12px !important;">
+        <form name="searchForm"  novalidate>
+            <div flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+                <div class="p-l-r-15" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field appearance="outline" class="widthfull">
+                        <mat-select [(value)]="selected">
+                            <mat-option value="ACTIVE" selected>Present</mat-option>
+                            <mat-option value="FUTURE">Future</mat-option>
+                            <mat-option value="PREVIOUS">Past</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            
+                
+            </div>
+        </form>
+
+    </div>
+    <mat-divider>
+    </mat-divider>
+    <div mat-dialog-actions class="m-0" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-raised-button color="accent"  class="dialog-footer-btn" aria-label="Search">
+            <mat-icon>search</mat-icon> Search
+        </button>
+        <button mat-raised-button color="primary" class="dialog-footer-btn" aria-label="RESET">
+            <mat-icon >refresh</mat-icon> Reset
+        </button>
+    </div>
+</div>

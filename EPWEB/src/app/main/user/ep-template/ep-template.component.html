@@ -1,0 +1,100 @@
+<div id="eptemplate">
+
+    <div fxLayout="row wrap">
+
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%"
+            [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" class="ptlbr-24">
+            <div class="widget-back1">
+
+                <div fxLayout="row">
+                    <mat-chip-list class="search-chip">
+                        <mat-chip class="cursorPointer search_label">
+                            <span class="search_name">
+                                Search Template :
+                            </span>
+                            <span class="search_value"> Present</span>
+                            <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                    </mat-chip-list>
+                </div>
+            </div>
+        </div>
+
+
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout.xs="column" fxLayout="row" class="p-lr-24 m-t-10">
+            <h1 fxFlex="25%" class="main_title">EP Template</h1>
+
+            <div fxFlex="75%" fxLayoutAlign="end center">
+                <div>
+                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=200>
+                        <mat-select [(value)]="selected">
+                            <mat-option value="ACTIVE">Present</mat-option>
+                            <mat-option value="FUTURE">Future</mat-option>
+                            <mat-option value="PREVIOUS">Past</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <button mat-icon-button (click)="openSearchModel()" class=" search-btn-icon-font m-l-15">
+                        <mat-icon class="fwb">search</mat-icon>
+                        Search
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100"
+            fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="widget-front">
+
+                <mat-table matSort [dataSource]="dataSource" class="m-10">
+
+                    <ng-container matColumnDef="templateid">
+                        <mat-header-cell *matHeaderCellDef>templateid
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="templateid">
+                            <div class="MB-cell-width">
+                                <a href="#" class="link_c" [routerLink]="['/EPWEB/user/epShowTemplate']">{{i.templateid}}</a>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="effectiveDate">
+                        <mat-header-cell *matHeaderCellDef>Effective Date
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Effective Date">
+                            <div class="MB-cell-width">
+                                {{i.effectiveDate}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="createdDate">
+                        <mat-header-cell *matHeaderCellDef>Created Date
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Created Date">
+                            <div class="MB-cell-width">
+                                {{i.createdDate}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let i; columns: displayedColumns">
+                    </mat-row>
+                </mat-table>
+
+
+            </div>
+            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                <mat-paginator #paginator [length]="dataSource.data.length" [pageSize]="10"
+                    [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
+            </div>
+
+        </div>
+
+    </div>
+</div>

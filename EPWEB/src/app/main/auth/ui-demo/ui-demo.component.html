@@ -1,0 +1,247 @@
+<div id="uiDemoCss">
+<mat-drawer-container class="addrow" autosize hasBackdrop="false">
+    <mat-drawer #drawer class="example-sidenav" mode="side">
+      <p>Auto-resizing sidenav</p>
+    </mat-drawer>
+    <mat-drawer #sideNav mode="side" position="end" mode="over">
+      <div class="copy-inplace-policy">
+        <div class="header_pol">
+          <span class="title">Copy Policy Form Inplace</span>
+          <button mat-icon-button (click)="sideNav.toggle()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+        <p class="copy_notes"> Select Policy For Copy From Inplace (click the "Copy Now" button in order to copy the in place policies after selection) </p>
+  
+        <div class="group_ply">
+          <mat-checkbox>Select All</mat-checkbox>
+          <mat-checkbox>Automobile Liability</mat-checkbox>
+          <mat-checkbox>General Liability</mat-checkbox>
+          <mat-checkbox>Cargo</mat-checkbox>
+          <mat-checkbox>Trailer Interchange</mat-checkbox>
+          <mat-checkbox>Worker's compensation</mat-checkbox>
+          <mat-checkbox>Employer's Liability</mat-checkbox>
+          <mat-checkbox>Contingent Cargo</mat-checkbox>
+          <mat-checkbox>Refrigerated Trailer</mat-checkbox>
+          <mat-checkbox>Employee Dishonesty</mat-checkbox>
+          <mat-checkbox>Umbrella</mat-checkbox>
+        </div>
+  
+        <div fxlayout="row" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayoutAlign="center" >
+          <button mat-flat-button color="accent">Copy Now</button>
+         </div>
+  
+      </div>
+      
+    </mat-drawer>
+  
+    <!-- <div class="example-sidenav-content">
+      <button type="button" mat-button (click)="drawer.toggle()">
+        Toggle sidenav
+      </button>
+      
+    </div> -->
+  
+  
+  
+  <div class="main_container">
+  
+    <button mat-icon-button  class="warn mat-elevation-z2 theme-options-button mebtn"  (click)="sideNav.toggle()">
+      <mat-icon>file_copy</mat-icon> Copy Policy From Inplace
+    </button>
+  
+  
+    
+  
+    <div class="page-layout" fxLayout="row">
+      <div class="header" fxLayout="row" fxLayoutAlign="space-between">
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+          <span class="mat-display-1 welcome-message">
+            Update Basic Information
+          </span>
+        </div>
+  
+        <div fxLayout="row">
+          <div class="selected-project">
+            Rail Delivery Services
+          </div>
+        </div>
+  
+      </div>
+    </div>
+    <mat-card class="ns app-notes">NOTE : - If your agency no longer represents and/or provides insurance for any of the above companies, you will need to check the "No Longer an Insured" box.</mat-card>
+  
+  
+    <div class="container">
+  
+      <h1>Tab</h1>
+      <div fxLayout="row wrap">
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayoutAlign="start start">
+          <mat-tab-group mat-align-tabs="start">
+            <mat-tab label="First">Content 1</mat-tab>
+            <mat-tab label="Second">Content 2</mat-tab>
+            <mat-tab label="Third">Content 3</mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+  
+  
+      <h1>Form</h1>
+  
+      <div fxLayout="row wrap" class="w_bg">
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayoutAlign="start start">
+  
+          <div class="p-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+            <mat-form-field class="widthfull" appearance="outline" fxFlex>
+              <mat-label>Company Name</mat-label>
+              <mat-icon matSuffix class="secondary-text">
+                account_circle
+              </mat-icon>
+              <input name="companyName" maxlength="60" required matInput>
+              <mat-error>
+                Company is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+  
+          <div class="p-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+            <mat-form-field class="widthfull" appearance="outline">
+              <mat-label>Outline form field</mat-label>
+              <input matInput placeholder="Placeholder">
+              <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+              <mat-hint>Hint</mat-hint>
+            </mat-form-field>
+          </div>
+  
+          <div class="p-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+            <mat-form-field class="widthfull" appearance="outline">
+              <mat-label>Phone number</mat-label>
+              <input matInput placeholder="Placeholder">
+              <mat-icon matSuffix>phone</mat-icon>
+              <mat-hint>Include area code</mat-hint>
+            </mat-form-field>
+          </div>
+  
+          <div class="p-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+          <mat-form-field appearance="outline" class="widthfull">
+            <mat-label>Choose an option</mat-label>
+            <mat-select [disabled]="disableSelect.value">
+              <mat-option value="option1">Option 1</mat-option>
+              <mat-option value="option2" disabled>Option 2 (disabled)</mat-option>
+              <mat-option value="option3">Option 3</mat-option>
+            </mat-select>
+          </mat-form-field>
+          </div>
+          <div class="p-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%" >
+            <mat-checkbox [formControl]="disableSelect">Disable select</mat-checkbox>
+          </div>
+          <div class="p-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">  
+            <mat-form-field appearance="outline">
+              <mat-label>Choose a date</mat-label>
+              <input matInput [matDatepicker]="picker">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+  
+       
+  
+        </div>
+      </div>
+  
+  
+     
+        <section>
+          <div class="example-label">Flat</div>
+          <div class="example-button-row">
+            <button mat-flat-button>Basic</button>
+            <button mat-flat-button color="primary">Primary</button>
+            <button mat-flat-button color="accent">Accent</button>
+            <button mat-flat-button color="warn">Warn</button>
+            <button mat-flat-button disabled>Disabled</button>
+            <a mat-flat-button href="https://www.google.com/" target="_blank">Link</a>
+          </div>
+        </section>
+        <mat-divider></mat-divider>
+        <section>
+          <div class="example-label">Icon</div>
+          <div class="example-button-row">
+            <div class="example-flex-container">
+              <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+                <mat-icon>home</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" aria-label="Example icon button with a menu icon">
+                <mat-icon>menu</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon">
+                <mat-icon>favorite</mat-icon>
+              </button>
+              <button mat-icon-button disabled aria-label="Example icon button with a open in new tab icon">
+                <mat-icon>open_in_new</mat-icon>
+              </button>
+            </div>
+          </div>
+        </section>
+      
+        
+          <h1 >Tooltip</h1>
+         
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Info about the action" matTooltipPosition="left"
+            matTooltipHideDelay="1000"
+            aria-label="Button that displays a tooltip that hides when scrolled out of the container"
+            class="example-button">
+            Action
+          </button>
+       
+      
+  
+          <h1 >Table</h1>
+      
+        
+          <div class="widget-front" style="padding: 1px 0;">
+            <table mat-table [dataSource]="dataSource" class="m-10" style="width:98.7%;" >
+          
+              <!-- Position Column -->
+              <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef> No. </th>
+                <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+              </ng-container>
+          
+              <!-- Name Column -->
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+              </ng-container>
+          
+              <!-- Weight Column -->
+              <ng-container matColumnDef="weight">
+                <th mat-header-cell *matHeaderCellDef> Weight </th>
+                <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+              </ng-container>
+          
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="symbol">
+                <th mat-header-cell *matHeaderCellDef> Symbol </th>
+                <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+              </ng-container>
+          
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+       
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="app-paginator"></mat-paginator>
+  </div>
+   
+  
+  
+  
+  
+  </div>
+  
+  </mat-drawer-container>
+
+</div>

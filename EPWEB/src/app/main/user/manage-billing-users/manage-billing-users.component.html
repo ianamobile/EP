@@ -1,0 +1,124 @@
+<div id="manageBillingUsers">
+    <mat-card class="ns app-notes">Note : This Billing user(s) are pertaining to your UIIA invoices only.</mat-card>
+    <div fxLayout="row wrap">
+
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout.xs="column" fxLayout="row"
+            class="p-lr-24 m-tb-10">
+            <h1 fxFlex="25%" class="main_title">Manage Billing Users</h1>
+
+            <div fxFlex="75%" fxLayoutAlign="end center">
+                <div>
+                    <!-- <button (click)="openSearchModel()" mat-icon-button aria-label="more"  class="search-btn-icon-font m-l-15"> -->
+                    <button type="submit" mat-raised-button color="accent" (click)="addUserModel()">
+                        <mat-icon>add</mat-icon> Add New
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100"
+            fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="widget-front">
+
+                <mat-table matSort [dataSource]="dataSource" class="m-10">
+
+
+
+
+                    <ng-container matColumnDef="userName">
+                        <mat-header-cell *matHeaderCellDef>User Name</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="User Name">
+                            <div class="MB-cell-width">
+                                {{i.userName}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="password">
+                        <mat-header-cell *matHeaderCellDef>Password</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Password">
+                            <div class="MB-cell-width">
+                                {{i.password}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="firstName">
+                        <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="First Name">
+                            <div class="MB-cell-width">
+                                {{i.firstName}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="lastName">
+                        <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Last Name">
+                            <div class="MB-cell-width">
+                                {{i.lastName}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="title">
+                        <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Title">
+                            <div class="MB-cell-width">
+                                {{i.title}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="phone">
+                        <mat-header-cell *matHeaderCellDef>Phone</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Phone">
+                            <div class="MB-cell-width">
+                                {{i.phone}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="email">
+                        <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Email">
+                            <div class="MB-cell-width">
+                                {{i.email}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Action">
+                        <mat-header-cell *matHeaderCellDef class="txt_center">Action</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Delete" class="txt_center">
+                            <div class="MB-cell-width">
+                                <!-- Buttons Column -->
+                                <div fxFlex="row" fxLayoutAlign="start center">
+                                    <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More">
+                                        <mat-icon class="secondary-text vacenter fts-24">more_vert</mat-icon>
+                                    </button>
+
+                                    <mat-menu #moreMenu="matMenu">
+                                        <button mat-menu-item aria-label="remove" (click)="addUserModel()">
+                                            <mat-icon>edit</mat-icon> Edit
+                                        </button>
+                                        <button mat-menu-item aria-label="remove" (click)="deleteUserModel()">
+                                            <mat-icon>delete</mat-icon> Delete
+                                        </button>
+                                    </mat-menu>
+                                </div>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let i; columns: displayedColumns">
+                    </mat-row>
+                </mat-table>
+
+            </div>
+        </div>
+
+    </div>
+</div>

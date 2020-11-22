@@ -1,0 +1,132 @@
+<div id="notifications">
+    <mat-card class="ns app-notes">
+        Note: Listing of Deleted Motor Carriers is based on date range entered. Please note that any of these deleted
+        companies may have rejoined the UIIA since the time they were deleted. To check to see if MC rejoined UIIA,
+        click on MC Lookup on the navigation bar.
+    </mat-card>
+    <div fxLayout="row wrap">
+
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%"
+            [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" class="ptlbr-24">
+            <div class="widget-back1">
+
+                <div fxLayout="row">
+                    <mat-chip-list class="search-chip">
+                        <mat-chip class="cursorPointer search_label">
+                            <span class="search_name">
+                                Form Date :
+                            </span>
+                            <span class="search_value"> 11/01/2019</span>
+                            <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+
+                        <mat-chip class="cursorPointer search_label">
+                            <span class="search_name"> To Date: </span>
+                            <span class="search_value"> 11/01/2020 </span>
+                            <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                    </mat-chip-list>
+                </div>
+            </div>
+        </div>
+
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout.xs="column" fxLayout="row" class="p-lr-24 m-t-10">
+            <h1 fxFlex="25%" class="main_title">List of Deleted Motor Carriers</h1>
+
+            <div fxFlex="75%" fxLayoutAlign="end center">
+                <div>
+                    <button type="submit" mat-raised-button color="accent" class="download_btn">
+                        <mat-icon class="cursorPointer m-r-5">get_app</mat-icon> Download Report
+                    </button>
+                </div>
+                <div>
+                    <button (click)="openSearchModel()" mat-icon-button aria-label="more"
+                        class=" search-btn-icon-font m-l-15">
+                        <mat-icon class="fwb">search</mat-icon>
+                        Search
+                    </button>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100"
+            fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="widget-front">
+                <mat-table matSort [dataSource]="dataSource" class="m-10">
+                
+                     <ng-container matColumnDef="companyName">
+                        <mat-header-cell *matHeaderCellDef>Company Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Company Name">
+                            <div class="MB-cell-width">
+                                {{i.companyName}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="accountNo">
+                        <mat-header-cell *matHeaderCellDef>Account No.
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Account No.">
+                            <div class="MB-cell-width">
+                                {{i.accountNo}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="SCACCode">
+                        <mat-header-cell *matHeaderCellDef>SCAC Code
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="SCAC Code">
+                            <div class="MB-cell-width">
+                                {{i.SCACCode}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="cancelledDate">
+                        <mat-header-cell *matHeaderCellDef>Cancelled Date
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Cancelled Date">
+                            <div class="MB-cell-width">
+                                {{i.cancelledDate}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="deletedDate">
+                        <mat-header-cell *matHeaderCellDef>Deleted Date
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Deleted Date">
+                            <div class="MB-cell-width">
+                                {{i.deletedDate}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="UIIAStatusCode">
+                        <mat-header-cell *matHeaderCellDef>UIIA Status Code
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="UIIA Status Code">
+                            <div class="MB-cell-width">
+                                {{i.UIIAStatusCode}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let i; columns: displayedColumns">
+                    </mat-row>
+                </mat-table>
+            </div>
+            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                <mat-paginator #paginator [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
+            </div>
+            
+        </div>
+
+    </div>
+</div>

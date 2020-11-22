@@ -1,0 +1,476 @@
+<div id="managePaymentMethod">
+    <!-- <mat-card class="ns app-notes">NOTE : - If your agency no longer represents and/or provides insurance for any of the
+        above companies, you will need to check the "No Longer an Insured" box.</mat-card> -->
+
+    <div fxLayout="row wrap">
+
+        <!-- <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout.xs="column" fxLayout="row"   class="p-lr-24 m-tb-10">
+            <h1 fxFlex="100%" class="main_title">Manage Payment Method</h1>
+        </div> -->
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout.xs="column" fxLayout="row"  fxLayoutAlign="space-around center" class="p-lr-24   m-tb-10">
+            <div class="alert alert-success">
+                Your credit card details have been successfully added into Braintree's vault .
+            </div>
+        </div>
+
+        <div class="checkout-panel">
+            <div class="checkout-body">
+                <h2 class="title">Manage Payment Method</h2>
+                <!-- <div>
+                    <h1 class="bill_titel">Invoice Details</h1>
+                    <div class="invoice_details" flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+                        <div class="invoice_title" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%"><span>Invoice#:</span> <strong>256471</strong> </div>
+                        <div class="invoice_title" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%"><span class="pl-13">Invoice Date:</span> <strong> 12/03/2012</strong></div>
+                        <div class="invoice_title" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%"><span>Bill To:</span> <strong>APL Limited</strong> </div>
+                        <div class="invoice_title" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%"><span class="pl-13">Account#:</span> <strong>MC004792</strong> </div>
+                        <div class="invoice_title" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%"><span>Invoice Amount:</span> <strong> $10.00</strong> </div>
+                        <div class="invoice_title" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%"><span class="pl-13">Paid Amount: </span> <strong>$0.00</strong> </div>
+                    </div>
+                </div> -->
+
+                <div class="payment-method" flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+                    <label for="card" class="method card selected_op " fxFlex="46%" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <div class="card-logos">
+                            <mat-icon>credit_card</mat-icon>
+                        </div>
+                        <div class="radio-input">
+                            <mat-radio-button value="cardpayment"> Credit or Debit Card</mat-radio-button>
+                        </div>
+                    </label>
+
+                    <label for="bank" class="method bank" fxFlex="48%" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <div class="card-logos">
+                            <mat-icon>account_balance</mat-icon>
+                        </div>
+                        <div class="radio-input">
+                            <mat-radio-button value="bankpayment"> ACH Debit</mat-radio-button>
+                        </div>
+                    </label>
+                </div>
+
+
+                <!-- ----------------------------------------------------------  Card Section separation here -------------------------------------- -->
+
+                <div class="cardpayment" flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+                    <div class="card_ar_det" >
+                        <h1 class="bill_titel">Credit Cards</h1>
+                        <ul class="card_view">
+                            <li>
+                                <mat-radio-button value="newCreditCardDetailsDiv"></mat-radio-button>
+                                <img src="https://assets.braintreegateway.com/payment_method_logo/visa.png?environment=sandbox" class="cardimg" />
+                                <p class="crdexpnum">
+                                    411111******1111 <br>
+                                    Card Type : Visa <br>
+                                    Expires 10/2030
+                                </p>
+                                <!-- Temporary commented -->
+                                <span class="crdsetdef">
+                                    <button type="submit" mat-raised-button color="primary">
+                                        Make Default
+                                    </button>
+                                </span>
+
+                                <button type="submit" mat-raised-button color="warn" class="crdel">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+
+                                
+                            </li>
+                            <li>
+                                <mat-radio-button value="newCreditCardDetailsDiv"></mat-radio-button>
+                                <img src="https://assets.braintreegateway.com/payment_method_logo/visa.png?environment=sandbox" class="cardimg" />
+                                <p class="crdexpnum">
+                                    411111******1111 <br>
+                                    Card Type : Visa <br>
+                                    Expires 10/2030
+                                </p>
+                                <!-- Temporary commented -->
+                                <span class="crdsetdef">
+                                    <span style="padding: 5px;color: green;">Default</span>
+                                </span>
+                                <button type="submit" mat-raised-button color="warn" class="crdel">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </li>
+
+                            <li>
+                                <mat-radio-button value="newCreditCardDetailsDiv"></mat-radio-button>
+                                <p class="crdexpnum newpaymt">
+                                    Add a New Credit Card
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="new_payment_div bil_bg" id="newCreditCardDetailsDiv" flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+                    
+                        <h1 class="bill_titel" flex="100%">Billing Address <span class="yellow-txt">(enter address that is
+                                associated w/ Credit Card Issuing Bank for validation purpose.)</span>
+                        </h1>
+
+
+                        <div flex="100%" fxLayout="row wrap" fxLayoutAlign="start center" class="p-tb-12 m-0">
+
+                            <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>First Name</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                    <input autocomplete="off" name="FirstName" required matInput>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Last Name</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                    <input autocomplete="off" name="LastName" required matInput>
+                                </mat-form-field>
+                            </div>
+
+
+                            <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Address Line 1</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">business</mat-icon>
+                                    <input autocomplete="off" name="AddressLine1" required matInput>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Address Line 2</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">business</mat-icon>
+                                    <input autocomplete="off" name="AddressLine2" required matInput>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                    <mat-label>City</mat-label>
+                                    <input autocomplete="off" name="City" required matInput>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                    <mat-select placeholder="State">
+                                        <mat-option>Alabama</mat-option>
+                                        <mat-option>Alaska</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+
+                            <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                    <mat-label>Zip Code</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                    <input autocomplete="off" name="ZipCode" required matInput>
+                                </mat-form-field>
+                            </div>
+
+
+                            <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                    <mat-select placeholder="Country">
+                                        <mat-option>USA</mat-option>
+                                        <mat-option>CANADA</mat-option>
+                                        <mat-option>MEXICO</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                        </div>
+
+
+
+                        <h1 class="bill_titel bil_til">Credit Card Details <span class="yellow-txt">(enter the Zip code that
+                                is associated w/ Card Issuing Bank)</span>
+                        </h1>
+
+                        <div flex="100%" fxLayout="row wrap" fxLayoutAlign="start center" class="p-tb-12 m-0">
+
+                            <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                    <mat-label>Name On Card</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                    <input autocomplete="off" name="NameOnCard" required matInput>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                    <mat-label>Card Number</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">credit_card</mat-icon>
+                                    <input autocomplete="off" name="CardNumber" required matInput>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                    <mat-label>Expiration Date</mat-label>
+                                    <input autocomplete="off" name="ExpirationDate" required matInput>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                    <mat-label>CVV</mat-label>
+                                    <input autocomplete="off" name="CVV" required matInput>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                    <mat-label>Zip Code</mat-label>
+                                    <input autocomplete="off" name="Zip Code" required matInput>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                    <mat-label>Amount</mat-label>
+                                    <input autocomplete="off" name="Amount" required matInput>
+                                </mat-form-field>
+                            </div> -->
+
+                            <section class="p-l-r-15" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-checkbox> Set as default payment method</mat-checkbox>
+                            </section>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- ----------------------------------------------------------  BANK Section separation here -------------------------------------- -->
+                <div class="bankpayment" flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+
+                    <h1 class="bill_titel">Bank Details</h1>
+                    <div class="card_ar_det">
+                        <ul class="card_view">
+
+
+                            <li>
+                                <mat-radio-button value="newCreditCardDetailsDiv"></mat-radio-button>
+                                <img src="https://assets.braintreegateway.com/payment_method_logo/visa.png?environment=sandbox" class="cardimg" />
+                                <p class="crdexpnum">
+                                    Ends in 123 <br>
+                                    Routing Number 123 <br>
+                                    Account Type Business
+                                </p>
+
+                               <!-- Temporary commented -->
+                                <span class="crdsetdef">
+                                    <button type="submit" mat-raised-button color="primary">
+                                        Make Default
+                                    </button>
+                                </span>
+
+                                <button type="submit" mat-raised-button color="warn" class="crdel">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </li>
+
+
+                            <li>
+                                <mat-radio-button value="newCreditCardDetailsDiv"></mat-radio-button>
+                                <img src="https://assets.braintreegateway.com/payment_method_logo/visa.png?environment=sandbox" class="cardimg" />
+                                <p class="crdexpnum">
+                                    Ends in 123 <br>
+                                    Routing Number 123 <br>
+                                    Account Type Business
+                                </p>
+
+                                <!-- Temporary commented -->
+                                <span class="crdsetdef">
+                                    <span style="padding: 5px;color: green;">Default</span>
+                                </span>
+                                <button type="submit" mat-raised-button color="warn" class="crdel">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </li>
+
+                            <li>
+                                <mat-radio-button value="paymentMethodSelection"></mat-radio-button>
+                                <p class="crdexpnum newpaymt">
+                                    Add a New Bank
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="new_payment_div bil_bg" id="newBankDetailsDiv" flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+                        <h1 class="bill_titel bil_til">Billing Address</h1>
+
+                        <div flex="100%" fxLayout="row wrap" fxLayoutAlign="start center" class="p-tb-12 m-0">
+
+                            <div class="p-l-r-15 mb-24" fxLayout="column" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <label for="Ownership" class="required" class="mb-10 fwb">Ownership Type</label>
+                                <mat-radio-group aria-label="Ownership Type">
+                                    <mat-radio-button value="Personal">Personal</mat-radio-button>
+                                    <mat-radio-button value="Business">Business</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Business Name</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                    <input autocomplete="off" name="BusinessName" required matInput>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>First Name</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                    <input autocomplete="off" name="FirstName" required matInput>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Last Name</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                    <input autocomplete="off" name="LastName" required matInput>
+                                </mat-form-field>
+                            </div>
+
+
+                            <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Address Line 1</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">business</mat-icon>
+                                    <input autocomplete="off" name="AddressLine1" required matInput>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Address Line 2</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">business</mat-icon>
+                                    <input autocomplete="off" name="AddressLine2" required matInput>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                    <mat-label>City</mat-label>
+                                    <input autocomplete="off" name="City" required matInput>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                    <mat-select placeholder="State">
+                                        <mat-option>Alabama</mat-option>
+                                        <mat-option>Alaska</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+
+                            <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                    <mat-label>Zip Code</mat-label>
+                                    <input autocomplete="off" name="ZipCode" required matInput>
+                                </mat-form-field>
+                            </div>
+
+
+                            <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                    <mat-select placeholder="Country">
+                                        <mat-option>USA</mat-option>
+                                        <mat-option>CANADA</mat-option>
+                                        <mat-option>MEXICO</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                        </div>
+
+                        <h1 class="bill_titel">Bank Details</h1>
+
+                        <div flex="100%" fxLayout="row wrap" fxLayoutAlign="start center" class="p-tb-12  m-0">
+                            <!-- <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Amount</mat-label>
+                                    <input autocomplete="off" name="Amount" required matInput>
+                                </mat-form-field>
+                            </div> -->
+
+                            <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Bank Account Number</mat-label>
+                                    <input autocomplete="off" name="BankAccountNumber" required matInput>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Routing Number</mat-label>
+                                    <input autocomplete="off" name="RoutingNumber" required matInput>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="p-l-r-15" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                                    <mat-select placeholder="Account Type">
+                                        <mat-option>Checking</mat-option>
+                                        <mat-option>Savings</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <section class="p-l-r-15" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-checkbox> Set as default payment method</mat-checkbox>
+                            </section>
+
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ----------------------------------------------------------  End BANK Section separation here -------------------------------------- -->
+
+                <div class="savedet" flex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+
+                    <section class="p-l-r-15" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <mat-checkbox> Enable Auto Pay</mat-checkbox>
+                    </section>
+
+                    <div class="notes">
+                        <strong>Note:</strong> When you enroll in AutoPay, we will automatically debit
+                        the bank account, debit card, or credit card you've chosen for the total amount due for your annual UIIA Administrative
+                        Service Fee invoice. When your UIIA invoice is generated each year upon your anniversary date,
+                        you will receive an email notification that includes your annual invoice,
+                        and confirms that your payment will automatically be paid using the payment method you
+                        previously selected.
+                        A paid receipt will be sent via e-mail if the AutoPay option is enabled once the payment has
+                        been made.
+                        Also, your payment method will be encrypted and securely stored in Braintree's Vault.
+                    </div>
+                </div>
+
+                <div class="panel-footer" id="panelFooter" fxLayout="row" fxLayoutAlign="space-between center">
+
+                    <a  mat-raised-button color="warn" href="">
+                        <mat-icon>arrow_back_ios</mat-icon> Back
+                    </a>
+
+                    <button type="submit" mat-raised-button color="accent">
+                        <mat-icon>check_circle_outline</mat-icon> Confirm &amp; Submit
+                    </button>
+
+                </div>
+
+
+
+            </div>
+        </div>
+
+
+
+    </div>
+</div>

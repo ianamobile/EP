@@ -1,0 +1,18 @@
+@import '~@angular/material/theming';
+@import "~ng-snotify/styles/material";
+
+
+$custom-typography: mat-typography-config($font-family: 'Muli, Roboto, "Helvetica Neue", sans-serif');
+@include mat-core($custom-typography);
+
+
+
+$custom-primary: mat-palette($mat-indigo);
+$custom-accent: mat-palette($mat-blue);
+$candy-app-accent:  mat-palette($mat-pink, A200, A100, A400);
+$custom-theme: mat-light-theme($custom-primary, $custom-accent);
+@include angular-material-theme($custom-theme);
+
+body,html{
+    font-family: mat-font-family($custom-typography) ;
+    }

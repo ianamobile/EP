@@ -1,0 +1,381 @@
+<div id="addendumDetails">
+    <!-- <mat-card class="ns app-notes">NOTE : - If your agency no longer represents and/or provides insurance for any of the
+        above companies, you will need to check the "No Longer an Insured" box.</mat-card> -->
+
+    <div fxLayout="row wrap">
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout.xs="column" fxLayout="row"
+            class="p-lr-24 m-tb-10">
+            <h1 fxFlex="25%" class="main_title">Addendum Details</h1>
+
+            <div fxFlex="75%" fxLayoutAlign="end center">
+                <div>
+                    <button type="submit" mat-raised-button color="accent" class="download_btn">
+                        <mat-icon class="cursorPointer m-r-5">get_app</mat-icon>
+                        Download Current Addendum
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100"
+            fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="widget-front">
+
+                <div fxFlex="100%" fxLayout="row wrap" fxLayoutAlign="start center" class="mt-20">
+                    <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                       
+                        <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                            <mat-label>Member Specific Carrier</mat-label>
+                            <mat-select  [(value)]="MemberSpecific">
+                              <mat-option value="Yes">Yes</mat-option>
+                              <mat-option value="No">No</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                   </div>
+                    <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                            <mat-label>Known As</mat-label>
+                            <mat-select placeholder="Known As" [(value)]="KnownAs">
+                                <mat-option value="Yes">Yes</mat-option>
+                              <mat-option value="No">No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                            <mat-label>Ramp Details Required</mat-label>
+                            <mat-select placeholder="Ramp Details Required"  [(value)]="RampDetails">
+                                <mat-option value="Yes">Yes</mat-option>
+                                <mat-option value="No">No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="p-l-r-15" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <mat-form-field class="widthfull" appearance="outline" fxFlex>
+                            <mat-label>Blanket Additional Insured Allowed</mat-label>
+                            <mat-select  placeholder="Blanket Additional Insured Allowed"  [(value)]="BlanketAdditional">
+                                <mat-option value="Yes">Yes</mat-option>
+                                <mat-option value="No">No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100"
+            fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="widget-front">
+                <div class="card-companyinfo widthfull">
+                    <div class="title divider-header">
+                        <span>Insurance Requirements</span>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="compny_content" fxLayout="row" fxLayoutAlign="start center">
+
+                        <table mat-table [dataSource]="dataSource" class="widthfull m-10">
+
+                            <!-- Policy Column -->
+                            <ng-container matColumnDef="Policy">
+                                <th mat-header-cell *matHeaderCellDef> Policy. </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
+                                        <input matInput value="{{element.Policy}}">
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <!-- Required Column -->
+                            <ng-container matColumnDef="Required">
+                                <th mat-header-cell *matHeaderCellDef> Required </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
+                                        <mat-select [(value)]="Required">
+                                            <mat-option value="Yes">{{element.Required}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <!-- Mode Column -->
+                            <ng-container matColumnDef="MinimumLimit">
+                                <th mat-header-cell *matHeaderCellDef> Minimum Limit </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
+                                        <input matInput value="{{element.MinimumLimit}}">
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+
+                            <!-- MaximumDeductibleAllowed Column -->
+                            <ng-container matColumnDef="MaximumDeductibleAllowed">
+                                <th mat-header-cell *matHeaderCellDef> Maximum Deductible Allowed </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
+                                        <input matInput value="{{element.MaximumDeductibleAllowed}} ">
+                                    </mat-form-field>
+
+                                </td>
+                            </ng-container>
+
+
+                            <!-- MaximumDeductibleAllowed Column -->
+                            <ng-container matColumnDef="AdditionalInsuredRequired">
+                                <th mat-header-cell *matHeaderCellDef> Additional Insured Required </th>
+                                <td mat-cell *matCellDef="let element">
+
+                                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
+                                        <mat-select  [(value)]="AdditionalInsuredRequired">
+                                            <mat-option value="Yes">
+                                                {{element.AdditionalInsuredRequired}} </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <!-- MaximumDeductibleAllowed Column -->
+                            <ng-container matColumnDef="EPAllowsSelfInsurance">
+                                <th mat-header-cell *matHeaderCellDef> EPAllows Self Insurance </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
+                                        <mat-select  [(value)]="EPAllowsSelfInsurance">
+                                            <mat-option value="Yes"> {{element.EPAllowsSelfInsurance}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                </td>
+                            </ng-container>
+
+                            <!-- MaximumDeductibleAllowed Column -->
+                            <ng-container matColumnDef="MinBESTRating">
+                                <th mat-header-cell *matHeaderCellDef> Min BEST Rating </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
+                                        <input matInput value="{{element.MinBESTRating}}">
+                                    </mat-form-field>
+
+                                </td>
+                            </ng-container>
+
+                            <!-- MaximumDeductibleAllowed Column -->
+                            <ng-container matColumnDef="RiskRetentionInsuranceAllowed">
+                                <th mat-header-cell *matHeaderCellDef>Risk Retention Insurance (RRG) Allowed </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
+                                        <mat-select  [(value)]="RiskRetentionInsuranceAllowed">
+                                            <mat-option value="Yes"> {{element.RiskRetentionInsuranceAllowed}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <!-- MaximumDeductibleAllowed Column -->
+                            <ng-container matColumnDef="EPSpecificInsurancePolicyAllowed">
+                                <th mat-header-cell *matHeaderCellDef>EP Specific Insurance Policy Allowed</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
+                                        <mat-select  [(value)]="EPSpecificInsurancePolicyAllowed">
+                                            <mat-option value="Yes" >
+                                                {{element.EPSpecificInsurancePolicyAllowed}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100"
+            fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="widget-front">
+                <div class="card-companyinfo widthfull">
+                    <div class="title divider-header">
+                        <span>Multiple Limits</span>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="compny_content" fxLayout="row" fxLayoutAlign="start center">
+
+                        <table mat-table [dataSource]="dataSource1" class="widthfull m-10">
+
+                            <!-- <ng-container matColumnDef="Delete">
+                                <mat-header-cell *matHeaderCellDef class="txt_center">Delete</mat-header-cell>
+                                <mat-cell *matCellDef="let element" data-label="Delete" class="txt_center">
+                                    <mat-checkbox></mat-checkbox>
+                                </mat-cell>
+                            </ng-container> -->
+
+                            <!-- Policy Column -->
+                            <ng-container matColumnDef="Policy">
+                                <th mat-header-cell *matHeaderCellDef> Policy. </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
+                                        <mat-select  [(value)]="Policy">
+                                            <mat-option value="AL">{{element.Policy}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <!-- Required Column -->
+                            <ng-container matColumnDef="MinimumLimit">
+                                <th mat-header-cell *matHeaderCellDef> Minimum Limit </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
+                                        <input matInput value="{{element.MinimumLimit}}">
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <!-- Mode Column -->
+                            <ng-container matColumnDef="MaximumDeductibleAllowed">
+                                <th mat-header-cell *matHeaderCellDef> Maximum Deductible Allowed </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
+                                        <input matInput value="{{element.MaximumDeductibleAllowed}}">
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="80"
+            fxFlex.gt-xs="100" fxFlex.gt-md="80">
+            <div class="widget-front">
+                <div class="card-companyinfo widthfull">
+                    <div class="title divider-header">
+                        <span>Additional Requirements</span>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="compny_content" fxLayout="row" fxLayoutAlign="start center">
+
+
+                        <table mat-table [dataSource]="dataSource2" class="widthfull m-10">
+
+                            
+
+                            <!-- Policy Column -->
+                            <ng-container matColumnDef="Description">
+                                <th mat-header-cell *matHeaderCellDef> Description </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=150>
+                                        <input matInput value="{{element.Description}}">
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <!-- Mode Column -->
+                            <ng-container matColumnDef="Code">
+                                <th mat-header-cell *matHeaderCellDef>Code </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
+                                        <input matInput value="{{element.Code}}">
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <!-- Required Column -->
+                            <ng-container matColumnDef="Required">
+                                <th mat-header-cell *matHeaderCellDef> Required </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
+                                        <mat-select  [(value)]="Required">
+                                            <mat-option value="Yes">{{element.Required}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+
+                            <!-- MaximumDeductibleAllowed Column -->
+                            <ng-container matColumnDef="OriginalRequiredinDays">
+                                <th mat-header-cell *matHeaderCellDef> Original Required in Days </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field appearance="outline" class="table_input" [style.width.px]=100>
+                                        <input matInput value="{{element.OriginalRequiredinDays}} ">
+                                    </mat-form-field>
+
+                                </td>
+                            </ng-container>
+
+                            <!-- MaximumDeductibleAllowed Column -->
+                            <ng-container matColumnDef="FilePath">
+                                <th mat-header-cell *matHeaderCellDef>FilePath </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button mat-button color="warn" class="Back-btn">
+                                        <mat-icon>file_upload</mat-icon>
+                                        Upload
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <!-- MaximumDeductibleAllowed Column -->
+                            <ng-container matColumnDef="Download">
+                                <th mat-header-cell *matHeaderCellDef>Download</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <a href="#" class="link_c">{{element.Download}}</a> </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="20"
+            fxFlex.gt-xs="100" fxFlex.gt-md="20">
+            <div class="widget-front">
+                <div class="card-companyinfo widthfull">
+                    <div class="title divider-header">
+                        <span>Effective Date</span>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="compny_content" fxLayout="row" fxLayoutAlign="start center">
+                        <mat-form-field appearance="outline" class="table_input widthfull" >
+                            <input matInput value="11/05/2020">
+                        </mat-form-field>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div fxFlex="100%" fxLayout="row wrap" class="p-l-r-15 mt-20 mb-20">
+            <div fxFlex="100%" fxLayoutAlign="center center" fxFlex.xs="100%" fxFlex.sm="100%">
+                <div fxLayout="row">
+                    <button mat-raised-button type="button" color="warn" class="Back-btn">
+                        <mat-icon>close </mat-icon> Close
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

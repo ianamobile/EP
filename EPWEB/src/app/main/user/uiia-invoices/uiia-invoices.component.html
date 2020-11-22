@@ -1,0 +1,206 @@
+<div id="uiiaInvoice">
+    <div fxLayout="row wrap">
+
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout.xs="column" fxLayout="row"
+            class="p-lr-24 m-tb-10">
+            <h1 fxFlex="25%" class="main_title">UIIA Invoices </h1>
+        </div>
+
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100"
+            fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="widget-front">
+
+                <mat-table matSort [dataSource]="dataSource" class="m-10">
+
+                    <ng-container matColumnDef="invoiceNo">
+                        <mat-header-cell *matHeaderCellDef>Invoice No</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Invoice No">
+                            <div class="MB-cell-width">
+                                <a href="#" [routerLink]="['/EPWEB/user/invoiceDetails']" class="link_c">{{i.invoiceNo}}</a> 
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="invoiceDate">
+                        <mat-header-cell *matHeaderCellDef>Invoice Date </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Invoice Date	">
+                            <div class="MB-cell-width">
+                                {{i.invoiceDate}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="invoiceAmount">
+                        <mat-header-cell *matHeaderCellDef>Invoice Amount</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Invoice Amount">
+                            <div class="MB-cell-width">
+                                {{i.invoiceAmount}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="invoiceStatus">
+                        <mat-header-cell *matHeaderCellDef>Invoice Status</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Invoice Status">
+                            <div class="MB-cell-width">
+                                {{i.invoiceStatus}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="paymentDate">
+                        <mat-header-cell *matHeaderCellDef>Payment Date</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Payment Date">
+                            <div class="MB-cell-width">
+                                {{i.paymentDate}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="paidAmount">
+                        <mat-header-cell *matHeaderCellDef>Paid Amount</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Paid Amount">
+                            <div class="MB-cell-width">
+                                {{i.paidAmount}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+
+
+                    <ng-container matColumnDef="Action">
+                        <mat-header-cell *matHeaderCellDef class="txt_center">Action</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Delete" class="txt_center">
+                            <div class="MB-cell-width">
+                                <!-- Buttons Column -->
+                                <div fxFlex="row" fxLayoutAlign="start center">
+                                    <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More">
+                                        <mat-icon class="secondary-text vacenter fts-24">more_vert</mat-icon>
+                                    </button>
+
+                                    <mat-menu #moreMenu="matMenu">
+                                        <button mat-menu-item aria-label="Download Invoice">
+                                            <mat-icon>download</mat-icon> Download Invoice
+                                        </button>
+                                        <button mat-menu-item aria-label=" Download Receipt">
+                                            <mat-icon>download</mat-icon> Download Receipt
+                                        </button>
+                                        <button mat-menu-item aria-label=" Download Receipt">
+                                            <mat-icon>payment</mat-icon> Pay Now
+                                        </button>
+                                    </mat-menu>
+                                </div>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let i; columns: displayedColumns">
+                    </mat-row>
+                </mat-table>
+
+            </div>
+        </div>
+
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout.xs="column" fxLayout="row"
+            class="p-lr-24 m-tb-10">
+            <h1 fxFlex="25%" class="main_title">UIIA Invoices Option 2</h1>
+        </div>
+
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100"
+            fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="widget-front">
+
+                <mat-table matSort [dataSource]="dataSource" class="m-10">
+
+                    <ng-container matColumnDef="invoiceNo">
+                        <mat-header-cell *matHeaderCellDef>Invoice No</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Invoice No">
+                            <div class="MB-cell-width" >
+                                <a href="#" [routerLink]="['/EPWEB/user/invoiceDetails']" class="link_c">{{i.invoiceNo}}</a> 
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="invoiceDate">
+                        <mat-header-cell *matHeaderCellDef>Invoice Date </mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Invoice Date	">
+                            <div class="MB-cell-width">
+                                {{i.invoiceDate}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="invoiceAmount">
+                        <mat-header-cell *matHeaderCellDef>Invoice Amount</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Invoice Amount">
+                            <div class="MB-cell-width">
+                                {{i.invoiceAmount}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="invoiceStatus">
+                        <mat-header-cell *matHeaderCellDef>Invoice Status</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Invoice Status">
+                            <div class="MB-cell-width">
+                                {{i.invoiceStatus}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="paymentDate">
+                        <mat-header-cell *matHeaderCellDef>Payment Date</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Payment Date">
+                            <div class="MB-cell-width">
+                                {{i.paymentDate}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="paidAmount">
+                        <mat-header-cell *matHeaderCellDef>Paid Amount</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Paid Amount">
+                            <div class="MB-cell-width">
+                                {{i.paidAmount}}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+
+
+                    <ng-container matColumnDef="Action">
+                        <mat-header-cell *matHeaderCellDef class="txt_center action_btn">Action</mat-header-cell>
+                        <mat-cell *matCellDef="let i" data-label="Delete" class="action_btn">
+                            <div class="MB-cell-width">
+                                <button  mat-raised-button type="button" color="warn" aria-label="Download Invoice" class="download_btn inv_btn">
+                                    <mat-icon>download</mat-icon> Download Invoice
+                                </button>
+                                <button  mat-raised-button type="button" color="warn" aria-label=" Download Receipt" class="download_btn inv_btn">
+                                    <mat-icon>download</mat-icon> Download Receipt
+                                </button>
+                                <button  mat-raised-button type="button" color="warn" aria-label=" Download Receipt" class="payNow_btn inv_btn" [routerLink]="['/EPWEB/user/billingPayment']" >
+                                    <mat-icon>payment</mat-icon> Pay Now
+                                </button>
+
+                                <button  mat-raised-button type="button" color="warn" (click)="viewPaymentFailureAttempts()"  aria-label=" Download Receipt" class="inv_btn" >
+                                    <mat-icon>repeat</mat-icon>  3 Attempt(s)
+                                </button>
+
+                    
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let i; columns: displayedColumns">
+                    </mat-row>
+                </mat-table>
+
+            </div>
+        </div>
+
+    </div>
+</div>

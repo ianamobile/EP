@@ -1,0 +1,125 @@
+<div id="notifications">
+
+    <mat-card class="ns app-notes">
+        Notes: From this screen, you can view notifications generated from 01/01/2017 00:10:00 thru 10/31/2020 07:44:16
+        only. Please check under "view Archival Notification" for older notifications.
+    </mat-card>
+
+    <div fxLayout="row wrap">
+
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}" class="ptlbr-24">
+            <div class="widget-back1">
+
+                <div fxLayout="row">
+                    <mat-chip-list class="search-chip">
+                        <mat-chip class="cursorPointer search_label">
+                            <span class="search_name">
+                                Form Date :
+                            </span>
+                            <span class="search_value"> 11/01/2020</span>
+                            <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+
+                        <mat-chip class="cursorPointer search_label">
+                            <span class="search_name"> To Date: </span>
+                            <span class="search_value"> 11/01/2025 </span>
+                            <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+
+                        <mat-chip class="cursorPointer search_label">
+                            <span class="search_name">
+                                Mode:
+                            </span>
+                            <span class="search_value"> Mail
+                            </span>
+                            <!-- <mat-icon matChipRemove (click)="removeSearchField('mode')">cancel</mat-icon> -->
+                        </mat-chip>
+
+                        <mat-chip class="cursorPointer search_label">
+                            <span class="search_name">
+                                Status:
+                            </span>
+                            <span class="search_value">PENDING
+                            </span>
+                            <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+
+                    </mat-chip-list>
+                </div>
+            </div>
+        </div>
+
+
+        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout.xs="column" fxLayout="row" class="p-lr-24 m-t-10">
+            <h1 fxFlex="25%" class="main_title">Notifications</h1>
+
+            <div fxFlex="75%" fxLayoutAlign="end center">
+                <div>
+                    <button type="submit" mat-raised-button color="accent" class="download_btn">
+                        <mat-icon class="cursorPointer m-r-5">get_app</mat-icon>
+                        Download Selected
+                    </button>
+                </div>
+                <div>
+                    <button (click)="openSearchModel()" mat-icon-button aria-label="more"  class=" search-btn-icon-font m-l-15">
+                    <!-- <button mat-icon-button aria-label="more" class=" search-btn-icon-font m-l-15"> -->
+                        <mat-icon class="fwb">search</mat-icon>
+                        Search Your Notifications
+                    </button>
+
+                    
+                </div>
+            </div>
+        </div>
+
+
+
+        <div [@animate]="{value:'*',params:{y:'100%'}}" class="widget p-lr-24" fxLayout="column" fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-md="100">
+            <div class="widget-front">
+
+                <table mat-table [dataSource]="dataSource" class="widthfull m-10">
+                    <!-- NotificationName Column -->
+                    <ng-container matColumnDef="NotificationName">
+                        <th mat-header-cell *matHeaderCellDef> NotificationName. </th>
+                        <td mat-cell *matCellDef="let element"> {{element.NotificationName}} </td>
+                    </ng-container>
+
+                    <!-- Status Column -->
+                    <ng-container matColumnDef="Status">
+                        <th mat-header-cell *matHeaderCellDef> Status </th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-chip-list>
+                                <mat-chip class="chip-status" [ngClass]="'status-' + element.Status">
+                                    {{element.Status}} </mat-chip>
+                            </mat-chip-list>
+
+                        </td>
+                    </ng-container>
+
+                    <!-- Mode Column -->
+                    <ng-container matColumnDef="Mode">
+                        <th mat-header-cell *matHeaderCellDef> Mode </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Mode}} </td>
+                    </ng-container>
+
+                    <!-- NotificationDate Column -->
+                    <ng-container matColumnDef="NotificationDate">
+                        <th mat-header-cell *matHeaderCellDef> NotificationDate </th>
+                        <td mat-cell *matCellDef="let element"> {{element.NotificationDate}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+
+
+            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+            </div>
+            <!-- </ng-container> -->
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,37 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "module": "es2020",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "paths": {
+      "@app-core/*" :["src/app/core/*"],
+      "@app-services/*" :["src/app/shared/services/*"],
+      "@app-models/*" :["src/app/shared/models/*"],
+      "@app-components/*" :["src/app/shared/components/*"],
+      "@app-pipes/*" :["src/app/shared/pipes/*"],
+      "@app-environments/*" :["src/environments/*"],
+      "@app-forms/*" :["src/app/shared/forms/*"],
+      "@app-animations/*" :["src/app/shared/animations/*"],
+    },
+   
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
+  }
+}
