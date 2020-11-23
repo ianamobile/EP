@@ -5,10 +5,11 @@ import java.util.List;
 import com.iana.api.domain.AccountInfo;
 import com.iana.api.domain.AccountMaster;
 import com.iana.api.domain.AddendaDownload;
-import com.iana.api.domain.ArchHisLookUp;
 import com.iana.api.domain.EPAcctInfo;
 import com.iana.api.domain.EPAddendum;
 import com.iana.api.domain.EPAddendumDetForm;
+import com.iana.api.domain.EPMCSuspensionNotifForm;
+import com.iana.api.domain.EPMCSuspensionNotifPreference;
 import com.iana.api.domain.EPTemplate;
 import com.iana.api.domain.EPTerminalFeed;
 import com.iana.api.domain.JoinRecord;
@@ -31,8 +32,7 @@ public interface EPService {
 
 	List<JoinRecord> getEPMotorCarriers(SecurityObject securityObject, SearchAccount searchAccount) throws Exception;
 
-	void validateRoleEP(SecurityObject securityObject, List<String> errorList)
-			throws Exception;
+	void validateRoleEP(SecurityObject securityObject, List<String> errorList) throws Exception;
 
 	SetupMCDataJsonDTO getMCLookUpForEP(SecurityObject securityObject, SearchAccount searchAccount) throws Exception;
 
@@ -44,18 +44,18 @@ public interface EPService {
 
 	void validateManageAccountInfo(EPAcctInfo form, List<String> errorList) throws Exception;
 
-	void updateManageAccountInfoBusinessValidation(AccountMaster epAcctInfo,
-			List<String> errorList) throws Exception;
-	
+	void updateManageAccountInfoBusinessValidation(AccountMaster epAcctInfo, List<String> errorList) throws Exception;
+
 	void updateManageAccountInfo(SecurityObject securityObject, AccountMaster accountMaster) throws Exception;
-	
+
 	SetupAddendumDetails setupCurrentAddendumDetails();
-	
+
 	EPAddendumDetForm getCurrentAddendumDetails(SecurityObject securityObject) throws Exception;
-	
+
 	EPAddendum getTemplateDetails(EPTemplate epTemplate, String uvalidFlg) throws Exception;
 
-	List<MCCancel> getDeletedMC(String cancRefStartDate, String cancRefEndDate, int pageIndex, int pageSize) throws Exception;
+	List<MCCancel> getDeletedMC(String cancRefStartDate, String cancRefEndDate, int pageIndex, int pageSize)
+			throws Exception;
 
 	List<EPTerminalFeed> getTerminalFeedLocations(String accountNumber) throws Exception;
 
@@ -69,8 +69,8 @@ public interface EPService {
 	void validateArchHisLookUp(SecurityObject securityObject, SearchAccount searchAccount, List<String> errorList)
 			throws Exception;
 
-	List<AccountInfo> getArchivalHistoryLookUp(SearchAccount searchAccount, int pageIndex,
-			int pageSize) throws Exception;
+	List<AccountInfo> getArchivalHistoryLookUp(SearchAccount searchAccount, int pageIndex, int pageSize)
+			throws Exception;
 
 	void validateMCDetailsForArchHisLookUp(SecurityObject securityObject, SearchAccount searchAccount,
 			List<String> errorList) throws Exception;
@@ -82,5 +82,12 @@ public interface EPService {
 			throws Exception;
 
 	List<String> getEpMcUsdotStatusReportsList(int pageIndex, int pageSize) throws Exception;
+
+	List<EPMCSuspensionNotifPreference> getEpMcSuspensionNotif(String accountNumber) throws Exception;
+
+	void epMcSuspensionNotifPreferenceValidation(EPMCSuspensionNotifForm epMCSuspensionNotifForm, String accountNumber,
+			List<String> errorList) throws Exception;
+
+	void saveOrUpdateEpMcSuspensionNotifPreference(SecurityObject securityObject, EPMCSuspensionNotifForm epMCSuspensionNotifForm) throws Exception;
 
 }

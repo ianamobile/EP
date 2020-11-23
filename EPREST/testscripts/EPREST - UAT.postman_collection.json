@@ -878,6 +878,93 @@
 			"response": []
 		},
 		{
+			"name": "Notification Settings",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [],
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/epMcSuspensionNotif",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"epMcSuspensionNotif"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Notification Settings -  Insert or Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJFUDAwMTAxMiIsInVzZXJOYW1lIjoiRVAwMDEwMTIiLCJhY2NvdW50TnVtYmVyIjoiRVAwMDEwMTIiLCJyb2xlTmFtZSI6IkVQIiwiY29tcGFueU5hbWUiOiJBUEwgTGltaXRlZCIsInNjYWMiOiJBUExVIiwiaXBBZGRyZXNzIjoiMDowOjA6MDowOjA6MDoxIiwiaW5uZXJBY2NvdW50TnVtYmVyIjoiIiwiaW5uZXJDb21wYW55TmFtZSI6IiIsImlubmVyU2NhYyI6IiIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6Ik1ja2VuemllIiwiZW1haWwiOiJpbnRlcm1vZGFsLmVwQGdtYWlsLmNvbSIsInVpaWFTdGFmZiI6ImZhbHNlIiwiZ3JvdXBJZCI6IjAiLCJleHRyYVBhcmFtIjoiIn0.ZuPNodfwwVVxuo3k_0y0RcDKRB6acGtoAjEXfuXaUaVhrooue4vxMIMiCUQBKXsK_OkwwXDEhmFqQvKKo4P6cQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"notifPreferenceSelection\": 4,\r\n\"notifPreferenceSelectionDB\": 0\r\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9099/EPREST/rest/v1/UIIA/epMcSuspensionNotif",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9099",
+					"path": [
+						"EPREST",
+						"rest",
+						"v1",
+						"UIIA",
+						"epMcSuspensionNotif"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "EP What If - calculate",
 			"request": {
 				"method": "POST",
