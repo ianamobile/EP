@@ -24,6 +24,8 @@ import com.iana.api.domain.AccountMaster;
 import com.iana.api.domain.AddendaDownload;
 import com.iana.api.domain.EPAcctInfo;
 import com.iana.api.domain.EPAddendumDetForm;
+import com.iana.api.domain.EPMCSuspensionNotifForm;
+import com.iana.api.domain.EPMCSuspensionNotifPreference;
 import com.iana.api.domain.EPTemplate;
 import com.iana.api.domain.EPTerminalFeed;
 import com.iana.api.domain.JoinRecord;
@@ -72,6 +74,7 @@ public class EPRest extends CommonUtils {
 	public static final String URI_MC_DETAILS = "mcDetails";
 	public static final String URI_PREVIOUS_ADDENDA = "previousAddenda";
 	public static final String URI_MC_OPERATING_STATUS_REPORT = "mcOperatingStatusReport";
+	public static final String URI_EP_MC_SUSPENSION_NOTIF = "epMcSuspensionNotif";
 
 	@Autowired
 	private EPService epService;
@@ -569,7 +572,7 @@ public class EPRest extends CommonUtils {
 
 			addendaDownload = new AddendaDownload();
 			addendaDownload.setEpAcctNo(securityObject.getAccountNumber());
-			pagination.setCurrentPage(pageIndex+1);
+			pagination.setCurrentPage(pageIndex + 1);
 			pagination.setSize(pageSize);
 
 			epService.validateRoleEP(securityObject, errorList);
@@ -595,7 +598,7 @@ public class EPRest extends CommonUtils {
 		}
 
 	}
-	
+
 	@GetMapping(path = URI_MC_OPERATING_STATUS_REPORT, produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "GET LIST MC OPERATING STATUS REPORT LIST "
 			+ CLASS_NAME, responseContainer = "List", response = String.class, tags = {
@@ -616,7 +619,7 @@ public class EPRest extends CommonUtils {
 		try {
 			SecurityObject securityObject = (SecurityObject) request.getAttribute(GlobalVariables.SECURITY_OBJECT);
 
-			pagination.setCurrentPage(pageIndex+1);
+			pagination.setCurrentPage(pageIndex + 1);
 			pagination.setSize(pageSize);
 
 			epService.validateRoleEP(securityObject, errorList);
@@ -625,7 +628,7 @@ public class EPRest extends CommonUtils {
 
 			} else {
 				reportList = epService.getEpMcUsdotStatusReportsList(pageIndex, pageSize);
-	
+
 			}
 			if (isNotNullOrEmpty(errors)) {
 				return sendUnprocessableEntity(errors);
@@ -642,5 +645,75 @@ public class EPRest extends CommonUtils {
 		}
 
 	}
-	
+
+	@GetMapping(path = URI_EP_MC_SUSPENSION_NOTIF, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "GET EP MC SUSPENSION NOTIF PREFERENCES IN "
+			+ CLASS_NAME, responseContainer = "List", response = EPMCSuspensionNotifPreference.class, tags = {
+					GlobalVariables.CATEGORY_EP_TEMPLATE })
+	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
+			@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
+			@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class) })
+	public ResponseEntity<?> epMCSuspensionNotifSetup(HttpServletRequest request) {
+
+		try {
+			SecurityObject securityObject = (SecurityObject) request.getAttribute(GlobalVariables.SECURITY_OBJECT);
+			List<EPMCSuspensionNotifPreference> notifList = epService
+					.getEpMcSuspensionNotif(securityObject.getAccountNumber());
+			return new ResponseEntity<List<EPMCSuspensionNotifPreference>>(notifList, HttpStatus.OK);
+
+		} catch (ApiException e) {
+			return sendValidationError(e);
+
+		} catch (Exception e) {
+			return sendServerError(e, GlobalVariables.FAIL);
+		}
+
+	}
+
+	@PutMapping(path = URI_EP_MC_SUSPENSION_NOTIF, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Insert or Update EP MC SUSPENSION NOTIF PREFERENCES IN "
+			+ CLASS_NAME, responseContainer = "List", response = EPMCSuspensionNotifPreference.class, tags = {
+					GlobalVariables.CATEGORY_EP_TEMPLATE })
+	@ApiResponses({ @ApiResponse(code = 200, message = GlobalVariables.RESPONSE_MSG_200),
+			@ApiResponse(code = 422, message = GlobalVariables.RESPONSE_MSG_422, response = ApiResponseMessage.class),
+			@ApiResponse(code = 500, message = GlobalVariables.RESPONSE_MSG_500, response = ApiResponseMessage.class) })
+	public ResponseEntity<?> saveEpMcSuspensionNotifPreference(HttpEntity<EPMCSuspensionNotifForm> requestEntity,
+			HttpServletRequest request) {
+		List<Errors> errors = null;
+		List<String> errorList = getListInstance();
+		EPMCSuspensionNotifForm epMCSuspensionNotifForm = requestEntity.getBody();
+		try {
+			SecurityObject securityObject = (SecurityObject) request.getAttribute(GlobalVariables.SECURITY_OBJECT);
+			epService.validateRoleEP(securityObject, errorList);
+			if (isNotNullOrEmpty(errorList)) {
+				errors = setValidationErrors(errorList);
+			} else {
+				epService.epMcSuspensionNotifPreferenceValidation(epMCSuspensionNotifForm,
+						securityObject.getAccountNumber(), errorList);
+				if (isNotNullOrEmpty(errorList)) {
+					errors = setBusinessError(errorList);
+
+				} else {
+					epService.saveOrUpdateEpMcSuspensionNotifPreference(securityObject, epMCSuspensionNotifForm);
+				}
+			}
+
+			if (isNotNullOrEmpty(errors)) {
+				return sendUnprocessableEntity(errors);
+
+			} else {
+
+				List<EPMCSuspensionNotifPreference> notifList = epService
+						.getEpMcSuspensionNotif(securityObject.getAccountNumber());
+				return new ResponseEntity<List<EPMCSuspensionNotifPreference>>(notifList, HttpStatus.OK);
+			}
+		} catch (ApiException e) {
+			return sendValidationError(e);
+
+		} catch (Exception e) {
+			return sendServerError(e, GlobalVariables.FAIL);
+		}
+
+	}
+
 }

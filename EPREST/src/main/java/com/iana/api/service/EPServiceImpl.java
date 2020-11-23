@@ -33,6 +33,8 @@ import com.iana.api.domain.EPAcctInfo;
 import com.iana.api.domain.EPAddendum;
 import com.iana.api.domain.EPAddendumDetForm;
 import com.iana.api.domain.EPInsNeeds;
+import com.iana.api.domain.EPMCSuspensionNotifForm;
+import com.iana.api.domain.EPMCSuspensionNotifPreference;
 import com.iana.api.domain.EPTemplate;
 import com.iana.api.domain.EPTerminalFeed;
 import com.iana.api.domain.JoinRecord;
@@ -157,9 +159,13 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 	}
 
 	@Override
+	public List<EPMCSuspensionNotifPreference> getEpMcSuspensionNotif(String accountNumber) throws Exception {
+		Long notifPreferenceSelectedByEP = epDao.getNotifPreferenceSelectedByEP(accountNumber);
+		return epDao.getEPMCSuspensionNotifPref(notifPreferenceSelectedByEP);
+	}
+
+	@Override
 	public AccountMaster getEPAccountInfo(String acctNo) throws Exception {
-//		AccountMaster accountMaster = new AccountMaster();
-		System.out.println("---acctNo=" + acctNo);
 		EPAcctInfo epAcctInfo = epDao.getEpAcctDtls(acctNo);
 		epAcctInfo.setPrevNotes(Utility.removePaddingFrmNotes(epAcctInfo.getEpNotes()));
 
@@ -1193,6 +1199,51 @@ public class EPServiceImpl extends CommonUtils implements EPService {
 	@Override
 	public List<String> getEpMcUsdotStatusReportsList(int pageIndex, int pageSize) throws Exception {
 		return epDao.getEpMcUsdotStatusReportsList(pageIndex, pageSize, "");
+	}
+
+	@Override
+	public void epMcSuspensionNotifPreferenceValidation(EPMCSuspensionNotifForm epMCSuspensionNotifForm,
+			String accountNumber, List<String> errorList) throws Exception {
+
+		if (epMCSuspensionNotifForm == null || epMCSuspensionNotifForm.getNotifPreferenceSelection() == null
+				|| epMCSuspensionNotifForm.getNotifPreferenceSelection() == 0) {
+			errorList.add(env.getProperty("msg_error_empty_ep_mc_suspension_notif_preference"));
+			return;
+		}
+
+		//Business validation
+		if (epMCSuspensionNotifForm.getNotifPreferenceSelectionDB() > 0) {
+			// for update - validate it
+			if (!epDao.ifExistsOldEpMcNotifPreference(epMCSuspensionNotifForm.getNotifPreferenceSelectionDB(),
+					accountNumber)) {
+				errorList.add(env.getProperty("msg_error_ep_mc_suspension_old_notif_preference_not_exits"));
+			}
+
+		} else if (epMCSuspensionNotifForm.getNotifPreferenceSelection() > 0) {
+			// for insert - validate it
+			if (epDao.ifExistsEpMcNotifPreferenceForAccount(accountNumber)) {
+				errorList.add(env.getProperty("msg_error_exist_ep_mc_suspension_notif_preference"));
+			}
+		}
+
+	}
+
+	@Override
+	public void saveOrUpdateEpMcSuspensionNotifPreference(SecurityObject securityObject,
+			EPMCSuspensionNotifForm epMCSuspensionNotifForm) throws Exception {
+
+		if (epMCSuspensionNotifForm.getNotifPreferenceSelectionDB() > 0) {
+			// for update
+			epDao.updateEPMCSuspensionNotification(securityObject,
+					epMCSuspensionNotifForm.getNotifPreferenceSelection(),
+					epMCSuspensionNotifForm.getNotifPreferenceSelectionDB());
+
+		} else {
+			// for insert
+			epDao.insertEPMCSuspensionNotification(securityObject,
+					epMCSuspensionNotifForm.getNotifPreferenceSelection());
+		}
+
 	}
 
 }

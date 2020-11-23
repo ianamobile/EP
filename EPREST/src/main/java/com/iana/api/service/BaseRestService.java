@@ -173,6 +173,17 @@ public class BaseRestService extends GenericDAO {
 		return epTemplatesList;
 	}
 	
+	public List<LabelValueForm> epMcSuspensionNotif() throws Exception {
+		
+		List<LabelValueForm> epTemplatesList = new ArrayList<>();
+ 
+		epTemplatesList.add(new LabelValueForm("Present",GlobalVariables.PRESENTTEMPLATE ));
+		epTemplatesList.add(new LabelValueForm("Future", GlobalVariables.WHATIFTEMPLATE ));
+		epTemplatesList.add(new LabelValueForm("Past", GlobalVariables.PASTTEMPLATE ));
+		
+		return epTemplatesList;
+	}
+	
 	public List<LabelValueForm> populateUiiaStatusList() {
 		List<LabelValueForm> uiiaStatus = new ArrayList<>();
 			uiiaStatus.add(new LabelValueForm("Active", GlobalVariables.ACTIVE));

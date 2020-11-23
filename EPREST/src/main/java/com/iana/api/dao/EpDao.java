@@ -11,6 +11,7 @@ import com.iana.api.domain.AddendaDownload;
 import com.iana.api.domain.AddressDet;
 import com.iana.api.domain.ContactDet;
 import com.iana.api.domain.EPAcctInfo;
+import com.iana.api.domain.EPMCSuspensionNotifPreference;
 import com.iana.api.domain.EPTemplate;
 import com.iana.api.domain.EPTerminalFeed;
 import com.iana.api.domain.JoinRecord;
@@ -98,4 +99,18 @@ public interface EpDao {
 	List<AddendaDownload> getPreviousTemplatesList(AddendaDownload epTemplate, int pageIndex, int pageSize) throws Exception;
 
 	List<String> getEpMcUsdotStatusReportsList(int pageIndex, int pageSize, String flag) throws Exception;
+
+	List<EPMCSuspensionNotifPreference> getEPMCSuspensionNotifPref(Long notifPreferenceSelectedByEP) throws Exception;
+
+	Long getNotifPreferenceSelectedByEP(String accountNumber) throws Exception;
+
+	boolean ifExistsEpMcNotifPreferenceForAccount(String accountNumber) throws Exception;
+
+	void insertEPMCSuspensionNotification(SecurityObject securityObject, Long notifPreferenceSelection)
+			throws Exception;
+
+	void updateEPMCSuspensionNotification(SecurityObject securityObject, Long notifPreferenceSelection,
+			Long notifPreferenceSelectionDB) throws Exception;
+
+	boolean ifExistsOldEpMcNotifPreference(Long notifPreferenceSelection, String accountNumber) throws Exception;
 }

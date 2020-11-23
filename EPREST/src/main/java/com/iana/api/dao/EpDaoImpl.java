@@ -27,6 +27,7 @@ import com.iana.api.domain.AddressDet;
 import com.iana.api.domain.ContactDet;
 import com.iana.api.domain.EPAcctInfo;
 import com.iana.api.domain.EPJoinDet;
+import com.iana.api.domain.EPMCSuspensionNotifPreference;
 import com.iana.api.domain.EPTemplate;
 import com.iana.api.domain.EPTerminalFeed;
 import com.iana.api.domain.JoinRecord;
@@ -3162,6 +3163,99 @@ public class EpDaoImpl extends GenericDAO implements EpDao {
 						return reportList;
 					}
 				}, params.toArray());
+
+	}
+
+	@Override
+	public List<EPMCSuspensionNotifPreference> getEPMCSuspensionNotifPref(Long notifPreferenceSelectedByEP)
+			throws Exception {
+
+		StringBuffer sbGetQuery = new StringBuffer("SELECT snp_id, notif_desc FROM ep_mc_suspension_notif_pref");
+
+		return getSpringJdbcTemplate(this.uiiaDataSource).query(sbGetQuery.toString(),
+				new ResultSetExtractor<List<EPMCSuspensionNotifPreference>>() {
+					List<EPMCSuspensionNotifPreference> prefList = new ArrayList<>();
+
+					@Override
+					public List<EPMCSuspensionNotifPreference> extractData(ResultSet rsAReqDetails)
+							throws SQLException {
+						while (rsAReqDetails.next()) {
+							EPMCSuspensionNotifPreference e = new EPMCSuspensionNotifPreference();
+							e.setSnpId(rsAReqDetails.getLong("snp_id"));
+							e.setNotifDesc(rsAReqDetails.getString("notif_desc"));
+							if (notifPreferenceSelectedByEP.longValue() == e.getSnpId().longValue()) {
+								e.setSelected(true);
+							}
+							prefList.add(e);
+						}
+						return prefList;
+					}
+				});
+
+	}
+
+	@Override
+	public Long getNotifPreferenceSelectedByEP(String accountNumber) throws Exception {
+		StringBuffer sbGetQuery = new StringBuffer("SELECT snp_id FROM ep_mc_suspension_notif WHERE ep_acct_no = ?");
+		return getSpringJdbcTemplate(this.uiiaDataSource).query(sbGetQuery.toString(), new ResultSetExtractor<Long>() {
+			@Override
+			public Long extractData(ResultSet rs) throws SQLException {
+				Long selPref = 0L;
+				;
+				if (rs.next()) {
+					selPref = rs.getLong("snp_id");
+				}
+				return selPref;
+			}
+		}, accountNumber);
+
+	}
+
+	@Override
+	public boolean ifExistsOldEpMcNotifPreference(Long notifPreferenceSelection, String accountNumber)
+			throws Exception {
+		StringBuffer sbQuery = new StringBuffer(
+				"SELECT count(snp_id) FROM ep_mc_suspension_notif WHERE ep_acct_no = ? AND snp_id = ?");
+
+		return findTotalRecordCount(this.uiiaDataSource, sbQuery.toString(), accountNumber,
+				notifPreferenceSelection) > 0 ? true : false;
+	}
+
+	@Override
+	public boolean ifExistsEpMcNotifPreferenceForAccount(String accountNumber) throws Exception {
+		StringBuffer sbQuery = new StringBuffer(
+				"SELECT count(snp_id) FROM ep_mc_suspension_notif WHERE ep_acct_no = ?");
+
+		return findTotalRecordCount(this.uiiaDataSource, sbQuery.toString(), accountNumber) > 0 ? true : false;
+	}
+
+	@Override
+	public void updateEPMCSuspensionNotification(SecurityObject securityObject, Long notifPreferenceSelection,
+			Long notifPreferenceSelectionDB) throws Exception {
+		StringBuilder sbUpdateQuery = new StringBuilder(
+				"UPDATE ep_mc_suspension_notif SET snp_id = ?, modified_by = ?,modified_date = ? WHERE ep_acct_no = ? AND snp_id = ?");
+		List<Object> params = new ArrayList<>();
+
+		params.add(notifPreferenceSelection);
+		params.add(securityObject.getUsername());
+		params.add(Utility.getSqlSysTimestamp());
+		params.add(securityObject.getAccountNumber());
+		params.add(notifPreferenceSelectionDB);
+		saveOrUpdate(this.uiiaDataSource, sbUpdateQuery.toString(), params.toArray(), false);
+
+	}
+
+	@Override
+	public void insertEPMCSuspensionNotification(SecurityObject securityObject, Long notifPreferenceSelection)
+			throws Exception {
+		StringBuilder sbInsertQuery = new StringBuilder(
+				"INSERT INTO ep_mc_suspension_notif (ep_acct_no,snp_id, created_by,created_date) values(?,?,?,?) ");
+		List<Object> params = new ArrayList<>();
+		params.add(securityObject.getAccountNumber());
+		params.add(notifPreferenceSelection);
+		params.add(securityObject.getUsername());
+		params.add(Utility.getSqlSysTimestamp());
+		saveOrUpdate(this.uiiaDataSource, sbInsertQuery.toString(), params.toArray(), false);
 
 	}
 
