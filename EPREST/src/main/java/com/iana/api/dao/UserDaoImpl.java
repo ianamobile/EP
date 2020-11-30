@@ -72,7 +72,7 @@ public class UserDaoImpl extends GenericDAO implements UserDao {
 		StringBuilder sbQuery = new StringBuilder();
 
 		sbQuery.append(
-				" SELECT a.account_no AS accountNumber, a.company_name companyName, a.scac_code AS scac, a.iana_mem, a.non_uiia_ep AS nonUIIAEpFlag, ");
+				" SELECT a.account_no, a.company_name companyName, a.scac_code AS scac, a.iana_mem, a.non_uiia_ep AS nonUIIAEpFlag, ");
 		sbQuery.append(
 				" a.uiia_status, a.uiia_status_cd AS uiiaStatusCode, IFNULL(DATE_FORMAT(a.mem_eff_dt,'%m/%d/%Y'), '') AS memEffDate, ");
 		sbQuery.append(
